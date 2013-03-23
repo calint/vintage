@@ -36,27 +36,31 @@ public class s{public s()throws Throwable{
 		glVertex2f(dspwi>>1,0);
 		glVertex2f(dspwi>>1,dsphi);
 		glVertex2f(0,dsphi);
-
-		glColor3f(.5f,0,0);
-		glVertex2f(dspwi>>1,0);
-		glVertex2f(dspwi,0);
-		glVertex2f(dspwi,dsphi);
-		glVertex2f(dspwi>>1,dsphi);
-
+		
 		glColor3f(0,0,0);
 		glVertex2f((dspwi>>2)+0,(dsphi>>1)+0);
 		glVertex2f((dspwi>>2)+5,(dsphi>>1)+0);
 		glVertex2f((dspwi>>2)+5,(dsphi>>1)+5);
 		glVertex2f((dspwi>>2)+0,(dsphi>>1)+5);
-
-		glColor3f(0,0,0);
-		glVertex2f((dspwi>>2)+(dspwi>>1)+0,(dsphi>>1)+0);
-		glVertex2f((dspwi>>2)+(dspwi>>1)+5,(dsphi>>1)+0);
-		glVertex2f((dspwi>>2)+(dspwi>>1)+5,(dsphi>>1)+5);
-		glVertex2f((dspwi>>2)+(dspwi>>1)+0,(dsphi>>1)+5);
-		
 		glEnd();
 		
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(-dspwi>>1,dspwi>>1,dsphi,0,1,-1);
+
+		glBegin(GL_QUADS);
+		glColor3f(.5f,0,0);
+		glVertex2f(0,0);
+		glVertex2f(dspwi>>1,0);
+		glVertex2f(dspwi>>1,dsphi);
+		glVertex2f(0,dsphi);
+		glColor3f(0,0,0);
+		glVertex2f((dspwi>>2)+0,(dsphi>>1)+0);
+		glVertex2f((dspwi>>2)+5,(dsphi>>1)+0);
+		glVertex2f((dspwi>>2)+5,(dsphi>>1)+5);
+		glVertex2f((dspwi>>2)+0,(dsphi>>1)+5);
+		glEnd();
+
 		Display.update();
 		frm++;
 		final long t1=System.currentTimeMillis();
