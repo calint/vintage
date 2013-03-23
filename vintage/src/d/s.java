@@ -1,5 +1,5 @@
 package d;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW;
 import static org.lwjgl.opengl.GL11.GL_PROJECTION;
@@ -14,7 +14,9 @@ import static org.lwjgl.opengl.GL11.glOrtho;
 import static org.lwjgl.opengl.GL11.glVertex2f;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-public class s{public s()throws Throwable{
+public class s{
+public scene scene=new scene();
+public s()throws Throwable{
 	int dspwi=512,dsphi=512;
 	Display.setDisplayMode(new DisplayMode(dspwi,dsphi));
 	Display.create();
@@ -30,36 +32,15 @@ public class s{public s()throws Throwable{
 		glLoadIdentity();
 		glOrtho(0,dspwi,dsphi,0,1,-1);
 
-		glBegin(GL_QUADS);
-		glColor3f(0,.5f,0);
-		glVertex2f(0,0);
-		glVertex2f(dspwi>>1,0);
-		glVertex2f(dspwi>>1,dsphi);
-		glVertex2f(0,dsphi);
-		
-		glColor3f(0,0,0);
-		glVertex2f((dspwi>>2)+0,(dsphi>>1)+0);
-		glVertex2f((dspwi>>2)+5,(dsphi>>1)+0);
-		glVertex2f((dspwi>>2)+5,(dsphi>>1)+5);
-		glVertex2f((dspwi>>2)+0,(dsphi>>1)+5);
-		glEnd();
+		scene.background.rgb=new float[]{0,.3f,0};
+		scene.toopengl();
 		
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(-dspwi>>1,dspwi>>1,dsphi,0,1,-1);
-
-		glBegin(GL_QUADS);
-		glColor3f(.5f,0,0);
-		glVertex2f(0,0);
-		glVertex2f(dspwi>>1,0);
-		glVertex2f(dspwi>>1,dsphi);
-		glVertex2f(0,dsphi);
-		glColor3f(0,0,0);
-		glVertex2f((dspwi>>2)+0,(dsphi>>1)+0);
-		glVertex2f((dspwi>>2)+5,(dsphi>>1)+0);
-		glVertex2f((dspwi>>2)+5,(dsphi>>1)+5);
-		glVertex2f((dspwi>>2)+0,(dsphi>>1)+5);
-		glEnd();
+	
+		scene.background.rgb=new float[]{.3f,0,0};
+		scene.toopengl();
 
 		Display.update();
 		frm++;
