@@ -22,12 +22,13 @@ public class s{public s()throws Throwable{
 	long t0=System.currentTimeMillis();
 	while(!Display.isCloseRequested()){
 		glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-		
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glOrtho(0,dspwi,dsphi,0,1,-1);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
 
 		glBegin(GL_QUADS);
 		glColor3f(0,.5f,0);
