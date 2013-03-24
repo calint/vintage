@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -63,7 +64,10 @@ public class app{
 //		Display.create();
 //		Display.setResizable(false);
 		
+		System.out.println(Display.getAdapter());
 		System.out.println(Display.getVersion());
+		System.out.println(Sys.getVersion());
+
 		
 		// program
 		int errorCheckValue=glGetError();
