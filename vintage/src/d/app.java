@@ -23,13 +23,16 @@ import static org.lwjgl.opengl.GL20.glValidateProgram;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.PixelFormat;
 public class app{
 	public static void main(final String[]a)throws Throwable{new app();}
@@ -50,6 +53,7 @@ public class app{
 		load();
 		loop();		
 	}
+	private int umxproj;
 	public void load()throws Throwable{
 		final def def=(def)Class.forName(defclsnm).newInstance();
 		def.addvbos(vbos);
@@ -77,6 +81,9 @@ public class app{
 		glAttachShader(p,vs);
 		glAttachShader(p,fs);
 		glLinkProgram(p);
+		umxproj=GL20.glGetUniformLocation(p,"umxproj");
+		if(umxproj==-1)
+			throw new Error("could not link umxproj");
 		glBindAttribLocation(p,0,"in_Position");
 		glBindAttribLocation(p,1,"in_Color");
 		glValidateProgram(p);
@@ -108,6 +115,14 @@ public class app{
 
 //			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 //			GL11.glLoadIdentity();			
+			final FloatBuffer fbumxproj=BufferUtils.createFloatBuffer(16);
+			fbumxproj.put(1).put(0).put(0).put(0);
+			fbumxproj.put(0).put(1).put(0).put(0);
+			fbumxproj.put(0).put(0).put(1).put(0);
+			fbumxproj.put(0).put(0).put(0).put(1);
+			fbumxproj.flip();
+			
+			GL20.glUniformMatrix4(umxproj,false,fbumxproj);
 			for(final obj o:objs)
 				o.render();
 			
