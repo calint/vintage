@@ -22,7 +22,10 @@ public class s{
 		Display.create();
 		Display.setResizable(false);
 		final DisplayMode dm=Display.getDisplayMode();
-		System.out.println(dm.getWidth()+" x "+dm.getHeight()+" x "+dm.getBitsPerPixel()+" @ "+dm.getFrequency()+" Hz");
+		System.out.println("display "+dm.getWidth()+" x "+dm.getHeight()+" x "+dm.getBitsPerPixel()+" bpp @ "+dm.getFrequency()+" Hz");
+		
+		
+		final int[]vboid=vbo.vbomksample();
 		int frm=0;
 		long t0=System.currentTimeMillis();
 		while(!Display.isCloseRequested()){
@@ -35,15 +38,24 @@ public class s{
 			glLoadIdentity();
 			glOrtho(0,dspwi,dsphi,0,1,-1);
 
+			glColor4f(1,1,1,1);
+//			glBegin(GL_TRIANGLES);
+//		    glVertex3f(0,0,0);
+//		    glVertex3f(100,100,0);
+//		    glVertex3f(0,100,0);
+//		    glEnd(); 
+		
+			vbo.vbodraw(vboid[0],vboid[1],3);
+			
 			scene.background.rgb=new float[]{0,.3f,0};
-			scene.toopengl();
+//			scene.toopengl();
 
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			glOrtho(-dspwi>>1,dspwi>>1,dsphi,0,1,-1);
-
-			scene.background.rgb=new float[]{.3f,0,0};
-			scene.toopengl();
+//			glMatrixMode(GL_PROJECTION);
+//			glLoadIdentity();
+//			glOrtho(-dspwi>>1,dspwi>>1,dsphi,0,1,-1);
+//
+//			scene.background.rgb=new float[]{.3f,0,0};
+//			scene.toopengl();
 
 			Display.update();
 			frm++;
