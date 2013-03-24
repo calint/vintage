@@ -1,12 +1,14 @@
 package d;
 import java.lang.reflect.Field;
 import b.a;
-public class glob extends a{
+public class obj extends a{
 	static final long serialVersionUID=1;
-	public void toopengl()throws Throwable{
+	polyh vbo;
+	final public void toopengl()throws Throwable{
+		vbo.render();
 		for(final Field f:getClass().getFields()){
-			if(glob.class.isAssignableFrom(f.getType())){
-				final glob o=(glob)f.get(this);
+			if(obj.class.isAssignableFrom(f.getType())){
+				final obj o=(obj)f.get(this);
 				if(o!=null)
 					o.toopengl();
 			}
