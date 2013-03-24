@@ -1,8 +1,27 @@
 package d;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_FALSE;
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.glClear;
 import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glGetError;
 import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
+import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
+import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
+import static org.lwjgl.opengl.GL20.glAttachShader;
+import static org.lwjgl.opengl.GL20.glBindAttribLocation;
+import static org.lwjgl.opengl.GL20.glCompileShader;
+import static org.lwjgl.opengl.GL20.glCreateProgram;
+import static org.lwjgl.opengl.GL20.glCreateShader;
+import static org.lwjgl.opengl.GL20.glGetShaderi;
+import static org.lwjgl.opengl.GL20.glLinkProgram;
+import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL20.glValidateProgram;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -13,7 +32,9 @@ public class app{
 	private final int hi=512;
 	private int fps;
 	private final vbo vbo=new vbo();
+	private final vbo1 vbo1=new vbo1();
 	public app()throws Throwable{
+		// display
 		final PixelFormat pixelFormat=new PixelFormat();
 		final ContextAttribs contextAtrributes=new ContextAttribs(3,2)
 				.withForwardCompatible(true)
@@ -21,10 +42,34 @@ public class app{
 		Display.setDisplayMode(new DisplayMode(wi,hi));
 		Display.create(pixelFormat,contextAtrributes);
 
-		vbo.load();
+		// program
+		int errorCheckValue=glGetError();
+		final int p=glCreateProgram();
+		final int vs=loadshader("vs",GL_VERTEX_SHADER);
+		final int fs=loadshader("fs",GL_FRAGMENT_SHADER);
+		glAttachShader(p,vs);
+		glAttachShader(p,fs);
+		glLinkProgram(p);
+		glBindAttribLocation(p,0,"in_Position");
+		glBindAttribLocation(p,1,"in_Color");
+		glValidateProgram(p);
+		errorCheckValue=glGetError();
+		if (errorCheckValue!=GL_NO_ERROR)
+			throw new Error("could not load program: "+errorCheckValue);
+		glUseProgram(p);
+
 		
+		
+		vbo.load();
+		vbo1.load();
+		
+		
+		
+		// viewport
 		glViewport(0,0,wi,hi);
 		glClearColor(.4f,.6f,.9f,0);
+		
+		// loop
 		long t0=System.currentTimeMillis();
 		int frm=0;
 		while(!Display.isCloseRequested()){
@@ -32,6 +77,7 @@ public class app{
 			glClear(GL_COLOR_BUFFER_BIT);
 			
 			vbo.render();
+			vbo1.render();
 						
 			final long t1=System.currentTimeMillis();
 			final long dt=t1-t0;
@@ -47,5 +93,22 @@ public class app{
 		}
 		//? cleanupskippeddueto
 		Display.destroy();
+	}
+	private static int loadshader(final String filename,final int type)throws Throwable{
+		final StringBuilder src=new StringBuilder();
+		final InputStream srcis=vbo.class.getResourceAsStream(filename);
+		final BufferedReader r=new BufferedReader(new InputStreamReader(srcis));
+		for(String line;(line=r.readLine())!=null;)
+			src.append(line).append("\n");
+		r.close();
+		
+		final int shdr=glCreateShader(type);
+		glShaderSource(shdr,src);
+		glCompileShader(shdr);
+
+		if(glGetShaderi(shdr,GL_COMPILE_STATUS)==GL_FALSE)
+			throw new Error("could not compile "+filename);
+
+		return shdr;
 	}
 }
