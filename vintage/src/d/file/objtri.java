@@ -1,8 +1,6 @@
 package d.file;
-
 import d.obj;
-
-public class square extends obj{
+public class objtri extends obj{
 	static final long serialVersionUID=1;
-	{vbo=vbocoloredsquare.o;}
+	{vbo=vbotri.o;}
 }

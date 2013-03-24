@@ -2,8 +2,8 @@ package d.file;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import d.vbo;
-public class vbocoloredsquare extends vbo{
-	static final public vbocoloredsquare o=new vbocoloredsquare(); 
+public class vbosqr extends vbo{
+	static final public vbosqr o=new vbosqr(); 
 	protected int nvertices(){return 4;}
 	protected void vertices(final FloatBuffer vb){
 		vb.put(-.5f).put( .5f).put(0).put(1);//xyzw
