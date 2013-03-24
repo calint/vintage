@@ -1,7 +1,8 @@
-package d;
+package d.file;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-public class vbocoloredsquare extends polyh{
+import d.vbo;
+public class vbocoloredsquare extends vbo{
 	static final public vbocoloredsquare o=new vbocoloredsquare(); 
 	protected int nvertices(){return 4;}
 	protected void vertices(final FloatBuffer vb){

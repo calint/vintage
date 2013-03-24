@@ -1,7 +1,8 @@
-package d;
+package d.file;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-public class vbowhitetriangle extends polyh{
+import d.vbo;
+public class vbowhitetriangle extends vbo{
 	static final public vbowhitetriangle o=new vbowhitetriangle();
 	protected int nvertices(){return 3;}
 	protected void vertices(final FloatBuffer vb){

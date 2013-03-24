@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
-public class polyh{
+public class vbo{
 	private int vao;// vertex array object
 	private int vbo;// vertex buffer object
 	private int vboi;// indices buffer object
