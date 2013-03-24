@@ -8,7 +8,7 @@ public class obj extends a{
 	protected float[]pos=new float[3];// x y z
 	final public void render()throws Throwable{
 //		GL11.glPushMatrix();
-//		GL11.glTranslatef(pos[0],pos[1],pos[2]);
+		GL11.glTranslatef(pos[0],pos[1],pos[2]);
 		vbo.render();
 		for(final Field f:getClass().getFields()){
 			if(obj.class.isAssignableFrom(f.getType())){
