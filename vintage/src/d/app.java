@@ -28,20 +28,43 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
+import d.file.background;
+import d.file.vbocoloredsquare;
+import d.file.vbowhitetriangle;
 public class app{
-	public static void main(final String[]a)throws Throwable{new app();}	
+	public static void main(final String[]a)throws Throwable{new app();}
 	private final int wi=512;
 	private final int hi=512;
 	private int fps;
 	public final int nvbos=128;
-	private final Collection<polyh>vbos=new ArrayList<polyh>(nvbos);
+	public final int nobjs=128;
+	private final Collection<vbo>vbos=new ArrayList<vbo>(nvbos);
+	private final Collection<obj>objs=new ArrayList<obj>(nobjs);
 //	private final vbo vbo=new vbo();
 //	private final vbo1 vbo1=new vbo1();
-	public app()throws Throwable{
-		vbos.add(new polyh());
-		vbos.add(new vbowhitetriangle());
-		
-		
+	{
+//		addvbos(vbos);
+//		addobjs(objs);
+		load();
+		loop();
+	}
+	public static String defclsnm="d.file.difc";
+	public interface def{
+		void addvbos(final Collection<vbo>col);
+		void addobjs(final Collection<obj>col);
+	}
+//	protected void addvbos(final Collection<vbo>col){
+//		col.add(vbocoloredsquare.o);
+//		col.add(vbowhitetriangle.o);
+//	}
+//	protected void addobjs(final Collection<obj>col){
+//		col.add(new background());
+//	}
+	public app()throws Throwable{}
+	public void load()throws Throwable{
+		final def def=(def)Class.forName(defclsnm).newInstance();
+		def.addvbos(vbos);
+		def.addobjs(objs);
 		// display
 		final PixelFormat pixelFormat=new PixelFormat();
 		final ContextAttribs contextAtrributes=new ContextAttribs(3,2)
@@ -66,16 +89,14 @@ public class app{
 			throw new Error("could not load program: "+errorCheckValue);
 		glUseProgram(p);
 
-		
-		for(final polyh o:vbos)
+		// vbos
+		for(final vbo o:vbos)
 			o.load();
-		
-		
-		
+	}
+	public void loop()throws Throwable{
 		// viewport
 		glViewport(0,0,wi,hi);
 		glClearColor(.4f,.6f,.9f,0);
-		
 		// loop
 		long t0=System.currentTimeMillis();
 		int frm=0;
@@ -83,9 +104,12 @@ public class app{
 			frm++;
 			glClear(GL_COLOR_BUFFER_BIT);
 			
-			for(final polyh o:vbos)
-				o.render();
+//			for(final polyh o:vbos)
+//				o.render();
 						
+			for(final obj o:objs)
+				o.render();
+			
 			final long t1=System.currentTimeMillis();
 			final long dt=t1-t0;
 			if(dt>1000){
@@ -103,7 +127,7 @@ public class app{
 	}
 	private static int loadshader(final String filename,final int type)throws Throwable{
 		final StringBuilder src=new StringBuilder();
-		final InputStream srcis=polyh.class.getResourceAsStream(filename);
+		final InputStream srcis=vbo.class.getResourceAsStream(filename);
 		final BufferedReader r=new BufferedReader(new InputStreamReader(srcis));
 		for(String line;(line=r.readLine())!=null;)
 			src.append(line).append("\n");
