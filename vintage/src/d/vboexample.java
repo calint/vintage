@@ -71,15 +71,15 @@ public class vboexample{
 	public static void main(final String[]a)throws Throwable{new vboexample();}
 	
 	private final String title="vbo";
-	private final int wi=640;
-	private final int hi=480;
+	private final int wi=512;
+	private final int hi=512;
 	private int vao;// vertex array object
 	private int vbo;// vertex buffer object
 	private int vboi;// indices buffer object
 	private int nindices;
-	private int fps;
 	private FloatBuffer vb;//vertex buffer
 	private ByteBuffer ib;//indices buffer
+	private int fps;
 	
 	public vboexample()throws Throwable{
 		final PixelFormat pixelFormat=new PixelFormat();
@@ -112,6 +112,8 @@ public class vboexample{
 //		FloatBuffer verticesBuffer = ByteBuffer.allocateDirect(4*vertices.length*Vertex.elementCount).asFloatBuffer();
 		final int nvertices=4;
 		final int stride=8;
+		final int sizeofnum=4;
+		final int stridebytes=stride*sizeofnum;
 		vb=BufferUtils.createFloatBuffer(nvertices*stride);
 	
 		vb.put(-.5f).put( .5f).put(0).put(1);//xyzw
@@ -141,8 +143,8 @@ public class vboexample{
 		vbo=glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER,vbo);
 		glBufferData(GL_ARRAY_BUFFER,vb,GL_STATIC_DRAW);
-		glVertexAttribPointer(0,4,GL_FLOAT,false,nvertices*stride,0);// positions
-		glVertexAttribPointer(1,4,GL_FLOAT,false,nvertices*stride,4*4);// colors, 16 bytes offset
+		glVertexAttribPointer(0,4,GL_FLOAT,false,stridebytes,0);// positions
+		glVertexAttribPointer(1,4,GL_FLOAT,false,stridebytes,4*sizeofnum);// colors, 16 bytes offset
 		glBindBuffer(GL_ARRAY_BUFFER,0);
 		glBindVertexArray(0);
 
