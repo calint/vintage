@@ -1,5 +1,6 @@
 package d;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.GL_FALSE;
 import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
 import static org.lwjgl.opengl.GL11.glClear;
@@ -28,11 +29,13 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
-import d.file.background;
-import d.file.vbocoloredsquare;
-import d.file.vbowhitetriangle;
 public class app{
 	public static void main(final String[]a)throws Throwable{new app();}
+	public static String defclsnm="d.file.def";
+	public interface def{
+		void addvbos(final Collection<vbo>col);
+		void addobjs(final Collection<obj>col);
+	}
 	private final int wi=512;
 	private final int hi=512;
 	private int fps;
@@ -40,39 +43,27 @@ public class app{
 	public final int nobjs=128;
 	private final Collection<vbo>vbos=new ArrayList<vbo>(nvbos);
 	private final Collection<obj>objs=new ArrayList<obj>(nobjs);
-//	private final vbo vbo=new vbo();
-//	private final vbo1 vbo1=new vbo1();
-	{
-//		addvbos(vbos);
-//		addobjs(objs);
+
+	public app()throws Throwable{
 		load();
-		loop();
+		loop();		
 	}
-	public static String defclsnm="d.file.difc";
-	public interface def{
-		void addvbos(final Collection<vbo>col);
-		void addobjs(final Collection<obj>col);
-	}
-//	protected void addvbos(final Collection<vbo>col){
-//		col.add(vbocoloredsquare.o);
-//		col.add(vbowhitetriangle.o);
-//	}
-//	protected void addobjs(final Collection<obj>col){
-//		col.add(new background());
-//	}
-	public app()throws Throwable{}
 	public void load()throws Throwable{
 		final def def=(def)Class.forName(defclsnm).newInstance();
 		def.addvbos(vbos);
 		def.addobjs(objs);
 		// display
 		final PixelFormat pixelFormat=new PixelFormat();
-		final ContextAttribs contextAtrributes=new ContextAttribs(3,2)
-				.withForwardCompatible(true)
-				.withProfileCore(true);
+		final ContextAttribs contextAtrributes=new ContextAttribs(3,2).withProfileCore(true);
 		Display.setDisplayMode(new DisplayMode(wi,hi));
 		Display.create(pixelFormat,contextAtrributes);
-
+		
+//		Display.setDisplayMode(new DisplayMode(wi,hi));
+//		Display.create();
+//		Display.setResizable(false);
+		
+		System.out.println(Display.getVersion());
+		
 		// program
 		int errorCheckValue=glGetError();
 		final int p=glCreateProgram();
@@ -92,6 +83,7 @@ public class app{
 		// vbos
 		for(final vbo o:vbos)
 			o.load();
+		
 	}
 	public void loop()throws Throwable{
 		// viewport
@@ -102,11 +94,15 @@ public class app{
 		int frm=0;
 		while(!Display.isCloseRequested()){
 			frm++;
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			
-//			for(final polyh o:vbos)
-//				o.render();
-						
+//			glMatrixMode(GL_MODELVIEW);
+//			glLoadIdentity();
+//
+//			glMatrixMode(GL_PROJECTION);
+//			glLoadIdentity();
+//			glOrtho(0,wi,hi,0,1,-1);
+			
 			for(final obj o:objs)
 				o.render();
 			
