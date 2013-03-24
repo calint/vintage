@@ -73,9 +73,9 @@ public class TheQuadExampleInterleaved {
 	private int vboiId = 0;
 	private int indicesCount = 0;
 	// Shader variables
-	private int vsId = 0;
-	private int fsId = 0;
-	private int pId = 0;
+	private int vs = 0;
+	private int fs = 0;
+	private int p = 0;
 	
 	public TheQuadExampleInterleaved() {
 		// Initialize OpenGL (Display)
@@ -171,54 +171,46 @@ public class TheQuadExampleInterleaved {
 	
 	private void setupShaders() {
 		int errorCheckValue=glGetError();
-		vsId=loadShader("vertex.glsl",GL_VERTEX_SHADER);
-		fsId=loadShader("fragment.glsl",GL_FRAGMENT_SHADER);
-		pId=GL20.glCreateProgram();
-		GL20.glAttachShader(pId,vsId);
-		GL20.glAttachShader(pId,fsId);
-		GL20.glLinkProgram(pId);
-		GL20.glBindAttribLocation(pId,0,"in_Position");
-		GL20.glBindAttribLocation(pId,1,"in_Color");
-		GL20.glValidateProgram(pId);
+		p=glCreateProgram();
+		vs=loadShader("vertex.glsl",GL_VERTEX_SHADER);
+		fs=loadShader("fragment.glsl",GL_FRAGMENT_SHADER);
+		glAttachShader(p,vs);
+		glAttachShader(p,fs);
+		glLinkProgram(p);
+		glBindAttribLocation(p,0,"in_Position");
+		glBindAttribLocation(p,1,"in_Color");
+		glValidateProgram(p);
 		errorCheckValue=glGetError();
 		if (errorCheckValue!=GL_NO_ERROR)
 			throw new Error("ERROR - Could not create the shaders:"+errorCheckValue);
 	}
 	
 	public void loopCycle() {
-		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glUseProgram(p);
+		glBindVertexArray(vaoId);
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboiId);
+		glDrawElements(GL_TRIANGLES,indicesCount,GL_UNSIGNED_BYTE,0);
 		
-		GL20.glUseProgram(pId);
-		
-		// Bind to the VAO that has all the information about the vertices
-		GL30.glBindVertexArray(vaoId);
-		GL20.glEnableVertexAttribArray(0);
-		GL20.glEnableVertexAttribArray(1);
-		
-		// Bind to the index VBO that has all the information about the order of the vertices
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboiId);
-		
-//		GL11.glColor3b((byte)0,(byte)0,(byte)0);
-		// Draw the vertices
-		GL11.glDrawElements(GL11.GL_TRIANGLES, indicesCount, GL11.GL_UNSIGNED_BYTE, 0);
-		
-		// Put everything back to default (deselect)
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
-		GL20.glDisableVertexAttribArray(0);
-		GL20.glDisableVertexAttribArray(1);
-		GL30.glBindVertexArray(0);
-		GL20.glUseProgram(0);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glBindVertexArray(0);
+		glUseProgram(0);
 	}
 	
 	public void destroyOpenGL() {
 		// Delete the shaders
 		GL20.glUseProgram(0);
-		GL20.glDetachShader(pId, vsId);
-		GL20.glDetachShader(pId, fsId);
+		GL20.glDetachShader(p, vs);
+		GL20.glDetachShader(p, fs);
 		
-		GL20.glDeleteShader(vsId);
-		GL20.glDeleteShader(fsId);
-		GL20.glDeleteProgram(pId);
+		GL20.glDeleteShader(vs);
+		GL20.glDeleteShader(fs);
+		GL20.glDeleteProgram(p);
 		
 		// Select the VAO
 		GL30.glBindVertexArray(vaoId);
