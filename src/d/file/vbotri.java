@@ -2,8 +2,8 @@ package d.file;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import d.vbo;
-public class vbowhitetriangle extends vbo{
-	static final public vbowhitetriangle o=new vbowhitetriangle();
+public class vbotri extends vbo{
+	static final public vbotri o=new vbotri();
 	protected int nvertices(){return 3;}
 	protected void vertices(final FloatBuffer vb){
 		vb.put(-.5f).put( .5f).put(0).put(1);//xyzw

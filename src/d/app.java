@@ -28,6 +28,7 @@ import java.util.Collection;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.PixelFormat;
 public class app{
 	public static void main(final String[]a)throws Throwable{new app();}
@@ -96,13 +97,13 @@ public class app{
 			frm++;
 			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 			
-//			glMatrixMode(GL_MODELVIEW);
-//			glLoadIdentity();
 //
 //			glMatrixMode(GL_PROJECTION);
 //			glLoadIdentity();
 //			glOrtho(0,wi,hi,0,1,-1);
-			
+
+//			GL11.glMatrixMode(GL11.GL_MODELVIEW);
+//			GL11.glLoadIdentity();			
 			for(final obj o:objs)
 				o.render();
 			

@@ -1,8 +1,6 @@
 package d.file;
-
 import d.obj;
-
-public class background extends obj{
+public class objsqr extends obj{
 	static final long serialVersionUID=1;
-	{vbo=vbowhitetriangle.o;}
+	{vbo=vbosqr.o;}
 }
