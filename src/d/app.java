@@ -97,6 +97,22 @@ public class app{
 			o.load();
 		
 	}
+	final public static class mtx{
+		public final FloatBuffer fb=BufferUtils.createFloatBuffer(16);
+		public void ident(){
+			fb.rewind();
+			fb.put(1).put(0).put(0).put(0);
+			fb.put(0).put(1).put(0).put(0);
+			fb.put(0).put(0).put(1).put(0);
+			fb.put(0).put(0).put(0).put(1);
+			fb.flip();
+		}
+	}
+	final public static class mtxstk{
+		public mtxstk pushmul(final mtx m){return this;}
+		public mtxstk pop(){return this;}
+		public mtx get(){return null;}
+	}
 	public void loop()throws Throwable{
 		// viewport
 		glViewport(0,0,wi,hi);
@@ -104,37 +120,29 @@ public class app{
 		// loop
 		long t0=System.currentTimeMillis();
 		int frm=0;
+		final mtx mtxproj=new mtx();
+		float sx=1;
 		while(!Display.isCloseRequested()){
 			frm++;
-			glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-			
-//
-//			glMatrixMode(GL_PROJECTION);
-//			glLoadIdentity();
-//			glOrtho(0,wi,hi,0,1,-1);
+			glClear(GL_COLOR_BUFFER_BIT);
 
-//			GL11.glMatrixMode(GL11.GL_MODELVIEW);
-//			GL11.glLoadIdentity();			
-			final FloatBuffer fbumxproj=BufferUtils.createFloatBuffer(16);
-			fbumxproj.put(1).put(0).put(0).put(0);
-			fbumxproj.put(0).put(1).put(0).put(0);
-			fbumxproj.put(0).put(0).put(1).put(0);
-			fbumxproj.put(0).put(0).put(0).put(1);
-			fbumxproj.flip();
+			mtxproj.ident();
 			
-			GL20.glUniformMatrix4(umxproj,false,fbumxproj);
+			mtxproj.fb.put(0,sx);
+			GL20.glUniformMatrix4(umxproj,false,mtxproj.fb);
+			
 			for(final obj o:objs)
 				o.render();
 			
 			final long t1=System.currentTimeMillis();
-			final long dt=t1-t0;
-			if(dt>1000){
-				fps=(int)(frm*1000/dt);
+			final long dtms=t1-t0;
+			if(dtms>1000){
+				fps=(int)(frm*1000/dtms);
 				t0=t1;
 				frm=0;
 				Display.setTitle("fps: "+fps);
 			}
-			
+		
 			Display.sync(1000);
 			Display.update();
 		}
