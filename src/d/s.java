@@ -25,7 +25,7 @@ public class s{
 		System.out.println("display "+dm.getWidth()+" x "+dm.getHeight()+" x "+dm.getBitsPerPixel()+" bpp @ "+dm.getFrequency()+" Hz");
 		
 		
-		final int[]vboid=vbo.vbomksample();
+//		final int[]vboid=vbo.vbomksample();
 		int frm=0;
 		long t0=System.currentTimeMillis();
 		while(!Display.isCloseRequested()){
@@ -45,10 +45,10 @@ public class s{
 //		    glVertex3f(0,100,0);
 //		    glEnd(); 
 		
-			vbo.vbodraw(vboid[0],vboid[1],3);
+//			vbo.vbodraw(vboid[0],vboid[1],3);
 			
 			scene.background.rgb=new float[]{0,.3f,0};
-//			scene.toopengl();
+			scene.toopengl();
 
 //			glMatrixMode(GL_PROJECTION);
 //			glLoadIdentity();
