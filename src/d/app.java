@@ -34,12 +34,12 @@ public class app{
 	private final int hi=512;
 	private int fps;
 	public final int nvbos=128;
-	private final Collection<vbo>vbos=new ArrayList<vbo>(nvbos);
+	private final Collection<polyh>vbos=new ArrayList<polyh>(nvbos);
 //	private final vbo vbo=new vbo();
 //	private final vbo1 vbo1=new vbo1();
 	public app()throws Throwable{
-		vbos.add(new vbo());
-		vbos.add(new vbo1());
+		vbos.add(new polyh());
+		vbos.add(new vbowhitetriangle());
 		
 		
 		// display
@@ -67,7 +67,7 @@ public class app{
 		glUseProgram(p);
 
 		
-		for(final vbo o:vbos)
+		for(final polyh o:vbos)
 			o.load();
 		
 		
@@ -83,7 +83,7 @@ public class app{
 			frm++;
 			glClear(GL_COLOR_BUFFER_BIT);
 			
-			for(final vbo o:vbos)
+			for(final polyh o:vbos)
 				o.render();
 						
 			final long t1=System.currentTimeMillis();
@@ -103,7 +103,7 @@ public class app{
 	}
 	private static int loadshader(final String filename,final int type)throws Throwable{
 		final StringBuilder src=new StringBuilder();
-		final InputStream srcis=vbo.class.getResourceAsStream(filename);
+		final InputStream srcis=polyh.class.getResourceAsStream(filename);
 		final BufferedReader r=new BufferedReader(new InputStreamReader(srcis));
 		for(String line;(line=r.readLine())!=null;)
 			src.append(line).append("\n");
