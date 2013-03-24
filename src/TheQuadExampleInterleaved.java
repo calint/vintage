@@ -13,6 +13,12 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.opengl.PixelFormat;
+import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
 class Vertex {
 	// Vertex data
 	private float[] xyzw = new float[] {0f, 0f, 0f, 1f};
@@ -103,6 +109,7 @@ public class TheQuadExampleInterleaved {
 			Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
 			Display.setTitle(WINDOW_TITLE);
 			Display.create(pixelFormat, contextAtrributes);
+//			Display.create(pixelFormat, (ContextAttribs)null);
 			
 			GL11.glViewport(0, 0, WIDTH, HEIGHT);
 		} catch (LWJGLException e) {
@@ -126,75 +133,56 @@ public class TheQuadExampleInterleaved {
 		
 		Vertex[] vertices = new Vertex[] {v0, v1, v2, v3};
 		// Put each 'Vertex' in one FloatBuffer
-		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length *
-				Vertex.elementCount);
-		for (int i = 0; i < vertices.length; i++) {
+//		FloatBuffer verticesBuffer = ByteBuffer.allocateDirect(4*vertices.length*Vertex.elementCount).asFloatBuffer();
+		FloatBuffer verticesBuffer = BufferUtils.createFloatBuffer(vertices.length*Vertex.elementCount);
+		for (int i=0;i<vertices.length;i++){
 			verticesBuffer.put(vertices[i].getXYZW());
 			verticesBuffer.put(vertices[i].getRGBA());
 		}
 		verticesBuffer.flip();
 		
 		// OpenGL expects to draw vertices in counter clockwise order by default
-		byte[] indices = {
-				0, 1, 2,
-				2, 3, 0
-		};
-		indicesCount = indices.length;
-		ByteBuffer indicesBuffer = BufferUtils.createByteBuffer(indicesCount);
+		final byte[]indices={0,1,2, 2,3,0};
+		indicesCount=indices.length;
+		final ByteBuffer indicesBuffer=ByteBuffer.allocateDirect(indicesCount);
+//		BufferUtils.createByteBuffer(indicesCount);
 		indicesBuffer.put(indices);
 		indicesBuffer.flip();
 		
-		// Create a new Vertex Array Object in memory and select it (bind)
-		vaoId = GL30.glGenVertexArrays();
-		GL30.glBindVertexArray(vaoId);
+		vaoId=glGenVertexArrays();
+		glBindVertexArray(vaoId);
 		
-		// Create a new Vertex Buffer Object in memory and select it (bind)
-		vboId = GL15.glGenBuffers();
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, verticesBuffer, GL15.GL_STATIC_DRAW);
-		// Put the positions in attribute list 0
-		GL20.glVertexAttribPointer(0, 4, GL11.GL_FLOAT, false, Vertex.sizeInBytes, 0);
-		// Put the colors in attribute list 1
-		GL20.glVertexAttribPointer(1, 4, GL11.GL_FLOAT, false, Vertex.sizeInBytes, 
-				Vertex.elementBytes * 4);
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-		
-		// Deselect (bind to 0) the VAO
-		GL30.glBindVertexArray(0);
-		
-		// Create a new VBO for the indices and select it (bind) - INDICES
-		vboiId = GL15.glGenBuffers();
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboiId);
-		GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indicesBuffer, GL15.GL_STATIC_DRAW);
-		GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, 0);
+		vboId = glGenBuffers();
+		glBindBuffer(GL_ARRAY_BUFFER,vboId);
+		glBufferData(GL_ARRAY_BUFFER,verticesBuffer,GL_STATIC_DRAW);
+		// positions
+		glVertexAttribPointer(0,4,GL_FLOAT,false,Vertex.sizeInBytes,0);
+		// colors
+		glVertexAttribPointer(1,4,GL_FLOAT,false,Vertex.sizeInBytes,Vertex.elementBytes*4);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindVertexArray(0);
+
+		// load
+		vboiId=glGenBuffers();
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboiId);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER,indicesBuffer,GL_STATIC_DRAW);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 	}
 	
 	private void setupShaders() {
-		int errorCheckValue = GL11.glGetError();
-		
-		// Load the vertex shader
-		vsId = this.loadShader("vertex.glsl", GL20.GL_VERTEX_SHADER);
-		// Load the fragment shader
-		fsId = this.loadShader("fragment.glsl", GL20.GL_FRAGMENT_SHADER);
-		
-		// Create a new shader program that links both shaders
-		pId = GL20.glCreateProgram();
-		GL20.glAttachShader(pId, vsId);
-		GL20.glAttachShader(pId, fsId);
+		int errorCheckValue=glGetError();
+		vsId=loadShader("vertex.glsl",GL_VERTEX_SHADER);
+		fsId=loadShader("fragment.glsl",GL_FRAGMENT_SHADER);
+		pId=GL20.glCreateProgram();
+		GL20.glAttachShader(pId,vsId);
+		GL20.glAttachShader(pId,fsId);
 		GL20.glLinkProgram(pId);
-
-		// Position information will be attribute 0
-		GL20.glBindAttribLocation(pId, 0, "in_Position");
-		// Color information will be attribute 1
-		GL20.glBindAttribLocation(pId, 1, "in_Color");
-		
+		GL20.glBindAttribLocation(pId,0,"in_Position");
+		GL20.glBindAttribLocation(pId,1,"in_Color");
 		GL20.glValidateProgram(pId);
-		
-		errorCheckValue = GL11.glGetError();
-		if (errorCheckValue != GL11.GL_NO_ERROR) {
-			System.out.println("ERROR - Could not create the shaders:" + errorCheckValue);
-			System.exit(-1);
-		}
+		errorCheckValue=glGetError();
+		if (errorCheckValue!=GL_NO_ERROR)
+			throw new Error("ERROR - Could not create the shaders:"+errorCheckValue);
 	}
 	
 	public void loopCycle() {
