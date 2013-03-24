@@ -22,6 +22,8 @@ import static org.lwjgl.opengl.GL20.glValidateProgram;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -31,9 +33,15 @@ public class app{
 	private final int wi=512;
 	private final int hi=512;
 	private int fps;
-	private final vbo vbo=new vbo();
-	private final vbo1 vbo1=new vbo1();
+	public final int nvbos=128;
+	private final Collection<vbo>vbos=new ArrayList<vbo>(nvbos);
+//	private final vbo vbo=new vbo();
+//	private final vbo1 vbo1=new vbo1();
 	public app()throws Throwable{
+		vbos.add(new vbo());
+		vbos.add(new vbo1());
+		
+		
 		// display
 		final PixelFormat pixelFormat=new PixelFormat();
 		final ContextAttribs contextAtrributes=new ContextAttribs(3,2)
@@ -59,9 +67,8 @@ public class app{
 		glUseProgram(p);
 
 		
-		
-		vbo.load();
-		vbo1.load();
+		for(final vbo o:vbos)
+			o.load();
 		
 		
 		
@@ -76,8 +83,8 @@ public class app{
 			frm++;
 			glClear(GL_COLOR_BUFFER_BIT);
 			
-			vbo.render();
-			vbo1.render();
+			for(final vbo o:vbos)
+				o.render();
 						
 			final long t1=System.currentTimeMillis();
 			final long dt=t1-t0;
