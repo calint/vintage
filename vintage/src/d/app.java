@@ -31,6 +31,7 @@ public class app{
 	
 	// uniform variable locations
 	private int umxproj;
+	private int utx;
 	
 	public app()throws Throwable{load();loop();}
 	public void load()throws Throwable{
@@ -62,6 +63,7 @@ public class app{
 		glAttachShader(p,fs);
 		glLinkProgram(p);
 		umxproj=glGetUniformLocation(p,"umxproj");
+		utx=glGetUniformLocation(p,"utx");
 		if(umxproj==-1)
 			throw new Error("could not getuniformlocation umxproj");
 		glBindAttribLocation(p,0,"in_Position");
@@ -136,6 +138,7 @@ public class app{
 			
 			mtxproj.fb.put(0,sx);
 			glUniformMatrix4(umxproj,false,mtxproj.fb);
+			glUniform1i(utx,0);
 			
 			for(final obj o:objs)
 				o.render();
