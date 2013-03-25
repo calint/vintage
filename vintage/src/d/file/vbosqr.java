@@ -22,13 +22,14 @@ public class vbosqr extends vbo{
 		//3
 		vb.put(w).put(w).put(0).put(1);//xyzw
 		vb.put(1).put(1).put(1).put(1);//rgba
-		vb.put(1).put(0);//st
+		vb.put(1).put(0);//st //? 
 	}
 	protected int nindices(){return 6;}
 	protected void indices(final ByteBuffer ib){
 		ib.put((byte)0).put((byte)1).put((byte)2);
+//		ib.put((byte)1).put((byte)2).put((byte)3);
 		ib.put((byte)2).put((byte)3).put((byte)0);
-//		ib.put((byte)2).put((byte)3).put((byte)0);
+//		ib.put((byte)0).put((byte)1).put((byte)2);
 //		ib.put((byte)2).put((byte)3).put((byte)0);
 	}
 }
