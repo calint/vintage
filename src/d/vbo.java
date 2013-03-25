@@ -48,7 +48,7 @@ abstract public class vbo{
 		glBufferData(GL_ARRAY_BUFFER,vb,GL_STATIC_DRAW);
 		glVertexAttribPointer(0,4,GL_FLOAT,false,stridebytes,0);// positions
 		glVertexAttribPointer(1,4,GL_FLOAT,false,stridebytes,4*sizeofnum);// colors, 16 bytes offset
-		glVertexAttribPointer(2,4,GL_FLOAT,false,stridebytes,8*sizeofnum);// texture, 32 bytes offset
+		glVertexAttribPointer(2,2,GL_FLOAT,false,stridebytes,8*sizeofnum);// texture, 32 bytes offset
 		glBindBuffer(GL_ARRAY_BUFFER,0);
 		glBindVertexArray(0);
 

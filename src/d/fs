@@ -5,5 +5,5 @@ in vec2 pass_TextureCoord;
 out vec4 out_Color;
 void main(){
 	//out_Color=pass_Color;
-	out_Color=texture(utx,pass_TextureCoord);
+	out_Color=pass_Color+texture(utx,pass_TextureCoord);
 }
