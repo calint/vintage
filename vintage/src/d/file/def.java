@@ -9,6 +9,6 @@ public class def implements d.app.def{
 	}
 	public void addobjs(final Collection<obj>col){
 		col.add(new objsqr());
-		col.add(new objtri());
+//		col.add(new objtri());
 	}
 }

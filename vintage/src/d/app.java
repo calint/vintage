@@ -1,38 +1,18 @@
 package d;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_FALSE;
-import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glGetError;
-import static org.lwjgl.opengl.GL11.glViewport;
-import static org.lwjgl.opengl.GL20.GL_COMPILE_STATUS;
-import static org.lwjgl.opengl.GL20.GL_FRAGMENT_SHADER;
-import static org.lwjgl.opengl.GL20.GL_VERTEX_SHADER;
-import static org.lwjgl.opengl.GL20.glAttachShader;
-import static org.lwjgl.opengl.GL20.glBindAttribLocation;
-import static org.lwjgl.opengl.GL20.glCompileShader;
-import static org.lwjgl.opengl.GL20.glCreateProgram;
-import static org.lwjgl.opengl.GL20.glCreateShader;
-import static org.lwjgl.opengl.GL20.glGetShaderi;
-import static org.lwjgl.opengl.GL20.glLinkProgram;
-import static org.lwjgl.opengl.GL20.glShaderSource;
-import static org.lwjgl.opengl.GL20.glUseProgram;
-import static org.lwjgl.opengl.GL20.glValidateProgram;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.FloatBuffer;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
-import org.lwjgl.BufferUtils;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.PixelFormat;
 public class app{
 	public static void main(final String[]a)throws Throwable{new app();}
@@ -48,12 +28,11 @@ public class app{
 	public final int nobjs=128;
 	private final Collection<vbo>vbos=new ArrayList<vbo>(nvbos);
 	private final Collection<obj>objs=new ArrayList<obj>(nobjs);
-
-	public app()throws Throwable{
-		load();
-		loop();		
-	}
+	
+	// uniform variable locations
 	private int umxproj;
+	
+	public app()throws Throwable{load();loop();}
 	public void load()throws Throwable{
 		final def def=(def)Class.forName(defclsnm).newInstance();
 		def.addvbos(vbos);
@@ -72,6 +51,7 @@ public class app{
 		System.out.println(Display.getVersion());
 		System.out.println(Sys.getVersion());
 
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 		
 		// program
 		int errorCheckValue=glGetError();
@@ -81,37 +61,63 @@ public class app{
 		glAttachShader(p,vs);
 		glAttachShader(p,fs);
 		glLinkProgram(p);
-		umxproj=GL20.glGetUniformLocation(p,"umxproj");
+		umxproj=glGetUniformLocation(p,"umxproj");
 		if(umxproj==-1)
-			throw new Error("could not link umxproj");
+			throw new Error("could not getuniformlocation umxproj");
 		glBindAttribLocation(p,0,"in_Position");
 		glBindAttribLocation(p,1,"in_Color");
+		glBindAttribLocation(p,2,"in_TextureCoord");
 		glValidateProgram(p);
 		errorCheckValue=glGetError();
 		if (errorCheckValue!=GL_NO_ERROR)
 			throw new Error("could not load program: "+errorCheckValue);
 		glUseProgram(p);
 
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+
 		// vbos
 		for(final vbo o:vbos)
 			o.load();
-		
-	}
-	final public static class mtx{
-		public final FloatBuffer fb=BufferUtils.createFloatBuffer(16);
-		public void ident(){
-			fb.rewind();
-			fb.put(1).put(0).put(0).put(0);
-			fb.put(0).put(1).put(0).put(0);
-			fb.put(0).put(0).put(1).put(0);
-			fb.put(0).put(0).put(0).put(1);
-			fb.flip();
+
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+
+		// textures
+		final int tx=glGenTextures();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D,tx);
+		glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+
+		final int txwi=64;
+		final int txhi=64;
+		final int n=4*txwi*txhi;
+		final ByteBuffer txbuf=ByteBuffer.allocateDirect(n);// 4 bytes/pixel
+//		for(int i=0;i<txhi;i++){
+//			for(int j=0;j<txwi;j++){
+////				final byte d=(byte)(Math.random()*0x100);
+//				final byte r=(byte)i;
+//				final byte g=(byte)i;
+//				final byte b=(byte)i;
+//				final byte a=(byte)0xff;
+//				txbuf.put(r);
+//				txbuf.put(g);
+//				txbuf.put(b);
+//				txbuf.put(a);
+//			}
+//		}
+		for(int i=0;i<n;i++){
+			final byte d=(byte)(Math.random()*0x100);
+//			final byte d=(byte)i;
+			txbuf.put(d);
 		}
-	}
-	final public static class mtxstk{
-		public mtxstk pushmul(final mtx m){return this;}
-		public mtxstk pop(){return this;}
-		public mtx get(){return null;}
+		txbuf.flip();
+		
+		glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,txwi,txhi,0,GL_RGBA,GL_UNSIGNED_BYTE,txbuf);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
+		if(glGetError()!=GL_NO_ERROR)throw new Error("could not load texture");
 	}
 	public void loop()throws Throwable{
 		// viewport
@@ -129,7 +135,7 @@ public class app{
 			mtxproj.ident();
 			
 			mtxproj.fb.put(0,sx);
-			GL20.glUniformMatrix4(umxproj,false,mtxproj.fb);
+			glUniformMatrix4(umxproj,false,mtxproj.fb);
 			
 			for(final obj o:objs)
 				o.render();
@@ -161,8 +167,9 @@ public class app{
 		glShaderSource(shdr,src);
 		glCompileShader(shdr);
 
-		if(glGetShaderi(shdr,GL_COMPILE_STATUS)==GL_FALSE)
-			throw new Error("could not compile "+filename);
+		if(glGetShaderi(shdr,GL_COMPILE_STATUS)==GL_FALSE){
+			throw new Error("could not compile "+filename+" due to: "+glGetShaderInfoLog(shdr,255));
+		}
 
 		return shdr;
 	}
