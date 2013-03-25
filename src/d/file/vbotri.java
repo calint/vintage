@@ -8,12 +8,15 @@ public class vbotri extends vbo{
 	protected void vertices(final FloatBuffer vb){
 		vb.put(-.5f).put( .5f).put(0).put(1);//xyzw
 		vb.put(1).put(1).put(1).put(1);//rgba
+		vb.put(0).put(0);//st
 
 		vb.put(-.5f).put(-.5f).put(0).put(1);//xyzw
 		vb.put(1).put(1).put(1).put(1);//rgba
+		vb.put(0).put(1);//st
 
 		vb.put( .5f).put(-.5f).put(0).put(1);//xyzw
 		vb.put(1).put(1).put(1).put(1);//rgba
+		vb.put(1).put(1);//st
 	}
 	protected int nindices(){return 3;}
 	protected void indices(final ByteBuffer ib){
