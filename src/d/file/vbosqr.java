@@ -6,7 +6,7 @@ public class vbosqr extends vbo{
 	static final public vbosqr o=new vbosqr(); 
 	protected int nvertices(){return 4;}
 	protected void vertices(final FloatBuffer vb){
-		final float w=.5f;
+		final float w=.25f;
 		//0
 		vb.put(-w).put(w).put(0).put(1);//xyzw
 		vb.put(1).put(0).put(0).put(1);//rgba

@@ -6,7 +6,7 @@ public class obj extends a{
 	static final long serialVersionUID=1;
 	public static int count;
 	protected vbo vbo;
-	protected float[]pos=new float[3];// x y z
+	public float[]pos=new float[3];// x y z
 	protected mtx mxmw=new mtx().setident();
 	public obj(){count++;}
 	final public void render()throws Throwable{
@@ -14,7 +14,7 @@ public class obj extends a{
 //		pos[0]=.25f;
 //		pos[1]=.5f;
 		mxmw.settranslate(pos);
-		glUniformMatrix4(app.umxmw,false,mxmw.bf);
+		glUniformMatrix4(shader.umxmw,false,mxmw.bf);
 		vbo.render();
 		for(final Field f:getClass().getFields()){
 			if(obj.class.isAssignableFrom(f.getType())){
@@ -28,4 +28,5 @@ public class obj extends a{
 	public void setpos(final float x,final float y,final float z){
 		pos[0]=x;pos[1]=y;pos[2]=z;
 	}
+	public void update()throws Throwable{}
 }

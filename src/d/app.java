@@ -1,5 +1,6 @@
 package d;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
@@ -10,38 +11,37 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.lwjgl.Sys;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
-public class app{
-	public static void main(final String[]a)throws Throwable{new app();}
-	public static String defclsnm="d.file.def";
+final public class app{
+	public static void main(final String[]a)throws Throwable{load();loop();}
+	static public String defclsnm="d.file.def";
 	public interface def{
-		void addvbos(final Collection<vbo>col);
-		void addobjs(final Collection<obj>col);
+		void load()throws Throwable;
+		Collection<vbo>vbos();
+		Collection<obj>objs();
+		void update()throws Throwable;
 	}
-	private final int wi=512;
-	private final int hi=512;
-	private int fps;
-	public final int nvbos=128;
-	public final int nobjs=128;
-	private final Collection<vbo>vbos=new ArrayList<vbo>(nvbos);
-	private final Collection<obj>objs=new ArrayList<obj>(nobjs);
-	
-	// uniform variable locations
-	private int umxproj;
-	static int umxmw;
-	private int utx;
-	
-	public app()throws Throwable{load();loop();}
-	public void load()throws Throwable{
-		final def def=(def)Class.forName(defclsnm).newInstance();
-		def.addvbos(vbos);
-		def.addobjs(objs);
+	static private final int wi=512;
+	static private final int hi=512;
+	static public/*readonly*/int fps;
+	static public final int nvbos=1024;
+	static public final int nobjs=1024;
+	static private def def;
+	static public/*readonly*/int bmpkeys;
+	static public/*readonly*/long dtms;
+	static public/*readonly*/float dt;
+//	public app()throws Throwable{load();loop();}
+	static public void load()throws Throwable{
+		def=(def)Class.forName(defclsnm).newInstance();
+//		def.con(this);
+		def.load();
 		// display
 		final PixelFormat pixelFormat=new PixelFormat();
-		final ContextAttribs contextAtrributes=new ContextAttribs(3,2).withProfileCore(true);
+		final ContextAttribs contextAtrributes=new ContextAttribs(3,2).withProfileCore(true).withForwardCompatible(true);
 		Display.setDisplayMode(new DisplayMode(wi,hi));
 		Display.create(pixelFormat,contextAtrributes);
 		
@@ -52,44 +52,18 @@ public class app{
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 		System.out.println("light weight java game layer");
 		System.out.println("       version: "+Sys.getVersion());
+		System.out.println("        opengl: "+glGetString(GL_VERSION));
 		System.out.println("        64 bit: "+Sys.is64Bit());
 		System.out.println("       adapter: "+Display.getAdapter());
 		System.out.println("       version: "+Display.getVersion());
 		System.out.println("GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
 		System.out.println("         GL_MAX_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS));
 
-		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
-		
-		// program
-		int errorCheckValue=glGetError();
-		final int p=glCreateProgram();
-		final int vs=loadshader("vs",GL_VERTEX_SHADER);
-		final int fs=loadshader("fs",GL_FRAGMENT_SHADER);
-		glAttachShader(p,vs);
-		glAttachShader(p,fs);
-		glLinkProgram(p);
-		umxproj=glGetUniformLocation(p,"umxproj");
-		if(umxproj==-1)	throw new Error("could not getuniformlocation umxproj");
-		umxmw=glGetUniformLocation(p,"umxmw");
-		if(umxmw==-1)throw new Error("could not getuniformlocation umxmw");
-		utx=glGetUniformLocation(p,"utx");
-		if(utx==-1)throw new Error("could not getuniformlocation utx");
-		glBindAttribLocation(p,0,"in_Position");
-		glBindAttribLocation(p,1,"in_Color");
-		glBindAttribLocation(p,2,"in_TextureCoord");
-		glValidateProgram(p);
-		errorCheckValue=glGetError();
-		if (errorCheckValue!=GL_NO_ERROR)
-			throw new Error("could not load program: "+errorCheckValue);
-		glUseProgram(p);
-
-		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+		shader.load();
 
 		// vbos
-		for(final vbo o:vbos)
+		for(final vbo o:def.vbos())
 			o.load();
-
-		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 
 		// textures
 		final int tx=glGenTextures();
@@ -121,15 +95,23 @@ public class app{
 		}
 		txbuf.flip();
 		
-		glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,txwi,txhi,0,GL_RGBA,GL_UNSIGNED_BYTE,txbuf);
+		glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,txwi,txhi,0,GL_BGRA,GL_UNSIGNED_BYTE,txbuf);
+//		final long t0=System.currentTimeMillis();
+//		final int nn=1024*1024;
+//		for(int i=0;i<nn;i++){
+//			glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,txwi,txhi,0,GL_RGBA,GL_UNSIGNED_BYTE,txbuf);
+//		}
+//		final long dt=System.currentTimeMillis()-t0;
+//		System.out.println(" loads "+nn/dt+" loads/ms");
+//		if(glGetError()!=GL_NO_ERROR)throw new Error("could not load texture");
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
-		if(glGetError()!=GL_NO_ERROR)throw new Error("could not load texture");
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl is in error state");
 	}
-	public void loop()throws Throwable{
+	static public void loop()throws Throwable{
 		// viewport
 		glViewport(0,0,wi,hi);
 		glClearColor(.4f,.6f,.9f,0);
@@ -139,46 +121,33 @@ public class app{
 		final mtx mtxproj=new mtx();
 		while(!Display.isCloseRequested()){
 			frm++;
+			if(Keyboard.isKeyDown(Keyboard.KEY_W))bmpkeys|=1;else bmpkeys&=0xfffffffe;
+			if(Keyboard.isKeyDown(Keyboard.KEY_A))bmpkeys|=2;else bmpkeys&=0xfffffffd;
+				
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			mtxproj.setident();
-			glUniformMatrix4(umxproj,false,mtxproj.bf);
-			glUniform1i(utx,0);
+			glUniformMatrix4(shader.umxproj,false,mtxproj.bf);
 			
-			for(final obj o:objs)
+			for(final obj o:def.objs())
 				o.render();
 			
 			final long t1=System.currentTimeMillis();
-			final long dtms=t1-t0;
+			dtms=t1-t0;
+			dt=dtms/1000.f;
 			if(dtms>1000){
 				fps=(int)(frm*1000/dtms);
 				t0=t1;
 				frm=0;
-				Display.setTitle("fps: "+fps+", obj: "+obj.count);
+				Display.setTitle("fps: "+fps+", obj: "+obj.count+" keys: "+bmpkeys);
 			}
-		
-			Display.sync(1000);
+			
+			def.update();
+			
+//			Display.sync(1000);
 			Display.update();
 		}
 		//? cleanupskippeddueto
-		Display.destroy();
-	}
-	private static int loadshader(final String filename,final int type)throws Throwable{
-		final StringBuilder src=new StringBuilder();
-		final InputStream srcis=vbo.class.getResourceAsStream(filename);
-		final BufferedReader r=new BufferedReader(new InputStreamReader(srcis));
-		for(String line;(line=r.readLine())!=null;)
-			src.append(line).append("\n");
-		r.close();
-		
-		final int shdr=glCreateShader(type);
-		glShaderSource(shdr,src);
-		glCompileShader(shdr);
-
-		if(glGetShaderi(shdr,GL_COMPILE_STATUS)==GL_FALSE){
-			throw new Error("could not compile "+filename+" due to: "+glGetShaderInfoLog(shdr,255));
-		}
-
-		return shdr;
+//		Display.destroy();
 	}
 }
