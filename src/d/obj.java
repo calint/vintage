@@ -5,9 +5,10 @@ import b.a;
 public class obj extends a{
 	static final long serialVersionUID=1;
 	public static int count;
-	protected vbo vbo;
-	public float[]pos=new float[3];// x y z
-	protected mtx mxmw=new mtx().setident();
+	private vbo vbo;
+	public void vbo(final vbo v){vbo=v;}
+	private float[]pos=new float[3];// x y z
+	private mtx mxmw=new mtx().setident();
 	public obj(){count++;}
 	final public void render()throws Throwable{
 //		GL11.glPushMatrix();
@@ -25,8 +26,11 @@ public class obj extends a{
 		}
 //		GL11.glPopMatrix();
 	}
-	public void setpos(final float x,final float y,final float z){
-		pos[0]=x;pos[1]=y;pos[2]=z;
+	public void setpos(final float x,final float y,final float z){pos[0]=x;pos[1]=y;pos[2]=z;}
+	public void dpos(final float x,final float y,final float z,final float dt){
+		pos[0]+=x*dt;
+		pos[1]+=y*dt;
+		pos[2]+=z*dt;
 	}
 	public void update()throws Throwable{}
 }

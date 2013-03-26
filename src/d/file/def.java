@@ -14,14 +14,14 @@ final public class def implements d.app.def{
 
 		o=new objsqr();
 		objs.add(o);
-//		
-//		final int n=1024;// 60+ fps
-//		for(int i=0;i<n;i++){
-//			final obj o=new objsqr();
-//			final float f=-1+(float)i/n;
-//			o.setpos(f,-f,0);
-//			objs.add(o);
-//		}
+		
+		final int n=1024;// 60+ fps
+		for(int i=0;i<n;i++){
+			final obj o=new objsqr();
+			final float f=-1+(float)i/n;
+			o.setpos(f,-f,0);
+			objs.add(o);
+		}
 	}
 	public Collection<obj>objs(){return objs;}
 	public Collection<vbo>vbos(){return vbos;}
@@ -29,10 +29,10 @@ final public class def implements d.app.def{
 		for(final obj o:objs)o.update();
 		
 		if((app.bmpkeys&1)!=0){//w
-			o.pos[0]+=app.dt*.01f;
+			o.dpos(.01f,0,0,app.dt);
 		}
 		if((app.bmpkeys&2)!=0){//a
-			o.pos[0]-=app.dt*.01f;
+			o.dpos(-.01f,0,0,app.dt);
 		}
 	}
 }
