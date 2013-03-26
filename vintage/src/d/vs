@@ -7,7 +7,9 @@ in vec2 in_TextureCoord;
 out vec4 pass_Color;
 out vec2 pass_TextureCoord;
 void main(){
+//	umxproj;
 	gl_Position=umxproj*umxmw*in_Position;//? precalc umx*
+//	gl_Position=umxmw*in_Position;
 	pass_Color=in_Color;
 	pass_TextureCoord=in_TextureCoord;
 }
