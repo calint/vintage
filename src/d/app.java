@@ -31,6 +31,7 @@ public class app{
 	
 	// uniform variable locations
 	private int umxproj;
+	static int umxmw;
 	private int utx;
 	
 	public app()throws Throwable{load();loop();}
@@ -47,10 +48,15 @@ public class app{
 //		Display.setDisplayMode(new DisplayMode(wi,hi));
 //		Display.create();
 //		Display.setResizable(false);
-		
-		System.out.println(Display.getAdapter());
-		System.out.println(Display.getVersion());
-		System.out.println(Sys.getVersion());
+
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+		System.out.println("light weight java game layer");
+		System.out.println("       version: "+Sys.getVersion());
+		System.out.println("        64 bit: "+Sys.is64Bit());
+		System.out.println("       adapter: "+Display.getAdapter());
+		System.out.println("       version: "+Display.getVersion());
+		System.out.println("GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
+		System.out.println("         GL_MAX_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS));
 
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 		
@@ -63,9 +69,11 @@ public class app{
 		glAttachShader(p,fs);
 		glLinkProgram(p);
 		umxproj=glGetUniformLocation(p,"umxproj");
+		if(umxproj==-1)	throw new Error("could not getuniformlocation umxproj");
+		umxmw=glGetUniformLocation(p,"umxmw");
+		if(umxmw==-1)throw new Error("could not getuniformlocation umxmw");
 		utx=glGetUniformLocation(p,"utx");
-		if(umxproj==-1)
-			throw new Error("could not getuniformlocation umxproj");
+		if(utx==-1)throw new Error("could not getuniformlocation utx");
 		glBindAttribLocation(p,0,"in_Position");
 		glBindAttribLocation(p,1,"in_Color");
 		glBindAttribLocation(p,2,"in_TextureCoord");
@@ -129,15 +137,12 @@ public class app{
 		long t0=System.currentTimeMillis();
 		int frm=0;
 		final mtx mtxproj=new mtx();
-		float sx=1;
 		while(!Display.isCloseRequested()){
 			frm++;
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			mtxproj.ident();
-			
-			mtxproj.fb.put(0,sx);
-			glUniformMatrix4(umxproj,false,mtxproj.fb);
+			mtxproj.setident();
+			glUniformMatrix4(umxproj,false,mtxproj.bf);
 			glUniform1i(utx,0);
 			
 			for(final obj o:objs)
@@ -149,7 +154,7 @@ public class app{
 				fps=(int)(frm*1000/dtms);
 				t0=t1;
 				frm=0;
-				Display.setTitle("fps: "+fps);
+				Display.setTitle("fps: "+fps+", obj: "+obj.count);
 			}
 		
 			Display.sync(1000);

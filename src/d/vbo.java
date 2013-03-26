@@ -65,7 +65,8 @@ abstract public class vbo{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboi);
 		glDrawElements(GL_TRIANGLES,nindices,GL_UNSIGNED_BYTE,0);
 //			glDrawElements(GL_POINTS,nindices,GL_UNSIGNED_BYTE,0);
-		//. groupbymaterial,drawelementsrange
+		
+		//. groupedbymaterial,textureunit,drawelementsrange
 	}
 	
 	
