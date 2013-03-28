@@ -2,7 +2,7 @@ package d.app;
 import d.box;
 import d.obj;
 public class plr extends obj{static final long serialVersionUID=1;
-	{vbo=vbosqr.o;}
+	{vbo=vboplr.o;}
 	private long lastfire;
 	private double a;
 	public void update()throws Throwable{
@@ -31,12 +31,12 @@ public class plr extends obj{static final long serialVersionUID=1;
 			}
 		}
 		if((box.keys&32)!=0){//k
-			if(vbo==vbotri.o){
-				vbo=vbosqr.o;
+			if(vbo==vboblt.o){
+				vbo=vboplr.o;
 			}else{
-				vbo=vbotri.o;
+				vbo=vboblt.o;
 			}
-			vbo=vbotri.o;
+			vbo=vboblt.o;
 //			vbo(vbosqr.o);
 		}
 //		System.out.println(this+" "+pos[0]+","+pos[1]);

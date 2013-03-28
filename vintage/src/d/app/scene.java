@@ -23,5 +23,5 @@ public class scene extends obj implements d.box.app{
 	}
 	
 	//d.box.app
-	public vbo[]vbos()throws Throwable{return new vbo[]{vbosqr.o,vbotri.o};}
+	public vbo[]vbos()throws Throwable{return new vbo[]{vboplr.o,vboblt.o};}
 }
