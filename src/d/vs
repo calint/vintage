@@ -2,13 +2,15 @@
 uniform mat4 umxproj;
 uniform mat4 umxmw;
 uniform vec3 upos;
+uniform vec3 uscl;
 in vec4 in_Position;
 in vec4 in_Color;
 in vec2 in_TextureCoord;
 out vec4 pass_Color;
 out vec2 pass_TextureCoord;
 void main(){
-	vec4 pw=umxmw*in_Position;
+	vec4 pscl=vec4(uscl,1)*in_Position;
+	vec4 pw=umxmw*pscl;
 	vec4 pp=umxproj*pw;
 	vec4 ps=pp-vec4(upos,0);
 	gl_Position=ps;

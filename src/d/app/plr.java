@@ -24,5 +24,6 @@ public class plr extends obj{static final long serialVersionUID=1;
 		if((box.keys&32)!=0){//k
 			vbo(vbosqr.o);
 		}
+		System.out.println(this+" "+pos[0]+","+pos[1]);
 	}
 }

@@ -13,6 +13,7 @@ final class shader{
 	static int umxmw;
 	static int utx;
 	static int upos;
+	static int uscl;
 	static public void load()throws Throwable{
 		int errorCheckValue=glGetError();
 		final int p=glCreateProgram();
@@ -29,6 +30,8 @@ final class shader{
 		if(utx==-1)throw new Error("could not getuniformlocation utx");
 		upos=glGetUniformLocation(p,"upos");
 		if(upos==-1)throw new Error("could not getuniformlocation upos");
+		uscl=glGetUniformLocation(p,"uscl");
+		if(uscl==-1)throw new Error("could not getuniformlocation uscl");
 		glBindAttribLocation(p,0,"in_Position");
 		glBindAttribLocation(p,1,"in_Color");
 		glBindAttribLocation(p,2,"in_TextureCoord");
