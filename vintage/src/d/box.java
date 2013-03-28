@@ -13,7 +13,6 @@ import static org.lwjgl.opengl.GL20.GL_MAX_FRAGMENT_UNIFORM_COMPONENTS;
 import static org.lwjgl.opengl.GL20.GL_MAX_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.opengl.GL20.GL_MAX_VERTEX_ATTRIBS;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
-import java.util.Iterator;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
@@ -37,7 +36,8 @@ final public class box{
 	public/*readonly*/static int keys;
 	public/*readonly*/static long dtms;
 	public/*readonly*/static float dt;
-//	public app()throws Throwable{load();loop();}
+	public/*readonly*/static long tms;
+	//	public app()throws Throwable{load();loop();}
 	static private void load()throws Throwable{
 		app=(app)Class.forName(appcls).newInstance();
 		scene=(obj)app;
@@ -69,6 +69,8 @@ final public class box{
 
 		for(final vbo o:app.vbos())
 			o.load();
+		
+//		objs.add(scene);
 	}
 	static private void loop()throws Throwable{
 		// loop
@@ -77,6 +79,7 @@ final public class box{
 		int frm=0;
 		final mtx umxproj=new mtx().ident();
 		while(!Display.isCloseRequested()){
+			tms=System.currentTimeMillis();
 			// viewport
 			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
 			glViewport(0,0,Display.getWidth(),Display.getHeight());
@@ -97,8 +100,13 @@ final public class box{
 			umxproj.settranslate(new float[]{0,0,0});
 			glUniformMatrix4(shader.umxproj,false,umxproj.bf);
 //			glUniform3f(shader.upos,-.5f,.5f,0);
-			scene.update();
-			scene.render();
+			
+			obj.all.removeAll(obj.removed);
+			obj.removed.clear();
+			obj.all.addAll(obj.news);
+			obj.news.clear();
+			for(final obj o:obj.all)o.update();
+			for(final obj o:obj.all)o.render();
 //			def.objs().iterator().next().render();
 			
 			final long t1=System.currentTimeMillis();
@@ -122,4 +130,5 @@ final public class box{
 		//? cleanupskippeddueto
 //		Display.destroy();
 	}
+	public static float rnd(){return (float)Math.random();}
 }

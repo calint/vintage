@@ -1,4 +1,5 @@
 package d.app;
+import d.box;
 import d.obj;
 import d.vbo;
 public class scene extends obj implements d.box.app{
@@ -6,10 +7,19 @@ public class scene extends obj implements d.box.app{
 	public tri tri;
 	public sqr sqr;
 	public plr plr;
+	public blt blt;
 	{
-		plr.setpos(0,0,0);
-		sqr.setpos(0,0,0);
-		tri.setpos(-1,0,0);
+		plr.pos(-.5f,0,0);
+		sqr.pos(.75f,0,0);
+		tri.pos(-1,0,0);
+	}
+	private long t0;
+	protected void update() throws Throwable{
+		super.update();
+		if(box.tms-t0>1000){
+			t0=box.tms;
+			new blt().pos(-1,box.rnd(),0);
+		}
 	}
 	
 	//d.box.app
