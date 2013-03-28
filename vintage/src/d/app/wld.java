@@ -5,6 +5,17 @@ import d.vbo;
 public class wld extends obj implements d.box.app{
 	static final long serialVersionUID=1;
 	{
+//		final int n=512;
+		for(int i=0;i<8;i++)
+			new plr().pos(box.rnd(-1,1),box.rnd(-1,1),0).scl(.02f,.02f,.02f);
+
+		for(int i=0;i<512;i++){
+			final float h=box.rnd(0,.5f);
+			final float w=box.rnd(.05f,.1f);
+			new sqr().pos(box.rnd(-1,1),h,0).scl(w,h,1);
+		}
+		
+		
 		new plr().pos(-.5f,0,0);
 		new sqr().pos(.75f,.4f,0).scl(.1f,.4f,1).agl(0,0,0);
 		new sqr().pos(.75f,.2f,0).scl(.1f,.2f,1).agl(0,0,0);
