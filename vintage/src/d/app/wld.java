@@ -6,13 +6,14 @@ public class wld extends obj implements d.box.app{
 	static final long serialVersionUID=1;
 	{
 //		final int n=512;
+		final float sprd=.2f;
 		for(int i=0;i<8;i++)
-			new plr().pos(box.rnd(-1,1),box.rnd(-1,1),0).scl(.02f,.02f,.02f);
+			new plr().pos(box.rnd(-sprd,sprd),box.rnd(0,sprd),0).scl(.02f,.02f,.02f);
 
 		for(int i=0;i<512;i++){
 			final float h=box.rnd(0,.5f);
 			final float w=box.rnd(.05f,.1f);
-			new sqr().pos(box.rnd(-1,1),h,0).scl(w,h,1);
+			new sqr().pos(box.rnd(-1,1),h,box.rnd(-.1f,.1f)).scl(w,h,1);
 		}
 		
 		

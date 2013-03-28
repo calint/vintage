@@ -74,7 +74,7 @@ final public class box{
 				fps=(int)(frm*1000/(tms-t0));
 				t0=tms;
 				frm=0;
-				Display.setTitle("fps: "+fps+", obj: "+obj.count+" keys: "+keys+" ur("+obj.ms_allupdate+","+obj.ms_allrender+")");
+				Display.setTitle("fps:"+fps+", objs:"+obj.count+", keys:"+keys+", upd,rend:"+obj.ms_allupdate+","+obj.ms_allrender+" ms");
 			}
 			// viewport
 //			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
