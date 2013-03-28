@@ -21,7 +21,7 @@ public class scene extends obj implements d.box.app{
 		super.update();
 		if(box.tms-t0>rainratems){
 			t0=box.tms;
-			new blt().pos(1,box.rnd(),0).dpos(-1,0,0);
+			new blt().pos(1,box.rnd(-1,1),0).dpos(-1,0,0);
 		}
 	}
 	
