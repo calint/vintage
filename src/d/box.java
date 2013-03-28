@@ -12,7 +12,7 @@ import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.opengl.GL20.GL_MAX_FRAGMENT_UNIFORM_COMPONENTS;
 import static org.lwjgl.opengl.GL20.GL_MAX_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.opengl.GL20.GL_MAX_VERTEX_ATTRIBS;
-import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 import java.util.Random;
 import org.lwjgl.Sys;
@@ -29,8 +29,10 @@ final public class box{
 		vbo[]vbos()throws Throwable;
 	}
 	private static app app;
-	private static final int wi=512;
-	private static final int hi=512;
+	private static final int width=1024;
+	private static final int height=512;
+	private static int wi=width;
+	private static int hi=height;
 	static long frmno;
 	public/*readonly*/static int fps;
 	public/*readonly*/static int keys;
@@ -43,7 +45,7 @@ final public class box{
 		// display
 		final PixelFormat pixelFormat=new PixelFormat();
 		final ContextAttribs contextAtrributes=new ContextAttribs(3,2).withProfileCore(true).withForwardCompatible(true);
-		Display.setDisplayMode(new DisplayMode(wi,hi));
+		Display.setDisplayMode(new DisplayMode(width,height));
 		Display.create(pixelFormat,contextAtrributes);
 
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
@@ -71,14 +73,32 @@ final public class box{
 		int frm=0;
 		final mtx umxproj=new mtx().ident();
 		while(!Display.isCloseRequested()){
-			tms=System.currentTimeMillis();
-			// viewport
-//			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
-			glViewport(0,0,Display.getWidth(),Display.getHeight());
-			glClearColor(.4f,.6f,.9f,0);
-
 			frm++;
 			frmno++;
+			tms=System.currentTimeMillis();
+//			final long t1=tms;
+//			final long dt0=t1-t;
+//			if(dt0>16)
+//				System.out.println("frame #"+frmno+": "+dt0+" ms "+(dt0>16?"!":" "));
+			dtms=tms-t;
+			dt=(float)(dtms/1000.);
+			t=tms;
+			dt=dtms/1000.f;
+			if(tms-t0>1000){
+				fps=(int)(frm*1000/(tms-t0));
+				t0=tms;
+				frm=0;
+				Display.setTitle("fps: "+fps+", obj: "+obj.count+" keys: "+keys);
+			}
+			// viewport
+//			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
+			wi=Display.getWidth();
+			hi=Display.getHeight();
+			final float wihiratio=(float)wi/hi;
+			glViewport(0,0,wi,hi);
+			glClearColor(.4f,.6f,.9f,0);
+			glClear(GL_COLOR_BUFFER_BIT);
+
 			if(Keyboard.isKeyDown(Keyboard.KEY_W))keys|=1;else keys&=~1;
 			if(Keyboard.isKeyDown(Keyboard.KEY_A))keys|=2;else keys&=~2;
 			if(Keyboard.isKeyDown(Keyboard.KEY_S))keys|=4;else keys&=~4;
@@ -90,23 +110,8 @@ final public class box{
 			umxproj.settranslate(new float[]{0,0,0});
 			glUniformMatrix4(shader.umxproj,false,umxproj.bf);
 			glUniform3f(shader.upos,0,0,0);
-			
-			glClear(GL_COLOR_BUFFER_BIT);
-			obj.updaterender();
-			
-			final long t1=System.currentTimeMillis();
-//			final long dt0=t1-t;
-//			if(dt0>16)
-//				System.out.println("frame #"+frmno+": "+dt0+" ms "+(dt0>16?"!":" "));
-			t=t1;
-			dtms=t1-t0;
-			dt=dtms/1000.f;
-			if(dtms>1000){
-				fps=(int)(frm*1000/dtms);
-				t0=t1;
-				frm=0;
-				Display.setTitle("fps: "+fps+", obj: "+obj.count+" keys: "+keys);
-			}
+			glUniform2f(shader.us,1,wihiratio);
+			obj.allupdaterender();
 			
 			Display.update();
 		}

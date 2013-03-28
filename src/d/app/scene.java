@@ -11,16 +11,17 @@ public class scene extends obj implements d.box.app{
 	public blt blt;
 	{
 		plr.pos(-.5f,0,0);
-		sqr.pos(.75f,0,0).scl(.1f,.4f,0).agl(0,0,0);
-		sqr2.pos(.75f,0,0).scl(.1f,.2f,0).agl(0,0,0);
-		tri.pos(-1,0,0);
+		sqr.pos(.75f,0,0).scl(.1f,.4f,1).agl(0,0,0);
+		sqr2.pos(.75f,0,0).scl(.1f,.2f,1).agl(0,0,0);
+		tri.pos(-1,0,0).scl(1,1,1);
 	}
 	private long t0;
+	private static int rainratems=100;
 	protected void update() throws Throwable{
 		super.update();
-		if(box.tms-t0>1000){
+		if(box.tms-t0>rainratems){
 			t0=box.tms;
-			new blt().pos(-1,box.rnd(),0);
+			new blt().pos(1,box.rnd(),0).dpos(-1,0,0);
 		}
 	}
 	

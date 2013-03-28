@@ -2,9 +2,10 @@ package d.app;
 import d.obj;
 public class sqr extends obj{
 	static final long serialVersionUID=1;
-	{vbo=vbosqr.o;scl[0]=2;scl[1]=2;}
+	public static float dpos=.5f;
+	{vbo(vbosqr.o).scl(2,2,0);}
 	public void update()throws Throwable{
 		super.update();
-		dpos((float)(Math.random()-.5f)*.01f,(float)(Math.random()-.5f)*.01f,0);
+		dpos((float)(Math.random()-.5f)*dpos,(float)(Math.random()-.5f)*dpos,0);
 	}
 }

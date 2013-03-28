@@ -9,11 +9,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 final class shader{
 	// uniform variable locations
-	static int umxproj;
-	static int umxmw;
-	static int utx;
-	static int upos;
-	static int uscl;
+	static int umxproj;// projection matrix
+	static int umxmw;// model-world matrix
+	static int utx;// texture
+	static int upos;// camera position
+	static int uscl;//xyz current object scale
+	static int us;//xy projection scale x,y
 	static public void load()throws Throwable{
 		int errorCheckValue=glGetError();
 		final int p=glCreateProgram();
@@ -32,6 +33,8 @@ final class shader{
 		if(upos==-1)throw new Error("could not getuniformlocation upos");
 		uscl=glGetUniformLocation(p,"uscl");
 		if(uscl==-1)throw new Error("could not getuniformlocation uscl");
+		us=glGetUniformLocation(p,"us");
+		if(us==-1)throw new Error("could not getuniformlocation us");
 		glBindAttribLocation(p,0,"in_Position");
 		glBindAttribLocation(p,1,"in_Color");
 		glBindAttribLocation(p,2,"in_TextureCoord");
