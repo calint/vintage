@@ -94,7 +94,8 @@ final public class box{
 			if(Keyboard.isKeyDown(Keyboard.KEY_K))keys|=32;
 				
 			umxproj.ident();
-			umxproj.settranslate(new float[]{0,0,0});
+			final obj cam=(obj)app;
+			umxproj.setagltrans(new float[]{-cam.agl[0],-cam.agl[1],-cam.agl[2]},new float[]{-cam.pos[0],-cam.pos[1],-cam.pos[2]});
 			glUniformMatrix4(shader.umxwv,false,umxproj.bf);
 			glUniform3f(shader.upos,0,0,0);
 			glUniform2f(shader.us,1,wihiratio);
