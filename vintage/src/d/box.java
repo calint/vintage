@@ -118,4 +118,5 @@ final public class box{
 		//? cleanupskippeddueto
 	}
 	public static float rnd(){return random.nextFloat();}
+	public static float rnd(final float min,final float max){return min+(max-min)*random.nextFloat();}
 }
