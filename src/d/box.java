@@ -1,10 +1,19 @@
 package d;
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.*;
-import static org.lwjgl.opengl.GL20.*;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
+import static org.lwjgl.opengl.GL11.GL_VERSION;
+import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.glClearColor;
+import static org.lwjgl.opengl.GL11.glGetError;
+import static org.lwjgl.opengl.GL11.glGetInteger;
+import static org.lwjgl.opengl.GL11.glGetString;
+import static org.lwjgl.opengl.GL11.glViewport;
+import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
+import static org.lwjgl.opengl.GL20.GL_MAX_FRAGMENT_UNIFORM_COMPONENTS;
+import static org.lwjgl.opengl.GL20.GL_MAX_TEXTURE_IMAGE_UNITS;
+import static org.lwjgl.opengl.GL20.GL_MAX_VERTEX_ATTRIBS;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4;
+import java.util.Iterator;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
@@ -15,9 +24,7 @@ final public class box{
 	public static void main(final String[]a)throws Throwable{load();loop();}
 	static public String appcls="d.app.scene";
 	public interface app{
-		void vbos(final Collection<vbo>vbos)throws Throwable;
-		void objs(final Collection<obj>objs)throws Throwable;
-		void update()throws Throwable;
+		vbo[]vbos()throws Throwable;
 	}
 	private static final int wi=512;
 	private static final int hi=512;
@@ -60,9 +67,7 @@ final public class box{
 		System.out.println("              GL_MAX_VERTEX_ATTRIBS: "+glGetInteger(GL_MAX_VERTEX_ATTRIBS));
 		shader.load();
 
-		final Collection<vbo>vbos=new ArrayList<vbo>();
-		app.vbos(vbos);
-		for(final vbo o:vbos)
+		for(final vbo o:app.vbos())
 			o.load();
 	}
 	static private void loop()throws Throwable{
@@ -107,8 +112,6 @@ final public class box{
 				frm=0;
 				Display.setTitle("fps: "+fps+", obj: "+obj.count+" keys: "+keys);
 			}
-			
-			app.update();
 			
 //			Display.sync(60);
 			Display.update();
