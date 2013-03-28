@@ -1,6 +1,6 @@
 #version 150 core
 uniform vec2 us;//proj scale
-uniform vec3 upos;//camera pos
+//uniform vec3 upos;//camera pos
 uniform mat4 umxwv;//proj matrix
 uniform mat4 umxmw;//model world matrix
 uniform vec3 uscl;//model scale
@@ -13,7 +13,7 @@ void main(){
 	vec4 pm=vec4(uscl,1)*in_Position;
 	vec4 pw=umxmw*pm;
 	vec4 pv=umxwv*pw;
-	vec4 ps=pv-vec4(upos,0);
+	vec4 ps=pv;//-vec4(upos,0);
 	ps.x*=us.x;
 	ps.y*=us.y;
 	gl_Position=ps;

@@ -8,13 +8,20 @@ abstract public class obj{
 	private static Collection<obj>all=new ArrayList<obj>();
 	private static Collection<obj>dels=new ArrayList<obj>();
 	private static Collection<obj>news=new ArrayList<obj>();
+	public static long ms_allupdate;
+	public static long ms_allrender;
 	static void allupdaterender()throws Throwable{
+		final long t0=System.currentTimeMillis();
 		obj.all.removeAll(obj.dels);
 		obj.dels.clear();
 		obj.all.addAll(obj.news);
 		obj.news.clear();
 		for(final obj o:obj.all)o.update();
+		final long t1=System.currentTimeMillis();
 		for(final obj o:obj.all)o.render();
+		final long t2=System.currentTimeMillis();
+		ms_allupdate=t1-t0;
+		ms_allrender=t2-t1;
 	}
 
 //	private int bits;
