@@ -23,7 +23,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 final public class box{
 	public static void main(final String[]a)throws Throwable{load();loop();}
-	public static String appcls="d.app.scene";
+	public static String appcls="d.app.wld";
 	private static final Random random=new Random(0);
 	public interface app{
 		vbo[]vbos()throws Throwable;
@@ -98,16 +98,17 @@ final public class box{
 			glClearColor(.4f,.6f,.9f,0);
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			if(Keyboard.isKeyDown(Keyboard.KEY_W))keys|=1;else keys&=~1;
-			if(Keyboard.isKeyDown(Keyboard.KEY_A))keys|=2;else keys&=~2;
-			if(Keyboard.isKeyDown(Keyboard.KEY_S))keys|=4;else keys&=~4;
-			if(Keyboard.isKeyDown(Keyboard.KEY_D))keys|=8;else keys&=~8;
-			if(Keyboard.isKeyDown(Keyboard.KEY_J))keys|=16;else keys&=~16;
-			if(Keyboard.isKeyDown(Keyboard.KEY_K))keys|=32;else keys&=~32;
+			keys=0;
+			if(Keyboard.isKeyDown(Keyboard.KEY_W))keys|=1;
+			if(Keyboard.isKeyDown(Keyboard.KEY_A))keys|=2;
+			if(Keyboard.isKeyDown(Keyboard.KEY_S))keys|=4;
+			if(Keyboard.isKeyDown(Keyboard.KEY_D))keys|=8;
+			if(Keyboard.isKeyDown(Keyboard.KEY_J))keys|=16;
+			if(Keyboard.isKeyDown(Keyboard.KEY_K))keys|=32;
 				
 			umxproj.ident();
 			umxproj.settranslate(new float[]{0,0,0});
-			glUniformMatrix4(shader.umxproj,false,umxproj.bf);
+			glUniformMatrix4(shader.umxwv,false,umxproj.bf);
 			glUniform3f(shader.upos,0,0,0);
 			glUniform2f(shader.us,1,wihiratio);
 			obj.allupdaterender();

@@ -2,18 +2,19 @@ package d.app;
 import d.box;
 import d.obj;
 import d.vbo;
-public class scene extends obj implements d.box.app{
+public class wld extends obj implements d.box.app{
 	static final long serialVersionUID=1;
-	public tri tri;
-	public sqr sqr;
-	public sqr sqr2;
-	public plr plr;
+//	public tri tri;
+//	public sqr sqr;
+//	public sqr sqr2;
+//	public plr plr;
 	public blt blt;
 	{
-		plr.pos(-.5f,0,0);
-		sqr.pos(.75f,0,0).scl(.1f,.4f,1).agl(0,0,0);
-		sqr2.pos(.75f,0,0).scl(.1f,.2f,1).agl(0,0,0);
-		tri.pos(-1,0,0).scl(1,1,1);
+		new plr().pos(-.5f,0,0);
+		new sqr().pos(.75f,0,0).scl(.1f,.4f,1).agl(0,0,0);
+		new sqr().pos(.75f,0,0).scl(.1f,.2f,1).agl(0,0,0);
+		new tri().pos(-1,0,0).scl(1,1,1);
+		new blt().dpos(.1f,0,0);
 	}
 	private long t0;
 	private static int rainratems=100;

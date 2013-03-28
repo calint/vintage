@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 final class shader{
 	// uniform variable locations
-	static int umxproj;// projection matrix
+	static int umxwv;// projection matrix
 	static int umxmw;// model-world matrix
 	static int utx;// texture
 	static int upos;// camera position
@@ -23,8 +23,13 @@ final class shader{
 		glAttachShader(p,vs);
 		glAttachShader(p,fs);
 		glLinkProgram(p);
-		umxproj=glGetUniformLocation(p,"umxproj");
-		if(umxproj==-1)throw new Error("could not getuniformlocation umxproj");
+		if(glGetProgrami(p,GL_LINK_STATUS)==GL_FALSE){
+			throw new Error("could not link due to: "+glGetProgramInfoLog(p,255));
+		}
+		
+		if(glGetError()!=GL_NO_ERROR)throw new Error("could not link program");
+		umxwv=glGetUniformLocation(p,"umxwv");
+		if(umxwv==-1)throw new Error("could not getuniformlocation umxwv");
 		umxmw=glGetUniformLocation(p,"umxmw");
 		if(umxmw==-1)throw new Error("could not getuniformlocation umxmw");
 		utx=glGetUniformLocation(p,"utx");
@@ -40,7 +45,7 @@ final class shader{
 		glBindAttribLocation(p,2,"in_TextureCoord");
 		glValidateProgram(p);
 		errorCheckValue=glGetError();
-		if (errorCheckValue!=GL_NO_ERROR)
+		if(errorCheckValue!=GL_NO_ERROR)
 			throw new Error("could not load program: "+errorCheckValue);
 		glUseProgram(p);
 	}

@@ -3,8 +3,7 @@ import static org.lwjgl.opengl.GL20.*;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
-import b.a;
-abstract public class obj extends a{
+abstract public class obj{
 	static final long serialVersionUID=1;
 	public/*readonly*/static int count;
 	private static Collection<obj>all=new ArrayList<obj>();
@@ -47,13 +46,6 @@ abstract public class obj extends a{
 			glUniform3f(shader.uscl,scl[0],scl[1],scl[2]);
 			vbo.render();
 		}
-//		for(final Field f:getClass().getFields()){
-//			if(obj.class.isAssignableFrom(f.getType())){
-//				final obj o=(obj)f.get(this);
-//				if(o!=null)
-//					o.render();
-//			}
-//		}
 //		GL11.glPopMatrix();
 	}
 	final public obj vbo(final vbo v){this.vbo=v;return this;}
@@ -67,15 +59,5 @@ abstract public class obj extends a{
 	protected void update()throws Throwable{
 		pos[0]+=dpos[0]*box.dt;pos[1]+=dpos[1]*box.dt;pos[2]+=dpos[2]*box.dt;
 		agl[0]+=dagl[0]*box.dt;agl[1]+=dagl[1]*box.dt;agl[2]+=dagl[2]*box.dt;
-//		for(final Field f:getClass().getFields()){
-//			if(obj.class.isAssignableFrom(f.getType())){
-//				final obj o=(obj)f.get(this);
-//				if(o!=null)
-//					if(!o.isdeleted())
-//						o.update();
-//					else
-//						f.set(this,null);
-//			}
-//		}
 	}
 }
