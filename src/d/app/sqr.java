@@ -5,6 +5,6 @@ public class sqr extends obj{
 	{vbo(vbosqr.o);scl[0]=2;scl[1]=2;}
 	public void update()throws Throwable{
 		super.update();
-		setdpos((float)(Math.random()-.5f)*.01f,(float)(Math.random()-.5f)*.01f,0);
+		dpos((float)(Math.random()-.5f)*.01f,(float)(Math.random()-.5f)*.01f,0);
 	}
 }
