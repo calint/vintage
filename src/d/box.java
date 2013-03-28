@@ -24,6 +24,8 @@ final public class box{
 //	private static final int nvbos=1024;
 //	private static final int nobjs=1024;
 	private static app app;
+	private static obj scene;
+	static long frmno;
 	public/*readonly*/static int fps;
 	public/*readonly*/static int keys;
 	public/*readonly*/static long dtms;
@@ -31,6 +33,7 @@ final public class box{
 //	public app()throws Throwable{load();loop();}
 	static private void load()throws Throwable{
 		app=(app)Class.forName(appcls).newInstance();
+		scene=(obj)app;
 //		def.con(this);
 //		def.load();
 		// display
@@ -57,15 +60,11 @@ final public class box{
 		System.out.println("              GL_MAX_VERTEX_ATTRIBS: "+glGetInteger(GL_MAX_VERTEX_ATTRIBS));
 		shader.load();
 
+		final Collection<vbo>vbos=new ArrayList<vbo>();
 		app.vbos(vbos);
 		for(final vbo o:vbos)
 			o.load();
-		app.objs(objs);
 	}
-	private static final Collection<vbo>vbos=new ArrayList<vbo>();
-	private static final Collection<obj>objs=new ArrayList<obj>();
-
-	static long frmno;
 	static private void loop()throws Throwable{
 		// viewport
 		glViewport(0,0,wi,hi);
@@ -91,10 +90,8 @@ final public class box{
 			umxproj.settranslate(new float[]{.5f,-.5f,0});
 			glUniformMatrix4(shader.umxproj,false,umxproj.bf);
 //			glUniform3f(shader.upos,-.5f,.5f,0);
-			for(final obj o:objs)
-				o.update();
-			for(final obj o:objs)
-				o.render();
+			scene.update();
+			scene.render();
 //			def.objs().iterator().next().render();
 			
 			final long t1=System.currentTimeMillis();

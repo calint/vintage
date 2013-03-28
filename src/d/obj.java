@@ -34,5 +34,13 @@ public class obj extends a{
 		pos[1]+=y*dt;
 		pos[2]+=z*dt;
 	}
-	protected void update()throws Throwable{}
+	protected void update()throws Throwable{
+		for(final Field f:getClass().getFields()){
+			if(obj.class.isAssignableFrom(f.getType())){
+				final obj o=(obj)f.get(this);
+				if(o!=null)
+					o.update();
+			}
+		}
+	}
 }

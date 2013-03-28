@@ -5,9 +5,9 @@ import d.obj;
 import d.vbo;
 public class scene extends obj implements d.box.app{
 	static final long serialVersionUID=1;
-	public objtri tri;
-	public objsqr sqr;
-	public objsqr plr;
+	public tri tri;
+	public sqr sqr;
+	public plr plr;
 	public void vbos(final Collection<vbo>vbos)throws Throwable{
 		vbos.add(vbosqr.o);
 		vbos.add(vbotri.o);
@@ -32,6 +32,7 @@ public class scene extends obj implements d.box.app{
 //		}}
 	}
 	public void update()throws Throwable{
+		super.update();
 		if((box.keys&1)!=0){//w
 			plr.dpos(0,.01f,0,box.dt);
 		}
