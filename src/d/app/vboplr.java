@@ -2,8 +2,8 @@ package d.app;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import d.vbo;
-public class vbosqr extends vbo{
-	static final public vbosqr o=new vbosqr(); 
+public class vboplr extends vbo{
+	static final public vboplr o=new vboplr(); 
 	protected int nvertices(){return 4;}
 	protected void vertices(final FloatBuffer vb){
 		final float w=.25f;
