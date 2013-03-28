@@ -12,7 +12,9 @@ import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.opengl.GL20.GL_MAX_FRAGMENT_UNIFORM_COMPONENTS;
 import static org.lwjgl.opengl.GL20.GL_MAX_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.opengl.GL20.GL_MAX_VERTEX_ATTRIBS;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.glUniform3f;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4;
+import java.util.Random;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
@@ -21,16 +23,14 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 final public class box{
 	public static void main(final String[]a)throws Throwable{load();loop();}
-	static public String appcls="d.app.scene";
+	public static String appcls="d.app.scene";
+	private static final Random random=new Random(0);
 	public interface app{
 		vbo[]vbos()throws Throwable;
 	}
+	private static app app;
 	private static final int wi=512;
 	private static final int hi=512;
-//	private static final int nvbos=1024;
-//	private static final int nobjs=1024;
-	private static app app;
-//	private static obj scene;
 	static long frmno;
 	public/*readonly*/static int fps;
 	public/*readonly*/static int keys;
@@ -40,18 +40,11 @@ final public class box{
 	//	public app()throws Throwable{load();loop();}
 	static private void load()throws Throwable{
 		app=(app)Class.forName(appcls).newInstance();
-//		scene=(obj)app;
-//		def.con(this);
-//		def.load();
 		// display
 		final PixelFormat pixelFormat=new PixelFormat();
 		final ContextAttribs contextAtrributes=new ContextAttribs(3,2).withProfileCore(true).withForwardCompatible(true);
 		Display.setDisplayMode(new DisplayMode(wi,hi));
 		Display.create(pixelFormat,contextAtrributes);
-		
-//		Display.setDisplayMode(new DisplayMode(wi,hi));
-//		Display.create();
-//		Display.setResizable(false);
 
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 		System.out.println("light weight java game layer");
@@ -65,12 +58,11 @@ final public class box{
 		System.out.println("         GL_MAX_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS));
 		System.out.println(" GL_MAX_FRAGMENT_UNIFORM_COMPONENTS: "+glGetInteger(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS));
 		System.out.println("              GL_MAX_VERTEX_ATTRIBS: "+glGetInteger(GL_MAX_VERTEX_ATTRIBS));
+		
 		shader.load();
 
 		for(final vbo o:app.vbos())
 			o.load();
-		
-//		objs.add(scene);
 	}
 	static private void loop()throws Throwable{
 		// loop
@@ -103,7 +95,7 @@ final public class box{
 			obj.updaterender();
 			
 			final long t1=System.currentTimeMillis();
-			final long dt0=t1-t;
+//			final long dt0=t1-t;
 //			if(dt0>16)
 //				System.out.println("frame #"+frmno+": "+dt0+" ms "+(dt0>16?"!":" "));
 			t=t1;
@@ -116,12 +108,9 @@ final public class box{
 				Display.setTitle("fps: "+fps+", obj: "+obj.count+" keys: "+keys);
 			}
 			
-//			Display.sync(60);
 			Display.update();
-//			System.gc();
 		}
 		//? cleanupskippeddueto
-//		Display.destroy();
 	}
-	public static float rnd(){return (float)Math.random();}
+	public static float rnd(){return random.nextFloat();}
 }
