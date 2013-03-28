@@ -8,7 +8,7 @@ public class obj extends a{
 	private vbo vbo;
 	public void vbo(final vbo v){vbo=v;}
 	private float[]pos=new float[3];// x y z
-	private mtx mxmw=new mtx().setident();
+	private mtx mxmw=new mtx().ident();
 	public obj(){count++;}
 	final public void render()throws Throwable{
 //		GL11.glPushMatrix();
