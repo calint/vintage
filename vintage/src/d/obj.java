@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import b.a;
-public class obj extends a{
+abstract public class obj extends a{
 	static final long serialVersionUID=1;
 	public/*readonly*/static int count;
 	private static Collection<obj>all=new ArrayList<obj>();
@@ -32,13 +32,13 @@ public class obj extends a{
 		count++;
 		obj.news.add(this);
 	}
-	public void rm(){
+	final public void rm(){
 		count--;
 		bits|=1;
 		obj.dels.add(this);
 	}
-	private boolean isdeleted(){return (bits&1)!=0;}
-	private void updmxmw(){mxmw.setagltrans(agl,pos);}
+	final private boolean isdeleted(){return (bits&1)!=0;}
+	final private void updmxmw(){mxmw.setagltrans(agl,pos);}
 	final void render()throws Throwable{
 //		GL11.glPushMatrix();
 		if(vbo!=null){
@@ -56,14 +56,14 @@ public class obj extends a{
 //		}
 //		GL11.glPopMatrix();
 	}
-	public obj vbo(final vbo v){this.vbo=v;return this;}
-	public obj agl(final float x,final float y,final float z){agl[0]=x;agl[1]=y;agl[2]=z;return this;}
-	public obj scl(final float x,final float y,final float z){scl[0]=x;scl[1]=y;scl[2]=z;return this;}
-	public obj pos(final float x,final float y,final float z){pos[0]=x;pos[1]=y;pos[2]=z;return this;}
-	public obj dpos(final float x,final float y,final float z){dpos[0]=x;dpos[1]=y;dpos[2]=z;return this;}
-	public obj dagl(final float x,final float y,final float z){dagl[0]=x;dagl[1]=y;dagl[2]=z;return this;}
-	public obj incdpos(final float x,final float y,final float z){dpos[0]+=x;dpos[1]+=y;dpos[2]+=z;return this;}
-	public obj incdagl(final float x,final float y,final float z){dagl[0]+=x;dagl[1]+=y;dagl[2]+=z;return this;}
+	final public obj vbo(final vbo v){this.vbo=v;return this;}
+	final public obj agl(final float x,final float y,final float z){agl[0]=x;agl[1]=y;agl[2]=z;return this;}
+	final public obj scl(final float x,final float y,final float z){scl[0]=x;scl[1]=y;scl[2]=z;return this;}
+	final public obj pos(final float x,final float y,final float z){pos[0]=x;pos[1]=y;pos[2]=z;return this;}
+	final public obj dpos(final float x,final float y,final float z){dpos[0]=x;dpos[1]=y;dpos[2]=z;return this;}
+	final public obj dagl(final float x,final float y,final float z){dagl[0]=x;dagl[1]=y;dagl[2]=z;return this;}
+	final public obj incdpos(final float x,final float y,final float z){dpos[0]+=x;dpos[1]+=y;dpos[2]+=z;return this;}
+	final public obj incdagl(final float x,final float y,final float z){dagl[0]+=x;dagl[1]+=y;dagl[2]+=z;return this;}
 	protected void update()throws Throwable{
 		pos[0]+=dpos[0]*box.dt;pos[1]+=dpos[1]*box.dt;pos[2]+=dpos[2]*box.dt;
 		agl[0]+=dagl[0]*box.dt;agl[1]+=dagl[1]*box.dt;agl[2]+=dagl[2]*box.dt;
