@@ -1,9 +1,9 @@
 package d;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.*;
-import static org.lwjgl.opengl.GL13.*;
+//import static org.lwjgl.opengl.GL12.*;
+//import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+//import static org.lwjgl.opengl.GL30.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;

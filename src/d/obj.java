@@ -1,6 +1,5 @@
 package d;
 import static org.lwjgl.opengl.GL20.*;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 abstract public class obj{
@@ -18,7 +17,7 @@ abstract public class obj{
 		for(final obj o:obj.all)o.render();
 	}
 
-	private int bits;
+//	private int bits;
 	protected vbo vbo;
 	protected float[]pos=new float[3];// x y z
 	protected float[]dpos=new float[3];// x y z
@@ -33,10 +32,10 @@ abstract public class obj{
 	}
 	final public void rm(){
 		count--;
-		bits|=1;
+//		bits|=1;
 		obj.dels.add(this);
 	}
-	final private boolean isdeleted(){return (bits&1)!=0;}
+//	final private boolean isdeleted(){return (bits&1)!=0;}
 	final private void updmxmw(){mxmw.setagltrans(agl,pos);}
 	final void render()throws Throwable{
 //		GL11.glPushMatrix();
