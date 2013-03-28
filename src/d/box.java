@@ -74,7 +74,7 @@ final public class box{
 				fps=(int)(frm*1000/(tms-t0));
 				t0=tms;
 				frm=0;
-				Display.setTitle("fps: "+fps+", obj: "+obj.count+" keys: "+keys);
+				Display.setTitle("fps: "+fps+", obj: "+obj.count+" keys: "+keys+" ur("+obj.ms_allupdate+","+obj.ms_allrender+")");
 			}
 			// viewport
 //			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
@@ -97,7 +97,7 @@ final public class box{
 			final obj cam=(obj)app;
 			umxproj.setagltrans(new float[]{-cam.agl[0],-cam.agl[1],-cam.agl[2]},new float[]{-cam.pos[0],-cam.pos[1],-cam.pos[2]});
 			glUniformMatrix4(shader.umxwv,false,umxproj.bf);
-			glUniform3f(shader.upos,0,0,0);
+//			glUniform3f(shader.upos,0,0,0);
 			glUniform2f(shader.us,1,wihiratio);
 			obj.allupdaterender();
 			Display.update();
