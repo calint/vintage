@@ -13,6 +13,7 @@ final public class shader{
 	static int umxproj;
 	static int umxmw;
 	static int utx;
+	static int upos;
 	static public void load()throws Throwable{
 		int errorCheckValue=glGetError();
 		final int p=glCreateProgram();
@@ -21,12 +22,14 @@ final public class shader{
 		glAttachShader(p,vs);
 		glAttachShader(p,fs);
 		glLinkProgram(p);
-		shader.umxproj=glGetUniformLocation(p,"umxproj");
-		if(shader.umxproj==-1)throw new Error("could not getuniformlocation umxproj");
-		shader.umxmw=glGetUniformLocation(p,"umxmw");
-		if(shader.umxmw==-1)throw new Error("could not getuniformlocation umxmw");
-		shader.utx=glGetUniformLocation(p,"utx");
-		if(shader.utx==-1)throw new Error("could not getuniformlocation utx");
+		umxproj=glGetUniformLocation(p,"umxproj");
+		if(umxproj==-1)throw new Error("could not getuniformlocation umxproj");
+		umxmw=glGetUniformLocation(p,"umxmw");
+		if(umxmw==-1)throw new Error("could not getuniformlocation umxmw");
+		utx=glGetUniformLocation(p,"utx");
+		if(utx==-1)throw new Error("could not getuniformlocation utx");
+		upos=glGetUniformLocation(p,"upos");
+		if(upos==-1)throw new Error("could not getuniformlocation upos");
 		glBindAttribLocation(p,0,"in_Position");
 		glBindAttribLocation(p,1,"in_Color");
 		glBindAttribLocation(p,2,"in_TextureCoord");
