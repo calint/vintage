@@ -95,7 +95,7 @@ final public class box{
 			wi=Display.getWidth();
 			hi=Display.getHeight();
 			final float wihiratio=(float)wi/hi;
-			glViewport(0,0,wi,hi);
+//			glViewport(0,0,wi,hi);
 			glClearColor(.4f,.6f,.9f,0);
 			glClear(GL_COLOR_BUFFER_BIT);
 
@@ -112,7 +112,6 @@ final public class box{
 			glUniform3f(shader.upos,0,0,0);
 			glUniform2f(shader.us,1,wihiratio);
 			obj.allupdaterender();
-			
 			Display.update();
 		}
 		//? cleanupskippeddueto
