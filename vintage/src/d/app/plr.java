@@ -5,24 +5,28 @@ public class plr extends obj{static final long serialVersionUID=1;
 	{vbo=vboplr.o;}
 	private long lastfire;
 	private double a;
+	public static float dagl=.001f;
 	public void update()throws Throwable{
 		super.update();
-		
+				
 		scl[0]=scl[1]=(float)Math.sin(a);
 		a+=Math.PI/400*box.dt;
 		
 		dpos(0,0,0);
+		dagl(0,0,0);
 		if((box.keys&1)!=0){//w
 			incdpos(0,.001f,0);
 		}
 		if((box.keys&2)!=0){//a
 			incdpos(-.001f,0,0);
+			incdagl(0,0,dagl);
 		}
 		if((box.keys&4)!=0){//s
 			incdpos(0,-.001f,0);
 		}
 		if((box.keys&8)!=0){//d
 			incdpos(.001f,0,0);
+			incdagl(0,0,-dagl);
 		}
 		if((box.keys&16)!=0){//j
 			if((box.tms-lastfire)>100){
