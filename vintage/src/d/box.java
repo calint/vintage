@@ -30,7 +30,7 @@ final public class box{
 //	private static final int nvbos=1024;
 //	private static final int nobjs=1024;
 	private static app app;
-	private static obj scene;
+//	private static obj scene;
 	static long frmno;
 	public/*readonly*/static int fps;
 	public/*readonly*/static int keys;
@@ -40,7 +40,7 @@ final public class box{
 	//	public app()throws Throwable{load();loop();}
 	static private void load()throws Throwable{
 		app=(app)Class.forName(appcls).newInstance();
-		scene=(obj)app;
+//		scene=(obj)app;
 //		def.con(this);
 //		def.load();
 		// display
@@ -103,6 +103,7 @@ final public class box{
 			
 			obj.all.removeAll(obj.removed);
 			obj.removed.clear();
+			
 			obj.all.addAll(obj.news);
 			obj.news.clear();
 			for(final obj o:obj.all)o.update();
