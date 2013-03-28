@@ -22,4 +22,5 @@ public class vbotri extends vbo{
 	protected void indices(final ByteBuffer ib){
 		ib.put((byte)0).put((byte)1).put((byte)2);
 	}
+	protected String imgpath(){return null;}
 }

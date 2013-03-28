@@ -10,7 +10,7 @@ public class obj extends a{
 	private float[]pos=new float[3];// x y z
 	private mtx mxmw=new mtx().ident();
 	public obj(){count++;}
-	final public void render()throws Throwable{
+	final void render()throws Throwable{
 //		GL11.glPushMatrix();
 //		pos[0]=.25f;
 //		pos[1]=.5f;
@@ -32,5 +32,5 @@ public class obj extends a{
 		pos[1]+=y*dt;
 		pos[2]+=z*dt;
 	}
-	public void update()throws Throwable{}
+	protected void update()throws Throwable{}
 }
