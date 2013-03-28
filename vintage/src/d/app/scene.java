@@ -6,11 +6,13 @@ public class scene extends obj implements d.box.app{
 	static final long serialVersionUID=1;
 	public tri tri;
 	public sqr sqr;
+	public sqr sqr2;
 	public plr plr;
 	public blt blt;
 	{
 		plr.pos(-.5f,0,0);
-		sqr.pos(.75f,0,0);
+		sqr.pos(.75f,0,0).scl(.1f,.4f,0).agl(0,0,0);
+		sqr2.pos(.75f,0,0).scl(.1f,.2f,0).agl(0,0,0);
 		tri.pos(-1,0,0);
 	}
 	private long t0;
@@ -23,5 +25,5 @@ public class scene extends obj implements d.box.app{
 	}
 	
 	//d.box.app
-	public vbo[]vbos()throws Throwable{return new vbo[]{vboplr.o,vboblt.o};}
+	public vbo[]vbos()throws Throwable{return new vbo[]{vboplr.o,vboblt.o,vbosqr.o};}
 }

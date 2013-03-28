@@ -6,16 +6,27 @@ import java.util.Collection;
 import b.a;
 public class obj extends a{
 	static final long serialVersionUID=1;
-	public static int count;
+	public/*readonly*/static int count;
+	private static Collection<obj>all=new ArrayList<obj>();
+	private static Collection<obj>dels=new ArrayList<obj>();
+	private static Collection<obj>news=new ArrayList<obj>();
+	static void updaterender()throws Throwable{
+		obj.all.removeAll(obj.dels);
+		obj.dels.clear();
+		obj.all.addAll(obj.news);
+		obj.news.clear();
+		for(final obj o:obj.all)o.update();
+		for(final obj o:obj.all)o.render();
+	}
+
 	private int bits;
 	protected vbo vbo;
 	protected float[]pos=new float[3];// x y z
 	protected float[]dpos=new float[3];// x y z
 	protected float[]scl=new float[]{1,1,1};
+	protected float[]agl=new float[]{1,1,1};
 	private mtx mxmw=new mtx().ident();
-	static Collection<obj>all=new ArrayList<obj>();
-	static Collection<obj>dels=new ArrayList<obj>();
-	static Collection<obj>news=new ArrayList<obj>();
+	
 	public obj(){
 		count++;
 		obj.news.add(this);
@@ -45,6 +56,8 @@ public class obj extends a{
 		}
 //		GL11.glPopMatrix();
 	}
+	public obj agl(final float x,final float y,final float z){agl[0]=x;agl[1]=y;agl[2]=z;return this;}
+	public obj scl(final float x,final float y,final float z){scl[0]=x;scl[1]=y;scl[2]=z;return this;}
 	public obj pos(final float x,final float y,final float z){pos[0]=x;pos[1]=y;pos[2]=z;return this;}
 	public obj dpos(final float x,final float y,final float z){dpos[0]=x;dpos[1]=y;dpos[2]=z;return this;}
 	public obj incdpos(final float x,final float y,final float z){dpos[0]+=x;dpos[1]+=y;dpos[2]+=z;return this;}

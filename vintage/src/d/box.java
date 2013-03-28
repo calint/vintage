@@ -12,7 +12,7 @@ import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.opengl.GL20.GL_MAX_FRAGMENT_UNIFORM_COMPONENTS;
 import static org.lwjgl.opengl.GL20.GL_MAX_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.opengl.GL20.GL_MAX_VERTEX_ATTRIBS;
-import static org.lwjgl.opengl.GL20.glUniformMatrix4;
+import static org.lwjgl.opengl.GL20.*;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
@@ -81,7 +81,7 @@ final public class box{
 		while(!Display.isCloseRequested()){
 			tms=System.currentTimeMillis();
 			// viewport
-			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
+//			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
 			glViewport(0,0,Display.getWidth(),Display.getHeight());
 			glClearColor(.4f,.6f,.9f,0);
 
@@ -94,26 +94,18 @@ final public class box{
 			if(Keyboard.isKeyDown(Keyboard.KEY_J))keys|=16;else keys&=~16;
 			if(Keyboard.isKeyDown(Keyboard.KEY_K))keys|=32;else keys&=~32;
 				
-			glClear(GL_COLOR_BUFFER_BIT);
-
 			umxproj.ident();
 			umxproj.settranslate(new float[]{0,0,0});
 			glUniformMatrix4(shader.umxproj,false,umxproj.bf);
-//			glUniform3f(shader.upos,-.5f,.5f,0);
+			glUniform3f(shader.upos,0,0,0);
 			
-			obj.all.removeAll(obj.dels);
-			obj.dels.clear();
-			
-			obj.all.addAll(obj.news);
-			obj.news.clear();
-			for(final obj o:obj.all)o.update();
-			for(final obj o:obj.all)o.render();
-//			def.objs().iterator().next().render();
+			glClear(GL_COLOR_BUFFER_BIT);
+			obj.updaterender();
 			
 			final long t1=System.currentTimeMillis();
 			final long dt0=t1-t;
 //			if(dt0>16)
-				System.out.println("frame #"+frmno+": "+dt0+" ms "+(dt0>16?"!":" "));
+//				System.out.println("frame #"+frmno+": "+dt0+" ms "+(dt0>16?"!":" "));
 			t=t1;
 			dtms=t1-t0;
 			dt=dtms/1000.f;
