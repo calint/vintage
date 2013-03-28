@@ -11,10 +11,10 @@ import org.lwjgl.opengl.ContextAttribs;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
-final public class app{
+final public class box{
 	public static void main(final String[]a)throws Throwable{load();loop();}
-	static public String defclsnm="d.file.def";
-	public interface def{
+	static public String appcls="d.app.app";
+	public interface app{
 		void vbos(final Collection<vbo>vbos)throws Throwable;
 		void objs(final Collection<obj>objs)throws Throwable;
 		void update()throws Throwable;
@@ -23,14 +23,14 @@ final public class app{
 	private static final int hi=512;
 //	private static final int nvbos=1024;
 //	private static final int nobjs=1024;
-	private static def def;
+	private static app app;
 	public/*readonly*/static int fps;
-	public/*readonly*/static int bmpkeys;
+	public/*readonly*/static int keys;
 	public/*readonly*/static long dtms;
 	public/*readonly*/static float dt;
 //	public app()throws Throwable{load();loop();}
 	static private void load()throws Throwable{
-		def=(def)Class.forName(defclsnm).newInstance();
+		app=(app)Class.forName(appcls).newInstance();
 //		def.con(this);
 //		def.load();
 		// display
@@ -46,6 +46,7 @@ final public class app{
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 		System.out.println("light weight java game layer");
 		System.out.println("       version: "+Sys.getVersion());
+		System.out.println("   application: "+app.getClass().getName());
 		System.out.println("        opengl: "+glGetString(GL_VERSION));
 		System.out.println("        64 bit: "+Sys.is64Bit());
 		System.out.println("       adapter: "+Display.getAdapter());
@@ -56,10 +57,10 @@ final public class app{
 		System.out.println("              GL_MAX_VERTEX_ATTRIBS: "+glGetInteger(GL_MAX_VERTEX_ATTRIBS));
 		shader.load();
 
-		def.vbos(vbos);
+		app.vbos(vbos);
 		for(final vbo o:vbos)
 			o.load();
-		def.objs(objs);
+		app.objs(objs);
 	}
 	private static final Collection<vbo>vbos=new ArrayList<vbo>();
 	private static final Collection<obj>objs=new ArrayList<obj>();
@@ -77,8 +78,12 @@ final public class app{
 		while(!Display.isCloseRequested()){
 			frm++;
 			frmno++;
-			if(Keyboard.isKeyDown(Keyboard.KEY_W))bmpkeys|=1;else bmpkeys&=0xfffffffe;
-			if(Keyboard.isKeyDown(Keyboard.KEY_A))bmpkeys|=2;else bmpkeys&=0xfffffffd;
+			if(Keyboard.isKeyDown(Keyboard.KEY_W))keys|=1;else keys&=~1;
+			if(Keyboard.isKeyDown(Keyboard.KEY_A))keys|=2;else keys&=~2;
+			if(Keyboard.isKeyDown(Keyboard.KEY_S))keys|=4;else keys&=~4;
+			if(Keyboard.isKeyDown(Keyboard.KEY_D))keys|=8;else keys&=~8;
+			if(Keyboard.isKeyDown(Keyboard.KEY_J))keys|=16;else keys&=~16;
+			if(Keyboard.isKeyDown(Keyboard.KEY_K))keys|=32;else keys&=~32;
 				
 			glClear(GL_COLOR_BUFFER_BIT);
 
@@ -103,10 +108,10 @@ final public class app{
 				fps=(int)(frm*1000/dtms);
 				t0=t1;
 				frm=0;
-				Display.setTitle("fps: "+fps+", obj: "+obj.count+" keys: "+bmpkeys);
+				Display.setTitle("fps: "+fps+", obj: "+obj.count+" keys: "+keys);
 			}
 			
-			def.update();
+			app.update();
 			
 //			Display.sync(60);
 			Display.update();
