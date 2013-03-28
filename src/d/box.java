@@ -101,8 +101,8 @@ final public class box{
 			glUniformMatrix4(shader.umxproj,false,umxproj.bf);
 //			glUniform3f(shader.upos,-.5f,.5f,0);
 			
-			obj.all.removeAll(obj.removed);
-			obj.removed.clear();
+			obj.all.removeAll(obj.dels);
+			obj.dels.clear();
 			
 			obj.all.addAll(obj.news);
 			obj.news.clear();

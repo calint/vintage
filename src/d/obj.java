@@ -14,7 +14,7 @@ public class obj extends a{
 	protected float[]scl=new float[]{1,1,1};
 	private mtx mxmw=new mtx().ident();
 	static Collection<obj>all=new ArrayList<obj>();
-	static Collection<obj>removed=new ArrayList<obj>();
+	static Collection<obj>dels=new ArrayList<obj>();
 	static Collection<obj>news=new ArrayList<obj>();
 	public obj(){
 		count++;
@@ -23,7 +23,7 @@ public class obj extends a{
 	public void rm(){
 		count--;
 		bits|=1;
-		obj.removed.add(this);
+		obj.dels.add(this);
 	}
 	private boolean isdeleted(){return (bits&1)!=0;}
 	final void render()throws Throwable{
