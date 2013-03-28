@@ -33,6 +33,7 @@ abstract public class vbo{
 		final int hi;
 		final String path;
 		img(final int id,final int wi,final int hi,final String path){this.id=id;this.wi=wi;this.hi=hi;this.path=path;}
+		public String toString(){return id+" "+wi+"x"+hi+" "+path;}
 	}
 	final void load()throws Throwable{
 		final String imgpath=imgpath();
