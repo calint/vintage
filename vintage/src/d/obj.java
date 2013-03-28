@@ -1,14 +1,14 @@
 package d;
-import static org.lwjgl.opengl.GL20.glUniformMatrix4;
+import static org.lwjgl.opengl.GL20.*;
 import java.lang.reflect.Field;
 import b.a;
 public class obj extends a{
 	static final long serialVersionUID=1;
 	public static int count;
-	private vbo vbo;
-	public void vbo(final vbo v){vbo=v;}
-	private float[]pos=new float[3];// x y z
-	private float[]dpos=new float[3];// x y z
+	private vbo vbo;public void vbo(final vbo v){vbo=v;}
+	protected float[]pos=new float[3];// x y z
+	protected float[]dpos=new float[3];// x y z
+	protected float[]scl=new float[]{1,1,1};
 	private mtx mxmw=new mtx().ident();
 	public obj(){count++;}
 	final void render()throws Throwable{
@@ -18,6 +18,7 @@ public class obj extends a{
 		if(vbo!=null){
 			mxmw.settranslate(pos);
 			glUniformMatrix4(shader.umxmw,false,mxmw.bf);
+			glUniform3f(shader.uscl,scl[0],scl[1],scl[2]);
 			vbo.render();
 		}
 		for(final Field f:getClass().getFields()){

@@ -94,7 +94,7 @@ final public class box{
 			glClear(GL_COLOR_BUFFER_BIT);
 
 			umxproj.ident();
-			umxproj.settranslate(new float[]{.5f,-.5f,0});
+			umxproj.settranslate(new float[]{0,0,0});
 			glUniformMatrix4(shader.umxproj,false,umxproj.bf);
 //			glUniform3f(shader.upos,-.5f,.5f,0);
 			scene.update();

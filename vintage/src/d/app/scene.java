@@ -6,10 +6,12 @@ public class scene extends obj implements d.box.app{
 	public tri tri;
 	public sqr sqr;
 	public plr plr;
-	public vbo[]vbos()throws Throwable{
-		return new vbo[]{
-				vbosqr.o,
-				vbotri.o
-		};
+	{
+		plr.setpos(0,0,0);
+		sqr.setpos(0,0,0);
+		tri.setpos(-1,0,0);
 	}
+	
+	//d.box.app
+	public vbo[]vbos()throws Throwable{return new vbo[]{vbosqr.o,vbotri.o};}
 }
