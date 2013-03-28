@@ -71,15 +71,17 @@ final public class box{
 			o.load();
 	}
 	static private void loop()throws Throwable{
-		// viewport
-		glViewport(0,0,wi,hi);
-		glClearColor(.4f,.6f,.9f,0);
 		// loop
 		long t0=System.currentTimeMillis();
 		long t=t0;
 		int frm=0;
 		final mtx umxproj=new mtx().ident();
 		while(!Display.isCloseRequested()){
+			// viewport
+			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
+			glViewport(0,0,Display.getWidth(),Display.getHeight());
+			glClearColor(.4f,.6f,.9f,0);
+
 			frm++;
 			frmno++;
 			if(Keyboard.isKeyDown(Keyboard.KEY_W))keys|=1;else keys&=~1;
