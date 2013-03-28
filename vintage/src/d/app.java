@@ -1,15 +1,19 @@
 package d;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
-import static org.lwjgl.opengl.GL13.*;
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
+import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
+import static org.lwjgl.opengl.GL20.GL_MAX_FRAGMENT_UNIFORM_COMPONENTS;
+import static org.lwjgl.opengl.GL20.GL_MAX_TEXTURE_IMAGE_UNITS;
+import static org.lwjgl.opengl.GL20.GL_MAX_VERTEX_ATTRIBS;
+import static org.lwjgl.opengl.GL20.glUniformMatrix4;
+import static org.lwjgl.opengl.GL30.glGenerateMipmap;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.nio.ByteBuffer;
-import java.util.ArrayList;
 import java.util.Collection;
+import javax.imageio.ImageIO;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
@@ -58,7 +62,6 @@ final public class app{
 		System.out.println("       version: "+Display.getVersion());
 		System.out.println("GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
 		System.out.println("         GL_MAX_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS));
-		
 		System.out.println(" GL_MAX_FRAGMENT_UNIFORM_COMPONENTS: "+glGetInteger(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS));
 		System.out.println("              GL_MAX_VERTEX_ATTRIBS: "+glGetInteger(GL_MAX_VERTEX_ATTRIBS));
 		shader.load();
@@ -73,8 +76,14 @@ final public class app{
 		glBindTexture(GL_TEXTURE_2D,tx);
 		glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
-		final int txwi=64;
-		final int txhi=64;
+		final BufferedImage img=ImageIO.read(new File("logo.jpg"));
+		if(img==null)throw new Error("could not read file logo.jpg");
+//		final BufferedImage img0=new BufferedImage(img.getWidth(),img.getHeight(),BufferedImage.TYPE_4BYTE_ABGR);
+//	    img0.getGraphics().drawImage(img,0,0,null);
+//		img.getData().getDataBuffer();
+
+		final int txwi=img.getWidth();
+		final int txhi=img.getHeight();
 		final int n=4*txwi*txhi;
 		final ByteBuffer txbuf=ByteBuffer.allocateDirect(n);// 4 bytes/pixel
 //		for(int i=0;i<txhi;i++){
@@ -90,14 +99,39 @@ final public class app{
 //				txbuf.put(a);
 //			}
 //		}
-		for(int i=0;i<n;i++){
-			final byte d=(byte)(Math.random()*0x100);
-//			final byte d=(byte)i;
-			txbuf.put(d);
+		for(int y=0;y<txhi;y++){
+			for(int x=0;x<txwi;x++){
+				final int argb=img.getRGB(x,y);
+				final byte b=(byte)argb;
+				final byte g=(byte)(argb>>8);
+				final byte r=(byte)(argb>>16);
+				final byte a=(byte)(argb>>24);
+				if(r==0&&g==0&b==0){
+					txbuf.put(b);
+					txbuf.put(g);
+					txbuf.put(r);
+//					txbuf.put((byte)0xff);
+//					txbuf.put((byte)0xff);
+//					txbuf.put((byte)0xff);
+					txbuf.put((byte)0);
+				}else{
+					txbuf.put(b);
+					txbuf.put(g);
+					txbuf.put(r);
+					txbuf.put(a);
+				}
+			}
 		}
+		
+		
+//		for(int i=0;i<n;i++){
+//			final byte d=(byte)(Math.random()*0x100);
+////			final byte d=(byte)i;
+//			txbuf.put(d);
+//		}
 		txbuf.flip();
 		
-		glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,txwi,txhi,0,GL_RGBA,GL_UNSIGNED_BYTE,txbuf);
+		glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,txwi,txhi,0,GL_BGRA,GL_UNSIGNED_BYTE,txbuf);
 //		final long t0=System.currentTimeMillis();
 //		final int nn=1024*1024;
 //		for(int i=0;i<nn;i++){
@@ -110,7 +144,11 @@ final public class app{
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
+//		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+//		glEnable(GL_BLEND);
+//		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+//		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl is in error state");
 	}
 	static long frameno;
