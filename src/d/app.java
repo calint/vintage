@@ -35,7 +35,7 @@ final public class app{
 	static public/*readonly*/long dtms;
 	static public/*readonly*/float dt;
 //	public app()throws Throwable{load();loop();}
-	static public void load()throws Throwable{
+	static private void load()throws Throwable{
 		def=(def)Class.forName(defclsnm).newInstance();
 //		def.con(this);
 		def.load();
@@ -58,7 +58,9 @@ final public class app{
 		System.out.println("       version: "+Display.getVersion());
 		System.out.println("GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
 		System.out.println("         GL_MAX_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS));
-
+		
+		System.out.println(" GL_MAX_FRAGMENT_UNIFORM_COMPONENTS: "+glGetInteger(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS));
+		System.out.println("              GL_MAX_VERTEX_ATTRIBS: "+glGetInteger(GL_MAX_VERTEX_ATTRIBS));
 		shader.load();
 
 		// vbos
@@ -95,7 +97,7 @@ final public class app{
 		}
 		txbuf.flip();
 		
-		glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,txwi,txhi,0,GL_BGRA,GL_UNSIGNED_BYTE,txbuf);
+		glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,txwi,txhi,0,GL_RGBA,GL_UNSIGNED_BYTE,txbuf);
 //		final long t0=System.currentTimeMillis();
 //		final int nn=1024*1024;
 //		for(int i=0;i<nn;i++){
@@ -111,28 +113,35 @@ final public class app{
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl is in error state");
 	}
-	static public void loop()throws Throwable{
+	static long frameno;
+	static private void loop()throws Throwable{
 		// viewport
 		glViewport(0,0,wi,hi);
 		glClearColor(.4f,.6f,.9f,0);
 		// loop
 		long t0=System.currentTimeMillis();
+		long t=t0;
 		int frm=0;
-		final mtx mtxproj=new mtx();
+		final mtx mtxproj=new mtx().ident();
 		while(!Display.isCloseRequested()){
 			frm++;
+			frameno++;
 			if(Keyboard.isKeyDown(Keyboard.KEY_W))bmpkeys|=1;else bmpkeys&=0xfffffffe;
 			if(Keyboard.isKeyDown(Keyboard.KEY_A))bmpkeys|=2;else bmpkeys&=0xfffffffd;
 				
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			mtxproj.setident();
 			glUniformMatrix4(shader.umxproj,false,mtxproj.bf);
 			
 			for(final obj o:def.objs())
 				o.render();
+//			def.objs().iterator().next().render();
 			
 			final long t1=System.currentTimeMillis();
+			final long dt0=t1-t;
+//			if(dt0>16)
+				System.out.println("frame #"+frameno+": "+dt0+" ms "+(dt0>16?"!":" "));
+			t=t1;
 			dtms=t1-t0;
 			dt=dtms/1000.f;
 			if(dtms>1000){
@@ -144,8 +153,9 @@ final public class app{
 			
 			def.update();
 			
-//			Display.sync(1000);
+//			Display.sync(60);
 			Display.update();
+//			System.gc();
 		}
 		//? cleanupskippeddueto
 //		Display.destroy();

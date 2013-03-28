@@ -15,7 +15,7 @@ final public class def implements d.app.def{
 		o=new objsqr();
 		objs.add(o);
 		
-		final int n=1024;// 60+ fps
+		final int n=1024>>1;// 60+ fps
 		for(int i=0;i<n;i++){
 			final obj o=new objsqr();
 			final float f=-1+(float)i/n;
