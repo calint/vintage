@@ -1,7 +1,7 @@
 package d;
 import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
-final public class mtx{
+final class mtx{
 	public final FloatBuffer bf=BufferUtils.createFloatBuffer(16);
 	public mtx ident(){
 		bf.rewind();
