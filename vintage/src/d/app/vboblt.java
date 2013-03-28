@@ -6,15 +6,16 @@ public class vboblt extends vbo{
 	static final public vboblt o=new vboblt();
 	protected int nvertices(){return 3;}
 	protected void vertices(final FloatBuffer vb){
-		vb.put(-.5f).put( .5f).put(0).put(1);//xyzw
+		final float w=1;
+		vb.put(-w).put(w).put(0).put(1);//xyzw
 		vb.put(1).put(1).put(1).put(1);//rgba
 		vb.put(0).put(0);//st
 
-		vb.put(-.5f).put(-.5f).put(0).put(1);//xyzw
+		vb.put(-w).put(-w).put(0).put(1);//xyzw
 		vb.put(1).put(1).put(1).put(1);//rgba
 		vb.put(0).put(1);//st
 
-		vb.put( .5f).put(-.5f).put(0).put(1);//xyzw
+		vb.put(w).put(-w).put(0).put(1);//xyzw
 		vb.put(1).put(1).put(1).put(1);//rgba
 		vb.put(1).put(1);//st
 	}

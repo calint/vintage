@@ -1,8 +1,9 @@
 #version 150 core
-uniform mat4 umxproj;
-uniform mat4 umxmw;
-uniform vec3 upos;
-uniform vec3 uscl;
+uniform vec2 us;//proj scale
+uniform vec3 upos;//camera pos
+uniform mat4 umxproj;//proj matrix
+uniform mat4 umxmw;//model world matrix
+uniform vec3 uscl;//model scale
 in vec4 in_Position;
 in vec4 in_Color;
 in vec2 in_TextureCoord;
@@ -13,6 +14,8 @@ void main(){
 	vec4 pw=umxmw*pscl;
 	vec4 pp=umxproj*pw;
 	vec4 ps=pp-vec4(upos,0);
+	ps.x*=us.x;
+	ps.y*=us.y;
 	gl_Position=ps;
 	pass_Color=in_Color;
 	pass_TextureCoord=in_TextureCoord;

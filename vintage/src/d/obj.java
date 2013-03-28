@@ -10,7 +10,7 @@ public class obj extends a{
 	private static Collection<obj>all=new ArrayList<obj>();
 	private static Collection<obj>dels=new ArrayList<obj>();
 	private static Collection<obj>news=new ArrayList<obj>();
-	static void updaterender()throws Throwable{
+	static void allupdaterender()throws Throwable{
 		obj.all.removeAll(obj.dels);
 		obj.dels.clear();
 		obj.all.addAll(obj.news);
@@ -41,24 +41,22 @@ public class obj extends a{
 	private void updmxmw(){mxmw.setagltrans(agl,pos);}
 	final void render()throws Throwable{
 //		GL11.glPushMatrix();
-//		pos[0]=.25f;
-//		pos[1]=.5f;
 		if(vbo!=null){
-//			mxmw.settranslate(pos);
 			updmxmw();
 			glUniformMatrix4(shader.umxmw,false,mxmw.bf);
 			glUniform3f(shader.uscl,scl[0],scl[1],scl[2]);
 			vbo.render();
 		}
-		for(final Field f:getClass().getFields()){
-			if(obj.class.isAssignableFrom(f.getType())){
-				final obj o=(obj)f.get(this);
-				if(o!=null)
-					o.render();
-			}
-		}
+//		for(final Field f:getClass().getFields()){
+//			if(obj.class.isAssignableFrom(f.getType())){
+//				final obj o=(obj)f.get(this);
+//				if(o!=null)
+//					o.render();
+//			}
+//		}
 //		GL11.glPopMatrix();
 	}
+	public obj vbo(final vbo v){this.vbo=v;return this;}
 	public obj agl(final float x,final float y,final float z){agl[0]=x;agl[1]=y;agl[2]=z;return this;}
 	public obj scl(final float x,final float y,final float z){scl[0]=x;scl[1]=y;scl[2]=z;return this;}
 	public obj pos(final float x,final float y,final float z){pos[0]=x;pos[1]=y;pos[2]=z;return this;}
@@ -67,17 +65,17 @@ public class obj extends a{
 	public obj incdpos(final float x,final float y,final float z){dpos[0]+=x;dpos[1]+=y;dpos[2]+=z;return this;}
 	public obj incdagl(final float x,final float y,final float z){dagl[0]+=x;dagl[1]+=y;dagl[2]+=z;return this;}
 	protected void update()throws Throwable{
-		pos[0]+=dpos[0];pos[1]+=dpos[1];pos[2]+=dpos[2];
-		agl[0]+=dagl[0];agl[1]+=dagl[1];agl[2]+=dagl[2];
-		for(final Field f:getClass().getFields()){
-			if(obj.class.isAssignableFrom(f.getType())){
-				final obj o=(obj)f.get(this);
-				if(o!=null)
-					if(!o.isdeleted())
-						o.update();
-					else
-						f.set(this,null);
-			}
-		}
+		pos[0]+=dpos[0]*box.dt;pos[1]+=dpos[1]*box.dt;pos[2]+=dpos[2]*box.dt;
+		agl[0]+=dagl[0]*box.dt;agl[1]+=dagl[1]*box.dt;agl[2]+=dagl[2]*box.dt;
+//		for(final Field f:getClass().getFields()){
+//			if(obj.class.isAssignableFrom(f.getType())){
+//				final obj o=(obj)f.get(this);
+//				if(o!=null)
+//					if(!o.isdeleted())
+//						o.update();
+//					else
+//						f.set(this,null);
+//			}
+//		}
 	}
 }
