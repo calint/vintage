@@ -76,12 +76,11 @@ final public class box{
 			frm++;
 			frmno++;
 			tms=System.currentTimeMillis();
-//			final long t1=tms;
-//			final long dt0=t1-t;
-//			if(dt0>16)
-//				System.out.println("frame #"+frmno+": "+dt0+" ms "+(dt0>16?"!":" "));
 			dtms=tms-t;
 			dt=(float)(dtms/1000.);
+//			final long dt0=tms-t;
+//			if(dt0>16)
+//				System.out.println("frame #"+frmno+": "+dt0+" ms "+(dt0>16?"!":" "));
 			t=tms;
 			dt=dtms/1000.f;
 			if(tms-t0>1000){
