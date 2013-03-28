@@ -1,9 +1,9 @@
-package d.file;
+package d.app;
 import java.util.Collection;
-import d.app;
+import d.box;
 import d.obj;
 import d.vbo;
-final public class def implements d.app.def{
+final public class app implements d.box.app{
 	private obj player;
 	public void vbos(final Collection<vbo>vbos)throws Throwable{
 		vbos.add(vbosqr.o);
@@ -28,13 +28,23 @@ final public class def implements d.app.def{
 //		}}
 	}
 	public void update()throws Throwable{
-		if((app.bmpkeys&1)!=0){//w
-			player.vbo(vbosqr.o);
-			player.dpos(.01f,0,0,app.dt);
+		if((box.keys&1)!=0){//w
+			player.dpos(0,.01f,0,box.dt);
 		}
-		if((app.bmpkeys&2)!=0){//a
+		if((box.keys&2)!=0){//a
+			player.dpos(-.01f,0,0,box.dt);
+		}
+		if((box.keys&4)!=0){//s
+			player.dpos(0,-.01f,0,box.dt);
+		}
+		if((box.keys&8)!=0){//d
+			player.dpos(.01f,0,0,box.dt);
+		}
+		if((box.keys&16)!=0){//j
 			player.vbo(vbotri.o);
-			player.dpos(-.01f,0,0,app.dt);
+		}
+		if((box.keys&32)!=0){//k
+			player.vbo(vbosqr.o);
 		}
 	}
 }
