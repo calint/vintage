@@ -13,7 +13,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 final public class box{
 	public static void main(final String[]a)throws Throwable{load();loop();}
-	static public String appcls="d.app.app";
+	static public String appcls="d.app.scene";
 	public interface app{
 		void vbos(final Collection<vbo>vbos)throws Throwable;
 		void objs(final Collection<obj>objs)throws Throwable;

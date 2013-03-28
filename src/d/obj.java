@@ -14,9 +14,11 @@ public class obj extends a{
 //		GL11.glPushMatrix();
 //		pos[0]=.25f;
 //		pos[1]=.5f;
-		mxmw.settranslate(pos);
-		glUniformMatrix4(shader.umxmw,false,mxmw.bf);
-		vbo.render();
+		if(vbo!=null){
+			mxmw.settranslate(pos);
+			glUniformMatrix4(shader.umxmw,false,mxmw.bf);
+			vbo.render();
+		}
 		for(final Field f:getClass().getFields()){
 			if(obj.class.isAssignableFrom(f.getType())){
 				final obj o=(obj)f.get(this);
