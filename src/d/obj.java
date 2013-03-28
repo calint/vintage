@@ -10,6 +10,7 @@ abstract public class obj{
 	private static Collection<obj>news=new ArrayList<obj>();
 	public static long ms_allupdate;
 	public static long ms_allrender;
+	protected long t0ms=box.tms;
 	static void allupdaterender()throws Throwable{
 		final long t0=System.currentTimeMillis();
 		obj.all.removeAll(obj.dels);
@@ -48,8 +49,13 @@ abstract public class obj{
 //		GL11.glPushMatrix();
 		if(vbo!=null){
 			updmxmw();
+//			final long t0=System.currentTimeMillis();
+//			for(int i=0;i<100000;i++){
 			glUniformMatrix4(shader.umxmw,false,mxmw.bf);
 			glUniform3f(shader.uscl,scl[0],scl[1],scl[2]);
+//			}
+//			final long dt=System.currentTimeMillis()-t0;
+//			System.out.println(dt);
 			vbo.render();
 		}
 //		GL11.glPopMatrix();

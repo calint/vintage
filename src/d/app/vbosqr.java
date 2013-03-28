@@ -32,6 +32,6 @@ public class vbosqr extends vbo{
 //		ib.put((byte)0).put((byte)1).put((byte)2);
 //		ib.put((byte)2).put((byte)3).put((byte)0);
 	}
-	protected String imgpath(){return null;}
+	protected String imgpath(){return "logo.jpg";}
 //	protected String imgpath(){return null;}
 }

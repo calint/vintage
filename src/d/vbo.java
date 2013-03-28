@@ -84,7 +84,6 @@ abstract public class vbo{
 		glUniform1i(shader.utx,0);
 		glDrawElements(GL_TRIANGLES,nindices,GL_UNSIGNED_BYTE,0);
 //		glDrawElements(GL_TRIANGLE_STRIP,nindices,GL_UNSIGNED_BYTE,0);
-		
 		//. groupedbymaterial,textureunit,drawelementsrange
 	}
 	
