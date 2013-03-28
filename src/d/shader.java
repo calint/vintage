@@ -7,8 +7,7 @@ import static org.lwjgl.opengl.GL30.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-final public class shader{
+final class shader{
 	// uniform variable locations
 	static int umxproj;
 	static int umxmw;
