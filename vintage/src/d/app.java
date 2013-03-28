@@ -3,14 +3,11 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
 import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
-import static org.lwjgl.opengl.GL20.GL_MAX_FRAGMENT_UNIFORM_COMPONENTS;
-import static org.lwjgl.opengl.GL20.GL_MAX_TEXTURE_IMAGE_UNITS;
-import static org.lwjgl.opengl.GL20.GL_MAX_VERTEX_ATTRIBS;
-import static org.lwjgl.opengl.GL20.glUniformMatrix4;
+import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.glGenerateMipmap;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Collection;
 import javax.imageio.ImageIO;
@@ -70,13 +67,18 @@ final public class app{
 		for(final vbo o:def.vbos())
 			o.load();
 
+		txload("logo.jpg");
+	}
+	private static void txload(final String path)throws Throwable{
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+
 		// textures
 		final int tx=glGenTextures();
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D,tx);
 		glPixelStorei(GL_UNPACK_ALIGNMENT,1);
 
-		final BufferedImage img=ImageIO.read(new File("logo.jpg"));
+		final BufferedImage img=ImageIO.read(new File(path));
 		if(img==null)throw new Error("could not read file logo.jpg");
 //		final BufferedImage img0=new BufferedImage(img.getWidth(),img.getHeight(),BufferedImage.TYPE_4BYTE_ABGR);
 //	    img0.getGraphics().drawImage(img,0,0,null);
@@ -144,14 +146,14 @@ final public class app{
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-//		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+//		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
 //		glEnable(GL_BLEND);
 //		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 //		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl is in error state");
 	}
-	static long frameno;
+	static long frmno;
 	static private void loop()throws Throwable{
 		// viewport
 		glViewport(0,0,wi,hi);
@@ -160,16 +162,19 @@ final public class app{
 		long t0=System.currentTimeMillis();
 		long t=t0;
 		int frm=0;
-		final mtx mtxproj=new mtx().ident();
+		final mtx umxproj=new mtx().ident();
 		while(!Display.isCloseRequested()){
 			frm++;
-			frameno++;
+			frmno++;
 			if(Keyboard.isKeyDown(Keyboard.KEY_W))bmpkeys|=1;else bmpkeys&=0xfffffffe;
 			if(Keyboard.isKeyDown(Keyboard.KEY_A))bmpkeys|=2;else bmpkeys&=0xfffffffd;
 				
 			glClear(GL_COLOR_BUFFER_BIT);
 
-			glUniformMatrix4(shader.umxproj,false,mtxproj.bf);
+			umxproj.ident();
+			umxproj.settranslate(new float[]{.5f,-.5f,0});
+			glUniformMatrix4(shader.umxproj,false,umxproj.bf);
+//			glUniform3f(shader.upos,-.5f,.5f,0);
 			
 			for(final obj o:def.objs())
 				o.render();
@@ -178,7 +183,7 @@ final public class app{
 			final long t1=System.currentTimeMillis();
 			final long dt0=t1-t;
 //			if(dt0>16)
-				System.out.println("frame #"+frameno+": "+dt0+" ms "+(dt0>16?"!":" "));
+				System.out.println("frame #"+frmno+": "+dt0+" ms "+(dt0>16?"!":" "));
 			t=t1;
 			dtms=t1-t0;
 			dt=dtms/1000.f;

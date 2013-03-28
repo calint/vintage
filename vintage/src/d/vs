@@ -1,15 +1,17 @@
 #version 150 core
 uniform mat4 umxproj;
 uniform mat4 umxmw;
+uniform vec3 upos;
 in vec4 in_Position;
 in vec4 in_Color;
 in vec2 in_TextureCoord;
 out vec4 pass_Color;
 out vec2 pass_TextureCoord;
 void main(){
-//	umxproj;
-	gl_Position=umxproj*umxmw*in_Position;//? precalc umx*
-//	gl_Position=umxmw*in_Position;
+	vec4 pw=umxmw*in_Position;
+	vec4 pp=umxproj*pw;
+	vec4 ps=pp-vec4(upos,0);
+	gl_Position=ps;
 	pass_Color=in_Color;
 	pass_TextureCoord=in_TextureCoord;
 }
