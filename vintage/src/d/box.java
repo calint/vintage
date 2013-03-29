@@ -58,7 +58,7 @@ final public class box{
 		System.out.println(" GL_MAX_FRAGMENT_UNIFORM_COMPONENTS: "+glGetInteger(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS));
 		System.out.println("              GL_MAX_VERTEX_ATTRIBS: "+glGetInteger(GL_MAX_VERTEX_ATTRIBS));
 		System.out.println("              GL_MAX_TEXTURE_COORDS: "+glGetInteger(GL_MAX_TEXTURE_COORDS));
-			
+		System.out.println("   GL_MAX_VERTEX_UNIFORM_COMPONENTS: "+glGetInteger(GL_MAX_VERTEX_UNIFORM_COMPONENTS));
 		shader.load();
 
 		for(final vbo o:app.vbos())
@@ -103,6 +103,10 @@ final public class box{
 			if(Keyboard.isKeyDown(Keyboard.KEY_D))keys|=8;
 			if(Keyboard.isKeyDown(Keyboard.KEY_J))keys|=16;
 			if(Keyboard.isKeyDown(Keyboard.KEY_K))keys|=32;
+			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))keys|=64;
+			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE))keys|=128;
+			
+			if((keys&64)!=0)break;
 				
 			umxproj.ident();
 			final obj cam=(obj)app;

@@ -2,18 +2,19 @@ package d.app;
 import d.box;
 import d.obj;
 import d.vbo;
+import static d.box.*;
 public class wld extends obj implements d.box.app{
 	static final long serialVersionUID=1;
 	{
 //		final int n=512;
 		final float sprd=.2f;
 		for(int i=0;i<8;i++)
-			new plr().pos(box.rnd(-sprd,sprd),box.rnd(0,sprd),0).scl(.02f,.02f,.02f);
+			new plr().pos(rnd(-sprd,sprd),rnd(0,sprd),0).scl(.02f,.02f,.02f);
 
 		for(int i=0;i<512;i++){
-			final float h=box.rnd(0,.15f);
-			final float w=box.rnd(.05f,.1f);
-			new sqr().pos(box.rnd(-1,1),h,box.rnd(-.1f,.1f)).scl(w,h,1);
+			final float h=rnd(0,.15f);
+			final float w=rnd(.05f,.1f);
+			new sqr().pos(rnd(-1,1),h,rnd(-.1f,.1f)).scl(w,h,1);
 		}
 		
 		
@@ -26,13 +27,16 @@ public class wld extends obj implements d.box.app{
 //		dpos(0,.05f,0);
 		dagl(0,0,.01f);
 	}
-	public static int rainratems=100;
+	public static int rainratems=10;
 	private long t0;
 	protected void update() throws Throwable{
 		super.update();
+		if((box.keys&128)!=0)
+			new blt().pos(1,box.rnd(-1,1),0).dpos(-1,0,0);
+			
 		if(box.tms-t0>rainratems){
 			t0=box.tms;
-			new blt().pos(.5f,box.rnd(-1,1),0).dpos(-1,0,0);
+			new blt().pos(1,box.rnd(-1,1),0).dpos(-1,0,0);
 		}
 	}
 	
