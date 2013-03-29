@@ -83,7 +83,7 @@ abstract public class vbo{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboi);
 		glUniform1i(shader.utx,0);
 		glDrawElements(GL_TRIANGLES,nindices,GL_UNSIGNED_BYTE,0);
-//		glDrawElements(GL_TRIANGLE_STRIP,nindices,GL_UNSIGNED_BYTE,0);
+//		glDrawElements(GL_POINTS,nindices,GL_UNSIGNED_BYTE,0);
 		//. groupedbymaterial,textureunit,drawelementsrange
 	}
 	

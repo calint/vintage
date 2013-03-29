@@ -1,7 +1,7 @@
 #version 150 core
 uniform sampler2D utx;
 in vec4 in_rgba;
-in vec2 in_txcoord;
+smooth in vec2 in_txcoord;
 out vec4 out_Color;
 void main(){
 	vec4 txrgba=texture(utx,in_txcoord);

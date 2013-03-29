@@ -1,6 +1,10 @@
 package d;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL12.*;
+//import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL20.*;
+//import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL32.*;
 import java.util.Random;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -43,11 +47,18 @@ final public class box{
 		System.out.println("        64 bit: "+Sys.is64Bit());
 		System.out.println("       adapter: "+Display.getAdapter());
 		System.out.println("       version: "+Display.getVersion());
-		System.out.println("GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
+		System.out.println("        GL_SHADING_LANGUAGE_VERSION: "+glGetString(GL_SHADING_LANGUAGE_VERSION));
+		System.out.println("                GL_MAX_TEXTURE_SIZE: "+glGetInteger(GL_MAX_TEXTURE_SIZE));
+		System.out.println("             GL_MAX_3D_TEXTURE_SIZE: "+glGetInteger(GL_MAX_3D_TEXTURE_SIZE));
+//		System.out.println("               GL_MAX_TEXTURE_UNITS: "+glGetInteger(GL_MAX_TEXTURE_UNITS));
 		System.out.println("         GL_MAX_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS));
+		System.out.println("GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS));
+		System.out.println("  GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS));
+		System.out.println("GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
 		System.out.println(" GL_MAX_FRAGMENT_UNIFORM_COMPONENTS: "+glGetInteger(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS));
 		System.out.println("              GL_MAX_VERTEX_ATTRIBS: "+glGetInteger(GL_MAX_VERTEX_ATTRIBS));
-		
+		System.out.println("              GL_MAX_TEXTURE_COORDS: "+glGetInteger(GL_MAX_TEXTURE_COORDS));
+			
 		shader.load();
 
 		for(final vbo o:app.vbos())
