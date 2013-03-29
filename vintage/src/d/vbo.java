@@ -26,25 +26,32 @@ abstract public class vbo{
 	private int vbo;// vertex buffer object
 	private int vboi;// indices buffer object
 	private int nindices;
-	private img tx;
-	private static final class img{
-		final int id;
-		final int wi;
-		final int hi;
-		final String path;
-		img(final int id,final int wi,final int hi,final String path){this.id=id;this.wi=wi;this.hi=hi;this.path=path;}
-		public String toString(){return id+" "+wi+"x"+hi+" "+path;}
-	}
+	private texture tx;
 	final void load()throws Throwable{
 		final String imgpath=imgpath();
-		if(imgpath!=null)
-			tx=imgload(imgpath);
+		if(imgpath!=null){
+			tx=loadtexture(imgpath,null,0,0);
+		}else{
+			final int[]txsize=imgsize();
+			if(txsize!=null){
+				final int wi=txsize[0],hi=txsize[1],bpp=txsize[2];
+				final int n=wi*hi*bpp;
+				System.out.println(" texture alloc bmp "+wi+"x"+hi+"x"+bpp);
+				final ByteBuffer txdata=ByteBuffer.allocateDirect(n);
+				System.out.println(" generating texture "+wi+"x"+hi+"x"+bpp);
+				imggen(txdata);
+				txdata.flip();
+				System.out.println(" uploading texture "+wi+"x"+hi+"x"+bpp);
+				tx=loadtexture(null,txdata,txsize[0],txsize[1]);
+			}
+		}
 		// load buffers
 //		FloatBuffer verticesBuffer = ByteBuffer.allocateDirect(4*vertices.length*Vertex.elementCount).asFloatBuffer();
 		final int nvertices=nvertices();
 		final int stride=10;//xyzw,rgba,st
 		final int sizeofnum=4;//sizeof(float)
 		final int stridebytes=stride*sizeofnum;
+		System.out.println(" uploading vertex attributes, "+stridebytes+" B/px");
 		final FloatBuffer vb=BufferUtils.createFloatBuffer(nvertices*stride);
 	
 		vertices(vb);
@@ -94,16 +101,17 @@ abstract public class vbo{
 	abstract protected void vertices(final FloatBuffer vb);
 	abstract protected int nindices();
 	abstract protected void indices(final ByteBuffer ib);
-	abstract protected String imgpath();
-	private static img imgload(final String path)throws Throwable{
-			if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
-	
-			// textures
-			final int tx=glGenTextures();
-			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D,tx);
-			glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-	
+	protected void imggen(final ByteBuffer bb){}
+	protected int[]imgsize(){return null;}
+	protected String imgpath(){return null;}
+	private static texture loadtexture(final String path,final ByteBuffer rgbabuf,final int wi,final int hi)throws Throwable{
+		// textures
+		final int tx=glGenTextures();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D,tx);
+		glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+		texture texture;
+		if(path!=null){
 			final BufferedImage img=ImageIO.read(new File(path));
 			if(img==null)throw new Error("could not read file logo.jpg");
 	//		final BufferedImage img0=new BufferedImage(img.getWidth(),img.getHeight(),BufferedImage.TYPE_4BYTE_ABGR);
@@ -158,27 +166,34 @@ abstract public class vbo{
 	//			txbuf.put(d);
 	//		}
 			txbuf.flip();
-			
+			System.out.println(" uploading texture "+txwi+"x"+txhi+"x4");
 			glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,txwi,txhi,0,GL_BGRA,GL_UNSIGNED_BYTE,txbuf);
-	//		final long t0=System.currentTimeMillis();
-	//		final int nn=1024*1024;
-	//		for(int i=0;i<nn;i++){
-	//			glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,txwi,txhi,0,GL_RGBA,GL_UNSIGNED_BYTE,txbuf);
-	//		}
-	//		final long dt=System.currentTimeMillis()-t0;
-	//		System.out.println(" loads "+nn/dt+" loads/ms");
-	//		if(glGetError()!=GL_NO_ERROR)throw new Error("could not load texture");
-			glGenerateMipmap(GL_TEXTURE_2D);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
-	//		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
-	//		glEnable(GL_BLEND);
-	//		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	//		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-			if(glGetError()!=GL_NO_ERROR)throw new Error("opengl is in error state");
-			glBindTexture(GL_TEXTURE_2D,0);
-			return new img(tx,txwi,txhi,path);
+			if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+			texture=new texture(tx,txwi,txhi,path);
+		}else{			
+			glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,wi,hi,0,GL_BGRA,GL_UNSIGNED_BYTE,rgbabuf);
+			if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+			texture=new texture(tx,wi,hi,null);
 		}
+//		final long t0=System.currentTimeMillis();
+//		final int nn=1024*1024;
+//		for(int i=0;i<nn;i++){
+//			glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,txwi,txhi,0,GL_RGBA,GL_UNSIGNED_BYTE,txbuf);
+//		}
+//		final long dt=System.currentTimeMillis()-t0;
+//		System.out.println(" loads "+nn/dt+" loads/ms");
+//		if(glGetError()!=GL_NO_ERROR)throw new Error("could not load texture");
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+//		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR_MIPMAP_LINEAR);
+//		glEnable(GL_BLEND);
+//		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+//		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+		glBindTexture(GL_TEXTURE_2D,0);
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl is in error state");
+		return texture;
+	}
 }
