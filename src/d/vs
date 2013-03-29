@@ -1,5 +1,5 @@
 #version 150 core
-uniform vec2 us;//proj scale
+uniform vec2 us=vec2(1,1);//proj scale
 //uniform vec3 upos;//camera pos
 uniform mat4 umxwv;//proj matrix
 uniform mat4 umxmw;//model world matrix
