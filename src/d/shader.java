@@ -11,7 +11,7 @@ final class shader{
 	// uniform variable locations
 	static int umxwv;// world to view matrix
 	static int umxmw;// model to world matrix
-	static int utx;// texture
+	static int utx;// texture sampler
 //	static int upos;// camera position
 	static int uscl;//xyz current object scale
 	static int us;//xy projection scale x,y

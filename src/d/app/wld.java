@@ -5,8 +5,11 @@ import d.vbo;
 import static d.box.*;
 public class wld extends obj implements d.box.app{
 	static final long serialVersionUID=1;
+	//d.box.app
+	public vbo[]vbos(){return new vbo[]{vboplr.o,vboblt.o,vbosqr.o,vbobackground.o};}
 	{
-//		final int n=512;
+		new background();
+		
 		final float sprd=.2f;
 		for(int i=0;i<8;i++)
 			new plr().pos(rnd(-sprd,sprd),rnd(0,sprd),0).scl(.02f,.02f,.02f);
@@ -16,7 +19,6 @@ public class wld extends obj implements d.box.app{
 			final float w=rnd(.05f,.1f);
 			new sqr().pos(rnd(-1,1),h,rnd(-.1f,.1f)).scl(w,h,1);
 		}
-		
 		
 		new plr().pos(-.5f,0,0);
 		new sqr().pos(.75f,.4f,0).scl(.1f,.4f,1).agl(0,0,0);
@@ -39,7 +41,4 @@ public class wld extends obj implements d.box.app{
 			new blt().pos(1,box.rnd(-1,1),0).dpos(-1,0,0);
 		}
 	}
-	
-	//d.box.app
-	public vbo[]vbos()throws Throwable{return new vbo[]{vboplr.o,vboblt.o,vbosqr.o};}
 }
