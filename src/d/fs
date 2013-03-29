@@ -5,6 +5,6 @@ smooth in vec2 in_txcoord;
 out vec4 out_Color;
 void main(){
 	vec4 txrgba=texture(utx,in_txcoord);
-	if(txrgba.rgba==vec4(0,0,0,0))discard; 
+	if(txrgba.rgba==vec4(0,0,0,0))discard;//transparent pixel 
 	out_Color=in_rgba+txrgba;
 }
