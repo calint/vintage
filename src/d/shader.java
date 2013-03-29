@@ -44,10 +44,8 @@ final class shader{
 		glBindAttribLocation(p,1,"in_Color");
 		glBindAttribLocation(p,2,"in_TextureCoord");
 		glValidateProgram(p);
-		errorCheckValue=glGetError();
-		if(errorCheckValue!=GL_NO_ERROR)
-			throw new Error("could not load program: "+errorCheckValue);
 		glUseProgram(p);
+		if(glGetError()!=GL_NO_ERROR)throw new Error("could not load shader program");
 	}
 	private static int loadshader(final String filename,final int type)throws Throwable{
 		final StringBuilder src=new StringBuilder();

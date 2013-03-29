@@ -5,6 +5,7 @@ import static org.lwjgl.opengl.GL12.*;
 import static org.lwjgl.opengl.GL20.*;
 //import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL32.*;
+import java.text.SimpleDateFormat;
 import java.util.Random;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -26,6 +27,7 @@ final public class box{
 	public/*readonly*/static long dtms;//frame update+render time in millis
 	public/*readonly*/static float dt;//dtms in seconds
 	static private void load()throws Throwable{
+		final long t0=System.currentTimeMillis();
 		app=(app)Class.forName(appcls).newInstance();
 		// display
 		final PixelFormat pixelFormat=new PixelFormat();
@@ -36,11 +38,16 @@ final public class box{
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 
 		banner();
+		System.out.println();
 
 		shader.load();
 		
 		for(final vbo o:app.vbos())
 			o.load();
+		
+		final long dt=System.currentTimeMillis()-t0;
+		System.out.println();
+		System.out.println(box.class.getName()+" load, "+dt+" millis");
 	}
 	private static void banner(){
 		System.out.println("light weight java game layer");
@@ -50,6 +57,7 @@ final public class box{
 		System.out.println("        64 bit: "+Sys.is64Bit());
 		System.out.println("       adapter: "+Display.getAdapter());
 		System.out.println("       version: "+Display.getVersion());
+		System.out.println();
 		System.out.println("        GL_SHADING_LANGUAGE_VERSION: "+glGetString(GL_SHADING_LANGUAGE_VERSION));
 		System.out.println("                GL_MAX_TEXTURE_SIZE: "+glGetInteger(GL_MAX_TEXTURE_SIZE));
 		System.out.println("             GL_MAX_3D_TEXTURE_SIZE: "+glGetInteger(GL_MAX_3D_TEXTURE_SIZE));
@@ -66,6 +74,8 @@ final public class box{
 	static private void loop()throws Throwable{
 		// loop
 		long t0=System.currentTimeMillis();
+		final SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		System.out.println(box.class.getName()+" loop, "+sdf.format(t0));
 		long t=t0;
 		int frmi=0;
 		final mtx umxproj=new mtx().ident();
