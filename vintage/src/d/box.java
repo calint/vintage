@@ -70,6 +70,8 @@ final public class box{
 		System.out.println("              GL_MAX_VERTEX_ATTRIBS: "+glGetInteger(GL_MAX_VERTEX_ATTRIBS));
 		System.out.println("              GL_MAX_TEXTURE_COORDS: "+glGetInteger(GL_MAX_TEXTURE_COORDS));
 		System.out.println("   GL_MAX_VERTEX_UNIFORM_COMPONENTS: "+glGetInteger(GL_MAX_VERTEX_UNIFORM_COMPONENTS));
+		System.out.println("           GL_MAX_ELEMENTS_VERTICES: "+glGetInteger(GL_MAX_ELEMENTS_VERTICES));
+		
 	}
 	static private void loop()throws Throwable{
 		// loop
