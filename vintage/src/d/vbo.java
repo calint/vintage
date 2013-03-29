@@ -75,11 +75,13 @@ abstract public class vbo{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 	}
 	final void render()throws Throwable{
-		glBindTexture(GL_TEXTURE_2D,tx!=null?tx.id:0);
 		glBindVertexArray(vao);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
+		if(tx!=null){
+			glBindTexture(GL_TEXTURE_2D,tx.id);
+			glEnableVertexAttribArray(2);
+		}
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboi);
 		glUniform1i(shader.utx,0);
 		glDrawElements(GL_TRIANGLES,nindices,GL_UNSIGNED_BYTE,0);

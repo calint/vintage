@@ -14,32 +14,35 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 final public class box{
 	public static void main(final String[]a)throws Throwable{load();loop();}
-	public static String appcls="d.app.wld";
-	private static final Random random=new Random(0);
-	public interface app{
-		vbo[]vbos()throws Throwable;
-	}
+	public interface app{vbo[]vbos()throws Throwable;}
 	private static app app;
-	private static final int width=1024;
-	private static final int height=512;
-	private static int wi=width;
-	private static int hi=height;
-	static long frmno;
-	public/*readonly*/static int fps;
-	public/*readonly*/static int keys;
-	public/*readonly*/static long dtms;
-	public/*readonly*/static float dt;
-	public/*readonly*/static long tms;
-	//	public app()throws Throwable{load();loop();}
+	public static String appcls="d.app.wld";//application object
+	private static final Random random=new Random(0);
+	private static int wi=1024,hi=512;
+	public/*readonly*/static long frm;//frame number
+	public/*readonly*/static int fps;//frames per second
+	public/*readonly*/static int keys;//keys bits
+	public/*readonly*/static long tms;//time in millis
+	public/*readonly*/static long dtms;//frame update+render time in millis
+	public/*readonly*/static float dt;//dtms in seconds
 	static private void load()throws Throwable{
 		app=(app)Class.forName(appcls).newInstance();
 		// display
 		final PixelFormat pixelFormat=new PixelFormat();
 		final ContextAttribs contextAtrributes=new ContextAttribs(3,2).withProfileCore(true).withForwardCompatible(true);
-		Display.setDisplayMode(new DisplayMode(width,height));
+		Display.setDisplayMode(new DisplayMode(wi,hi));
 		Display.create(pixelFormat,contextAtrributes);
 
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+
+		banner();
+
+		shader.load();
+		
+		for(final vbo o:app.vbos())
+			o.load();
+	}
+	private static void banner(){
 		System.out.println("light weight java game layer");
 		System.out.println("       version: "+Sys.getVersion());
 		System.out.println("   application: "+app.getClass().getName());
@@ -59,20 +62,16 @@ final public class box{
 		System.out.println("              GL_MAX_VERTEX_ATTRIBS: "+glGetInteger(GL_MAX_VERTEX_ATTRIBS));
 		System.out.println("              GL_MAX_TEXTURE_COORDS: "+glGetInteger(GL_MAX_TEXTURE_COORDS));
 		System.out.println("   GL_MAX_VERTEX_UNIFORM_COMPONENTS: "+glGetInteger(GL_MAX_VERTEX_UNIFORM_COMPONENTS));
-		shader.load();
-
-		for(final vbo o:app.vbos())
-			o.load();
 	}
 	static private void loop()throws Throwable{
 		// loop
 		long t0=System.currentTimeMillis();
 		long t=t0;
-		int frm=0;
+		int frmi=0;
 		final mtx umxproj=new mtx().ident();
 		while(!Display.isCloseRequested()){
+			frmi++;
 			frm++;
-			frmno++;
 			tms=System.currentTimeMillis();
 			dtms=tms-t;
 			dt=(float)(dtms/1000.);
@@ -82,9 +81,9 @@ final public class box{
 			t=tms;
 			dt=dtms/1000.f;
 			if(tms-t0>1000){
-				fps=(int)(frm*1000/(tms-t0));
+				fps=(int)(frmi*1000/(tms-t0));
 				t0=tms;
-				frm=0;
+				frmi=0;
 				Display.setTitle("fps:"+fps+", objs:"+obj.count+", keys:"+keys+", upd,rend:"+obj.ms_allupdate+","+obj.ms_allrender+" ms");
 			}
 			// viewport
