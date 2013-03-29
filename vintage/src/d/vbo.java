@@ -28,30 +28,14 @@ abstract public class vbo{
 	private int nindices;
 	private texture tx;
 	final void load()throws Throwable{
-		final String imgpath=imgpath();
-		if(imgpath!=null){
-			tx=loadtexture(imgpath,null,0,0);
-		}else{
-			final int[]txsize=imgsize();
-			if(txsize!=null){
-				final int wi=txsize[0],hi=txsize[1],bpp=txsize[2];
-				final int n=wi*hi*bpp;
-				System.out.println(" texture alloc bmp "+wi+"x"+hi+"x"+bpp);
-				final ByteBuffer txdata=ByteBuffer.allocateDirect(n);
-				System.out.println(" generating texture "+wi+"x"+hi+"x"+bpp);
-				imggen(txdata);
-				txdata.flip();
-				System.out.println(" uploading texture "+wi+"x"+hi+"x"+bpp);
-				tx=loadtexture(null,txdata,txsize[0],txsize[1]);
-			}
-		}
+		System.out.println(getClass().getName());
 		// load buffers
 //		FloatBuffer verticesBuffer = ByteBuffer.allocateDirect(4*vertices.length*Vertex.elementCount).asFloatBuffer();
 		final int nvertices=nvertices();
 		final int stride=10;//xyzw,rgba,st
 		final int sizeofnum=4;//sizeof(float)
 		final int stridebytes=stride*sizeofnum;
-		System.out.println(" uploading vertex attributes, "+stridebytes+" B/px");
+		System.out.println("  "+nvertices+" vertices, "+stridebytes+" B/vertex");
 		final FloatBuffer vb=BufferUtils.createFloatBuffer(nvertices*stride);
 	
 		vertices(vb);
@@ -59,6 +43,7 @@ abstract public class vbo{
 		vb.flip();
 		
 		nindices=nindices();
+		System.out.println("  "+nindices+" indices, 1 B/index");
 		final ByteBuffer ib=BufferUtils.createByteBuffer(nindices);
 		indices(ib);
 
@@ -80,6 +65,29 @@ abstract public class vbo{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboi);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER,ib,GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+
+	
+	
+		final String imgpath=imgpath();
+		if(imgpath!=null){
+			System.out.println("  texture "+imgpath);
+			tx=loadtexture(imgpath,null,0,0);
+		}else{
+			final int[]txsize=imgsize();
+			if(txsize!=null){
+				final int wi=txsize[0],hi=txsize[1],bpp=txsize[2];
+				final int n=wi*hi*bpp;
+				System.out.println("  texture alloc "+wi+"x"+hi+"x"+bpp*8+" bpp");
+				final ByteBuffer txdata=ByteBuffer.allocateDirect(n);
+				System.out.println("  texture generate");
+				imggen(txdata);
+				txdata.flip();
+				System.out.println("  texture load");
+				tx=loadtexture(null,txdata,txsize[0],txsize[1]);
+			}
+		}
+		
+		System.out.println();
 	}
 	final void render()throws Throwable{
 		glBindVertexArray(vao);
@@ -104,77 +112,91 @@ abstract public class vbo{
 	protected void imggen(final ByteBuffer bb){}
 	protected int[]imgsize(){return null;}
 	protected String imgpath(){return null;}
+	private static img loadimg(final String path)throws Throwable{
+		final BufferedImage img=ImageIO.read(new File(path));
+		if(img==null)throw new Error("could not read file logo.jpg");
+//		final BufferedImage img0=new BufferedImage(img.getWidth(),img.getHeight(),BufferedImage.TYPE_4BYTE_ABGR);
+//	    img0.getGraphics().drawImage(img,0,0,null);
+//		img.getData().getDataBuffer();
+
+		final int txwi=img.getWidth();
+		final int txhi=img.getHeight();
+		final int n=4*txwi*txhi;
+		final ByteBuffer txbuf=ByteBuffer.allocateDirect(n);// 4 bytes/pixel
+//		for(int i=0;i<txhi;i++){
+//			for(int j=0;j<txwi;j++){
+////				final byte d=(byte)(Math.random()*0x100);
+//				final byte r=(byte)i;
+//				final byte g=(byte)i;
+//				final byte b=(byte)i;
+//				final byte a=(byte)0xff;
+//				txbuf.put(r);
+//				txbuf.put(g);
+//				txbuf.put(b);
+//				txbuf.put(a);
+//			}
+//		}
+		for(int y=0;y<txhi;y++){
+			for(int x=0;x<txwi;x++){
+				final int argb=img.getRGB(x,y);
+				final byte b=(byte)argb;
+				final byte g=(byte)(argb>>8);
+				final byte r=(byte)(argb>>16);
+				final byte a=(byte)(argb>>24);
+				if(r==0&&g==0&b==0){
+					txbuf.put(b);
+					txbuf.put(g);
+					txbuf.put(r);
+//					txbuf.put((byte)0xff);
+//					txbuf.put((byte)0xff);
+//					txbuf.put((byte)0xff);
+					txbuf.put((byte)0);
+				}else{
+					txbuf.put(b);
+					txbuf.put(g);
+					txbuf.put(r);
+					txbuf.put(a);
+				}
+			}
+		}
+		
+		
+//		for(int i=0;i<n;i++){
+//			final byte d=(byte)(Math.random()*0x100);
+////			final byte d=(byte)i;
+//			txbuf.put(d);
+//		}
+		txbuf.flip();
+		return new img(txwi,txhi,txbuf);
+	}
+	private static class img{
+		final int w;
+		final int h;
+		final ByteBuffer rgba;
+		img(final int w,final int h,final ByteBuffer rgba){this.w=w;this.h=h;this.rgba=rgba;}
+	}
 	private static texture loadtexture(final String path,final ByteBuffer rgbabuf,final int wi,final int hi)throws Throwable{
 		// textures
 		final int tx=glGenTextures();
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D,tx);
 		glPixelStorei(GL_UNPACK_ALIGNMENT,1);
-		texture texture;
+		final img img;
+		final int w;
+		final int h;
+		final ByteBuffer txbuf;
 		if(path!=null){
-			final BufferedImage img=ImageIO.read(new File(path));
-			if(img==null)throw new Error("could not read file logo.jpg");
-	//		final BufferedImage img0=new BufferedImage(img.getWidth(),img.getHeight(),BufferedImage.TYPE_4BYTE_ABGR);
-	//	    img0.getGraphics().drawImage(img,0,0,null);
-	//		img.getData().getDataBuffer();
-	
-			final int txwi=img.getWidth();
-			final int txhi=img.getHeight();
-			final int n=4*txwi*txhi;
-			final ByteBuffer txbuf=ByteBuffer.allocateDirect(n);// 4 bytes/pixel
-	//		for(int i=0;i<txhi;i++){
-	//			for(int j=0;j<txwi;j++){
-	////				final byte d=(byte)(Math.random()*0x100);
-	//				final byte r=(byte)i;
-	//				final byte g=(byte)i;
-	//				final byte b=(byte)i;
-	//				final byte a=(byte)0xff;
-	//				txbuf.put(r);
-	//				txbuf.put(g);
-	//				txbuf.put(b);
-	//				txbuf.put(a);
-	//			}
-	//		}
-			for(int y=0;y<txhi;y++){
-				for(int x=0;x<txwi;x++){
-					final int argb=img.getRGB(x,y);
-					final byte b=(byte)argb;
-					final byte g=(byte)(argb>>8);
-					final byte r=(byte)(argb>>16);
-					final byte a=(byte)(argb>>24);
-					if(r==0&&g==0&b==0){
-						txbuf.put(b);
-						txbuf.put(g);
-						txbuf.put(r);
-	//					txbuf.put((byte)0xff);
-	//					txbuf.put((byte)0xff);
-	//					txbuf.put((byte)0xff);
-						txbuf.put((byte)0);
-					}else{
-						txbuf.put(b);
-						txbuf.put(g);
-						txbuf.put(r);
-						txbuf.put(a);
-					}
-				}
-			}
-			
-			
-	//		for(int i=0;i<n;i++){
-	//			final byte d=(byte)(Math.random()*0x100);
-	////			final byte d=(byte)i;
-	//			txbuf.put(d);
-	//		}
-			txbuf.flip();
-			System.out.println(" uploading texture "+txwi+"x"+txhi+"x4");
-			glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,txwi,txhi,0,GL_BGRA,GL_UNSIGNED_BYTE,txbuf);
-			if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
-			texture=new texture(tx,txwi,txhi,path);
-		}else{			
-			glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,wi,hi,0,GL_BGRA,GL_UNSIGNED_BYTE,rgbabuf);
-			if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
-			texture=new texture(tx,wi,hi,null);
+			img=loadimg(path);
+			txbuf=img.rgba;
+			w=img.w;
+			h=img.h;
+		}else{
+			txbuf=rgbabuf;
+			w=wi;
+			h=hi;
 		}
+		glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,w,h,0,GL_BGRA,GL_UNSIGNED_BYTE,txbuf);
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 //		final long t0=System.currentTimeMillis();
 //		final int nn=1024*1024;
 //		for(int i=0;i<nn;i++){
@@ -194,6 +216,6 @@ abstract public class vbo{
 //		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 		glBindTexture(GL_TEXTURE_2D,0);
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl is in error state");
-		return texture;
+		return new texture(tx,w,h);
 	}
 }

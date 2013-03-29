@@ -40,10 +40,13 @@ public class vbobackground extends vbo{
 	protected void imggen(final ByteBuffer rgba){
 		for(int y=0;y<hi;y++){
 			for(int x=0;x<wi;x++){
+				final byte r=(byte)box.rnd(0,256);
+				final byte g=(byte)box.rnd(0,256);
+				final byte b=(byte)box.rnd(0,256);
 				final byte a=(byte)box.rnd(0,256);
-				rgba.put(a);
-				rgba.put(a);
-				rgba.put(a);
+				rgba.put(r);
+				rgba.put(g);
+				rgba.put(b);
 				rgba.put(a);				
 			}
 			
