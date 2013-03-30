@@ -34,16 +34,16 @@ final public class box{
 		final ContextAttribs contextAtrributes=new ContextAttribs(3,2).withProfileCore(true).withForwardCompatible(true);
 		Display.setDisplayMode(new DisplayMode(wi,hi));
 		Display.create(pixelFormat,contextAtrributes);
-		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		banner();
-		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		System.out.println();
-		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		shader.load();
-		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		for(final vbo o:((app)app).vbos())
 			o.load();
-		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		final long dt=System.currentTimeMillis()-t0;
 		System.out.println();
 		System.out.println(box.class.getName()+" load, "+dt+" millis");
@@ -99,7 +99,7 @@ final public class box{
 				fps=(int)(frmi*1000/(tms-t0));
 				t0=tms;
 				frmi=0;
-				Display.setTitle("fps:"+fps+", objs:"+obj.count+", keys:"+keys+", upd,rend:"+obj.ms_allupdate+","+obj.ms_allrender+" ms");
+				Display.setTitle("fps:"+fps+",objs:"+obj.count+",upd:"+obj.ms_allupdate+",rend:"+obj.ms_allrender+",keys:"+keys);
 			}
 			// viewport
 //			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
