@@ -29,5 +29,5 @@ public class vbotumbloid extends vbo{
 		ib.put((byte)0).put((byte)1).put((byte)2);
 		ib.put((byte)2).put((byte)3).put((byte)0);
 	}
-	protected String imgpath(){return "logo.jpg";}
+	protected String imgpath(){return "KL_USSR_KP1810BM86.jpg";}
 }
