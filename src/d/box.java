@@ -19,7 +19,7 @@ final public class box{
 	private static app app;
 	public static String appcls="d.app.wld";//application object
 	private static final Random random=new Random(0);
-	private static int wi=1024,hi=512;
+	private static int wi=512+256,hi=512+256;
 	public/*readonly*/static long frm;//frame number
 	public/*readonly*/static int fps;//frames per second
 	public/*readonly*/static int keys;//keys bits
@@ -34,16 +34,20 @@ final public class box{
 		final ContextAttribs contextAtrributes=new ContextAttribs(3,2).withProfileCore(true).withForwardCompatible(true);
 		Display.setDisplayMode(new DisplayMode(wi,hi));
 		Display.create(pixelFormat,contextAtrributes);
-
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 
 		banner();
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 		System.out.println();
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 
+//		glGetError();//?
 		shader.load();
-		
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
+
 		for(final vbo o:app.vbos())
 			o.load();
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 		
 		final long dt=System.currentTimeMillis()-t0;
 		System.out.println();
@@ -60,15 +64,14 @@ final public class box{
 		System.out.println();
 		System.out.println("        GL_SHADING_LANGUAGE_VERSION: "+glGetString(GL_SHADING_LANGUAGE_VERSION));
 		System.out.println("                GL_MAX_TEXTURE_SIZE: "+glGetInteger(GL_MAX_TEXTURE_SIZE));
-		System.out.println("             GL_MAX_3D_TEXTURE_SIZE: "+glGetInteger(GL_MAX_3D_TEXTURE_SIZE));
-//		System.out.println("               GL_MAX_TEXTURE_UNITS: "+glGetInteger(GL_MAX_TEXTURE_UNITS));
+//		System.out.println("             GL_MAX_3D_TEXTURE_SIZE: "+glGetInteger(GL_MAX_3D_TEXTURE_SIZE));
 		System.out.println("         GL_MAX_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_TEXTURE_IMAGE_UNITS));
 		System.out.println("GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS));
 		System.out.println("  GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS));
 		System.out.println("GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS: "+glGetInteger(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS));
 		System.out.println(" GL_MAX_FRAGMENT_UNIFORM_COMPONENTS: "+glGetInteger(GL_MAX_FRAGMENT_UNIFORM_COMPONENTS));
 		System.out.println("              GL_MAX_VERTEX_ATTRIBS: "+glGetInteger(GL_MAX_VERTEX_ATTRIBS));
-		System.out.println("              GL_MAX_TEXTURE_COORDS: "+glGetInteger(GL_MAX_TEXTURE_COORDS));
+//		System.out.println("              GL_MAX_TEXTURE_COORDS: "+glGetInteger(GL_MAX_TEXTURE_COORDS));
 		System.out.println("   GL_MAX_VERTEX_UNIFORM_COMPONENTS: "+glGetInteger(GL_MAX_VERTEX_UNIFORM_COMPONENTS));
 		System.out.println("           GL_MAX_ELEMENTS_VERTICES: "+glGetInteger(GL_MAX_ELEMENTS_VERTICES));
 		
@@ -81,6 +84,11 @@ final public class box{
 		long t=t0;
 		int frmi=0;
 		final mtx umxproj=new mtx().ident();
+		glClearColor(.4f,.6f,.9f,0);
+		glFrontFace(GL_CCW);
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
+//		glPolygonMode(GL_FRONT_AND_BACK,GL_POINT);
 		while(!Display.isCloseRequested()){
 			frmi++;
 			frm++;
@@ -104,8 +112,7 @@ final public class box{
 			hi=Display.getHeight();
 			final float wihiratio=(float)wi/hi;
 //			glViewport(0,0,wi,hi);
-			glClearColor(.4f,.6f,.9f,0);
-			glClear(GL_COLOR_BUFFER_BIT);
+			glClear(GL_COLOR_BUFFER_BIT+GL_DEPTH_BUFFER_BIT);
 
 			keys=0;
 			if(Keyboard.isKeyDown(Keyboard.KEY_W))keys|=1;

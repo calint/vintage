@@ -16,7 +16,7 @@ final class shader{
 	static int uscl;//xyz current object scale
 	static int us;//xy projection scale x,y
 	static public void load()throws Throwable{
-		int errorCheckValue=glGetError();
+		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 		final int p=glCreateProgram();
 		final int vs=loadshader("vs",GL_VERTEX_SHADER);
 		final int fs=loadshader("fs",GL_FRAGMENT_SHADER);
