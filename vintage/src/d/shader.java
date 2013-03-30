@@ -12,7 +12,7 @@ final class shader{
 	static int umxwv;// world to view matrix
 	static int umxmw;// model to world matrix
 	static int utx;// texture sampler
-	static int us;//xy projection scale x,y
+//	static int us;//xy projection scale x,y
 	//
 	static public void load()throws Throwable{
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
@@ -33,8 +33,8 @@ final class shader{
 		if(umxmw==-1)throw new Error("could not getuniformlocation umxmw");
 		utx=glGetUniformLocation(p,"utx");
 		if(utx==-1)throw new Error("could not getuniformlocation utx");
-		us=glGetUniformLocation(p,"us");
-		if(us==-1)throw new Error("could not getuniformlocation us");
+//		us=glGetUniformLocation(p,"us");
+//		if(us==-1)throw new Error("could not getuniformlocation us");
 		glBindAttribLocation(p,0,"in_Position");
 		glBindAttribLocation(p,1,"in_Color");
 		glBindAttribLocation(p,2,"in_TextureCoord");
