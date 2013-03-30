@@ -25,9 +25,9 @@ final class shader{
 		if((umxwv=glGetUniformLocation(p,"umxwv"))==-1)throw new Error();
 		if((umxmw=glGetUniformLocation(p,"umxmw"))==-1)throw new Error();
 		if((utx=glGetUniformLocation(p,"utx"))==-1)throw new Error();
-		glBindAttribLocation(p,0,"in_Position");
-		glBindAttribLocation(p,1,"in_Color");
-		glBindAttribLocation(p,2,"in_TextureCoord");
+		glBindAttribLocation(p,0,"in_pos");
+		glBindAttribLocation(p,1,"in_rgba");
+		glBindAttribLocation(p,2,"in_txc");
 		glValidateProgram(p);
 		glUseProgram(p);
 		if(glGetError()!=GL_NO_ERROR)throw new Error("could not load shader program");
