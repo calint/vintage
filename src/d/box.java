@@ -24,7 +24,7 @@ final public class box{
 	public/*readonly*/static int fps;//frames per second
 	public/*readonly*/static int keys;//keys bits
 	public/*readonly*/static long tms;//time in millis
-	public/*readonly*/static long dtms;//frame update+render time in millis
+	public/*readonly*/static long dtms;//last frame time in millis
 	public/*readonly*/static float dt;//dtms in seconds
 	static private void load()throws Throwable{
 		final long t0=System.currentTimeMillis();
@@ -34,13 +34,9 @@ final public class box{
 		final ContextAttribs contextAtrributes=new ContextAttribs(3,2).withProfileCore(true).withForwardCompatible(true);
 		Display.setDisplayMode(new DisplayMode(wi,hi));
 		Display.create(pixelFormat,contextAtrributes);
-		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		banner();
-		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		System.out.println();
-		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		shader.load();
-		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		for(final vbo o:((app)app).vbos())
 			o.load();
 		if(glGetError()!=GL_NO_ERROR)throw new Error();
