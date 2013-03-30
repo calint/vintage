@@ -1,10 +1,11 @@
 #version 150 core
 uniform sampler2D utx;
-smooth in vec4 in_rgba;
-smooth in vec2 in_txcoord;
+smooth in vec4 f_rgba;
+smooth in vec2 f_txcoord;
 out vec4 out_Color;
 void main(){
-	vec4 txrgba=texture(utx,in_txcoord);
-	if(txrgba.rgba==vec4(0,0,0,0))discard;//transparent pixel 
-	out_Color=(in_rgba+txrgba)/2;
+	const vec4 transp=vec4(0,0,0,0);
+	vec4 txrgba=texture(utx,f_txcoord);
+	if(txrgba.rgba==transp)discard;//transparent pixel 
+	out_Color=(f_rgba+txrgba)/2;
 }
