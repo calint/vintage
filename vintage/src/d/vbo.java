@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
-abstract public class vbo{
+public class vbo{
 	private int vao;// vertex array object
 	private int vbo;// vertex buffer object
 	private int vboi;// indices buffer object
@@ -37,21 +37,15 @@ abstract public class vbo{
 		final int stridebytes=stride*sizeofnum;
 		System.out.println("  "+nvertices+" vertices, "+stridebytes+" B/vertex");
 		final FloatBuffer vb=BufferUtils.createFloatBuffer(nvertices*stride);
-	
 		vertices(vb);
-
 		vb.flip();
-		
 		nindices=nindices();
 		System.out.println("  "+nindices+" indices, 1 B/index");
 		final ByteBuffer ib=BufferUtils.createByteBuffer(nindices);
 		indices(ib);
-
 		ib.flip();
-		
 		vao=glGenVertexArrays();
 		glBindVertexArray(vao);
-		
 		vbo=glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER,vbo);
 		glBufferData(GL_ARRAY_BUFFER,vb,GL_STATIC_DRAW);
@@ -60,14 +54,10 @@ abstract public class vbo{
 		glVertexAttribPointer(2,2,GL_FLOAT,false,stridebytes,8*sizeofnum);// texture, 32 bytes offset
 		glBindBuffer(GL_ARRAY_BUFFER,0);
 		glBindVertexArray(0);
-
 		vboi=glGenBuffers();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboi);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER,ib,GL_STATIC_DRAW);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
-
-	
-	
 		final String imgpath=imgpath();
 		if(imgpath!=null){
 			System.out.println("  texture "+imgpath);
@@ -86,7 +76,6 @@ abstract public class vbo{
 				tx=loadtexture(null,txdata,txsize[0],txsize[1]);
 			}
 		}
-		
 		System.out.println();
 	}
 	final void render()throws Throwable{
@@ -104,14 +93,40 @@ abstract public class vbo{
 		//. groupedbymaterial,textureunit,drawelementsrange
 	}
 	
-	
-	abstract protected int nvertices();
-	abstract protected void vertices(final FloatBuffer vb);
-	abstract protected int nindices();
-	abstract protected void indices(final ByteBuffer ib);
-	protected void imggen(final ByteBuffer bb){}
-	protected int[]imgsize(){return null;}
+
+	protected int nvertices(){return 4;}
+	protected void vertices(final FloatBuffer vb){
+		final float w=1;
+		//0
+		vb.put(-w).put(w).put(0).put(1);//xyzw
+		vb.put(1).put(0).put(0).put(1);//rgba
+		vb.put(0).put(0);//st
+		//1
+		vb.put(-w).put(-w).put(0).put(1);//xyzw
+		vb.put(0).put(1).put(0).put(1);//rgba
+		vb.put(0).put(1);//st
+		//2
+		vb.put(w).put(-w).put(0).put(1);//xyzw
+		vb.put(0).put(0).put(1).put(1);//rgba
+		vb.put(1).put(1);//st
+		//3
+		vb.put(w).put(w).put(0).put(1);//xyzw
+		vb.put(1).put(1).put(1).put(1);//rgba
+		vb.put(1).put(0);//st //? 
+	}
+	protected int nindices(){return 6;}
+	protected void indices(final ByteBuffer ib){
+		ib.put((byte)0).put((byte)1).put((byte)2);
+//		ib.put((byte)1).put((byte)2).put((byte)3);
+		ib.put((byte)2).put((byte)3).put((byte)0);
+//		ib.put((byte)0).put((byte)1).put((byte)2);
+//		ib.put((byte)2).put((byte)3).put((byte)0);
+	}
+	/** if texture in file path or null */
 	protected String imgpath(){return null;}
+	/** if texture is generated return width,height,bytesperpixel */
+	protected int[]imgsize(){return null;}
+	protected void imggen(final ByteBuffer bb){}
 	private static img loadimg(final String path)throws Throwable{
 		final BufferedImage img=ImageIO.read(new File(path));
 		if(img==null)throw new Error("could not read file logo.jpg");
@@ -123,19 +138,6 @@ abstract public class vbo{
 		final int txhi=img.getHeight();
 		final int n=4*txwi*txhi;
 		final ByteBuffer txbuf=ByteBuffer.allocateDirect(n);// 4 bytes/pixel
-//		for(int i=0;i<txhi;i++){
-//			for(int j=0;j<txwi;j++){
-////				final byte d=(byte)(Math.random()*0x100);
-//				final byte r=(byte)i;
-//				final byte g=(byte)i;
-//				final byte b=(byte)i;
-//				final byte a=(byte)0xff;
-//				txbuf.put(r);
-//				txbuf.put(g);
-//				txbuf.put(b);
-//				txbuf.put(a);
-//			}
-//		}
 		for(int y=0;y<txhi;y++){
 			for(int x=0;x<txwi;x++){
 				final int argb=img.getRGB(x,y);
@@ -147,9 +149,6 @@ abstract public class vbo{
 					txbuf.put(b);
 					txbuf.put(g);
 					txbuf.put(r);
-//					txbuf.put((byte)0xff);
-//					txbuf.put((byte)0xff);
-//					txbuf.put((byte)0xff);
 					txbuf.put((byte)0);
 				}else{
 					txbuf.put(b);
@@ -158,14 +157,7 @@ abstract public class vbo{
 					txbuf.put(a);
 				}
 			}
-		}
-		
-		
-//		for(int i=0;i<n;i++){
-//			final byte d=(byte)(Math.random()*0x100);
-////			final byte d=(byte)i;
-//			txbuf.put(d);
-//		}
+		}		
 		txbuf.flip();
 		return new img(txwi,txhi,txbuf);
 	}
@@ -175,6 +167,7 @@ abstract public class vbo{
 		final ByteBuffer rgba;
 		img(final int w,final int h,final ByteBuffer rgba){this.w=w;this.h=h;this.rgba=rgba;}
 	}
+	/** either path or rgbabuf */
 	private static texture loadtexture(final String path,final ByteBuffer rgbabuf,final int wi,final int hi)throws Throwable{
 		// textures
 		final int tx=glGenTextures();

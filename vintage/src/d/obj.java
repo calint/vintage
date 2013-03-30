@@ -2,7 +2,7 @@ package d;
 import static org.lwjgl.opengl.GL20.*;
 import java.util.ArrayList;
 import java.util.Collection;
-abstract public class obj{
+public class obj{
 	static final long serialVersionUID=1;
 	public/*readonly*/static int count;
 	private static Collection<obj>all=new ArrayList<obj>();

@@ -8,16 +8,16 @@ public class wld extends obj implements d.box.app{
 	//d.box.app
 	public vbo[]vbos(){return new vbo[]{vboplr.o,vboblt.o,vbosqr.o,vbobackground.o};}
 	{
-		new background();
+		new background().pos(0,0,.5f);
 		
 		final float sprd=.2f;
 		for(int i=0;i<8;i++)
-			new plr().pos(rnd(-sprd,sprd),rnd(0,sprd),0).scl(.02f,.02f,.02f);
+			new plr().pos(rnd(-sprd,sprd),rnd(0,sprd),-1).scl(.02f,.02f,.02f);
 
 		for(int i=0;i<512;i++){
-			final float h=rnd(0,.15f);
+			final float h=rnd(0,.2f);
 			final float w=rnd(.05f,.1f);
-			new sqr().pos(rnd(-1,1),h,rnd(-.1f,.1f)).scl(w,h,1);
+			new sqr().pos(rnd(-1,1),h,0).scl(w,h,1);
 		}
 		
 		new plr().pos(-.5f,0,0);
