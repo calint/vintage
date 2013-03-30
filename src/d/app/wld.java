@@ -6,9 +6,11 @@ import static d.box.*;
 public class wld extends obj implements d.box.app{
 	static final long serialVersionUID=1;
 	//d.box.app
-	public vbo[]vbos(){return new vbo[]{vboplr.o,vboblt.o,vbosqr.o,vbobackground.o};}
+	public vbo[]vbos(){return new vbo[]{vboplr.o,vboblt.o,vbosqr.o,vbobackground.o,vboshp.o};}
 	{
 		new background().pos(0,0,.5f);
+	
+		new shp().scl(.1f,.1f,0).pos(0,-.5f,0).dagl(0,0,.1f);
 		
 		final float sprd=.2f;
 		for(int i=0;i<8;i++)
