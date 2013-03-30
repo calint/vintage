@@ -12,14 +12,13 @@ final class shader{
 	static int umxwv;// world to view matrix
 	static int umxmw;// model to world matrix
 	static int utx;// texture sampler
-//	static int upos;// camera position
-//	static int uscl;//xyz current object scale
 	static int us;//xy projection scale x,y
+	//
 	static public void load()throws Throwable{
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 		final int p=glCreateProgram();
-		final int vs=loadshader("vs",GL_VERTEX_SHADER);
-		final int fs=loadshader("fs",GL_FRAGMENT_SHADER);
+		final int vs=loadshader("shader.v",GL_VERTEX_SHADER);
+		final int fs=loadshader("shader.f",GL_FRAGMENT_SHADER);
 		glAttachShader(p,vs);
 		glAttachShader(p,fs);
 		glLinkProgram(p);
@@ -34,10 +33,6 @@ final class shader{
 		if(umxmw==-1)throw new Error("could not getuniformlocation umxmw");
 		utx=glGetUniformLocation(p,"utx");
 		if(utx==-1)throw new Error("could not getuniformlocation utx");
-//		upos=glGetUniformLocation(p,"upos");
-//		if(upos==-1)throw new Error("could not getuniformlocation upos");
-//		uscl=glGetUniformLocation(p,"uscl");
-//		if(uscl==-1)throw new Error("could not getuniformlocation uscl");
 		us=glGetUniformLocation(p,"us");
 		if(us==-1)throw new Error("could not getuniformlocation us");
 		glBindAttribLocation(p,0,"in_Position");

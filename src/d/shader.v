@@ -1,19 +1,16 @@
 #version 150 core
-uniform vec2 us=vec2(1,1);//proj scale
-//uniform vec3 upos;//camera pos
-uniform mat4 umxwv;//proj matrix
 uniform mat4 umxmw;//model world matrix
-uniform vec3 uscl;//model scale
+uniform mat4 umxwv;//world view matrix
+uniform vec2 us=vec2(1,1);//view port adjust
 in vec4 in_Position;
 in vec4 in_Color;
 in vec2 in_TextureCoord;
 smooth out vec4 in_rgba;
 smooth out vec2 in_txcoord;
 void main(){
-	//vec4 pm=vec4(uscl,1)*in_Position;//scale
 	vec4 pw=umxmw*in_Position;//to world coords
 	vec4 pv=umxwv*pw;//to view coords
-	vec4 ps=pv;//-vec4(upos,0);
+	vec4 ps=pv;
 	ps.x*=us.x;//viewport adjust
 	ps.y*=us.y;//
 	gl_Position=ps;

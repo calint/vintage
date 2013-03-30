@@ -51,7 +51,6 @@ public class obj{
 	final void render()throws Throwable{
 //		GL11.glPushMatrix();
 		if(vbo!=null){
-//			glUniform3f(shader.uscl,scl[0],scl[1],scl[2]);
 			updmxmw();
 			glUniformMatrix4(shader.umxmw,false,mxmw.bf);
 			vbo.render();
