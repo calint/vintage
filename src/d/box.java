@@ -122,8 +122,8 @@ final public class box{
 			if((keys&64)!=0)break;
 				
 			umxproj.ident();
-			final obj cam=(obj)app;
-			umxproj.setagltrans(new float[]{-cam.agl[0],-cam.agl[1],-cam.agl[2]},new float[]{-cam.pos[0],-cam.pos[1],-cam.pos[2]});
+			final obj cam=app;
+			umxproj.setsclagltrans(new float[]{1,1,1,1},new float[]{-cam.agl[0],-cam.agl[1],-cam.agl[2]},new float[]{-cam.pos[0],-cam.pos[1],-cam.pos[2]});
 			glUniformMatrix4(shader.umxwv,false,umxproj.bf);
 //			glUniform3f(shader.upos,0,0,0);
 			glUniform2f(shader.us,1,wihiratio);
