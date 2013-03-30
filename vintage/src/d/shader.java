@@ -65,4 +65,5 @@ final class shader{
 
 		return shdr;
 	}
+//	public static void render(final vbo o,final float[]scl,final mtx mw){}
 }

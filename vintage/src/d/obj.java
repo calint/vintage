@@ -8,9 +8,8 @@ public class obj{
 	private static Collection<obj>all=new ArrayList<obj>();
 	private static Collection<obj>dels=new ArrayList<obj>();
 	private static Collection<obj>news=new ArrayList<obj>();
-	public static long ms_allupdate;
-	public static long ms_allrender;
-	protected long t0ms=box.tms;
+	public/*readonly*/static long ms_allupdate;
+	public/*readonly*/static long ms_allrender;
 	static void allupdaterender()throws Throwable{
 		final long t0=System.currentTimeMillis();
 		obj.all.removeAll(obj.dels);
@@ -27,13 +26,14 @@ public class obj{
 
 //	private int bits;
 	protected vbo vbo;
+	protected long t0ms=box.tms;
 	protected float[]pos=new float[3];// x y z
 	protected float[]dpos=new float[3];// x y z
 	protected float[]scl=new float[]{1,1,1};
 	protected float[]agl=new float[]{0,0,0};
 	protected float[]dagl=new float[]{0,0,0};
 	private mtx mxmw=new mtx().ident();
-	private long mxmwfrm;
+//	private long mxmwfrm;
 	
 	public obj(){
 		count++;
@@ -41,22 +41,18 @@ public class obj{
 	}
 	final public void rm(){
 		count--;
-//		bits|=1;
 		obj.dels.add(this);
 	}
-//	final private boolean isdeleted(){return (bits&1)!=0;}
-	final private void updmxmw(){mxmw.setagltrans(agl,pos);mxmwfrm=box.frm;}
+	final private void updmxmw(){
+		mxmw.setagltrans(agl,pos);
+//		mxmwfrm=box.frm;
+	}
 	final void render()throws Throwable{
 //		GL11.glPushMatrix();
 		if(vbo!=null){
 			updmxmw();
-//			final long t0=System.currentTimeMillis();
-//			for(int i=0;i<100000;i++){
 			glUniformMatrix4(shader.umxmw,false,mxmw.bf);
 			glUniform3f(shader.uscl,scl[0],scl[1],scl[2]);
-//			}
-//			final long dt=System.currentTimeMillis()-t0;
-//			System.out.println(dt);
 			vbo.render();
 		}
 //		GL11.glPopMatrix();
