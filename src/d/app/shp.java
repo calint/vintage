@@ -14,15 +14,15 @@ public class shp extends obj{
 		dagl(0,0,0);
 		
 		if((box.keys&1)!=0){//w
-//			incdpos(0,dpos,0);
-			incdagl(0,0,dagl);
+			incdpos(0,dpos,0);
+//			incdagl(0,0,dagl);
 		}
 		if((box.keys&2)!=0){//a
 			incdpos(-dpos,0,0);
 		}
 		if((box.keys&4)!=0){//s
-//			incdpos(0,-dpos,0);
-			incdagl(0,0,-dagl);
+			incdpos(0,-dpos,0);
+//			incdagl(0,0,-dagl);
 		}
 		if((box.keys&8)!=0){//d
 			incdpos(dpos,0,0);
@@ -33,16 +33,6 @@ public class shp extends obj{
 				new blt().pos(pos[0],pos[1],pos[2]).dpos((float)Math.cos(agl[2]-Math.PI/2),(float)-Math.sin(agl[2]-Math.PI/2),0).agl(agl[0],agl[1],agl[2]);
 			}
 		}
-		if((box.keys&32)!=0){//k
-			if(vbo==vboblt.o){
-				vbo=vboplr.o;
-			}else{
-				vbo=vboblt.o;
-			}
-			vbo=vboblt.o;
-//			vbo(vbosqr.o);
-		}
-//		System.out.println(this+" "+pos[0]+","+pos[1]);
 	}
 
 }

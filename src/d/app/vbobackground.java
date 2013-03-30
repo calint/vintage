@@ -1,6 +1,5 @@
 package d.app;
 import java.nio.ByteBuffer;
-import java.nio.FloatBuffer;
 import d.box;
 import d.vbo;
 public class vbobackground extends vbo{

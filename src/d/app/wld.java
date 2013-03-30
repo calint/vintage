@@ -6,7 +6,14 @@ import static d.box.*;
 public class wld extends obj implements d.box.app{
 	static final long serialVersionUID=1;
 	//d.box.app
-	public vbo[]vbos(){return new vbo[]{vboplr.o,vboblt.o,vbosqr.o,vbobackground.o,vboshp.o};}
+	public vbo[]vbos(){return new vbo[]{
+			vboplr.o,
+			vboblt.o,
+			vbosqr.o,
+			vbobackground.o,
+			vboshp.o,
+			vbotumbloid.o
+	};}
 	{
 		new background().pos(0,0,.5f);
 	
@@ -41,6 +48,8 @@ public class wld extends obj implements d.box.app{
 		if(box.tms-t0>rainratems){
 			t0=box.tms;
 			new blt().pos(1,box.rnd(-1,1),0).dpos(-1,0,0);
+			if(box.rnd()>.25)
+				new tumbloid().scl(.05f,.05f,0).pos(box.rnd(-1,1),1,0).dpos(0,-.5f,0).dagl(0,0,1);
 		}
 	}
 }
