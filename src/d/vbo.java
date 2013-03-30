@@ -32,7 +32,7 @@ public class vbo{
 		// load buffers
 //		FloatBuffer verticesBuffer = ByteBuffer.allocateDirect(4*vertices.length*Vertex.elementCount).asFloatBuffer();
 		final int nvertices=nvertices();
-		final int stride=10;//xyzw,rgba,st
+		final int stride=9;//xyz,rgba,st
 		final int sizeofnum=4;//sizeof(float)
 		final int stridebytes=stride*sizeofnum;
 		System.out.println("  "+nvertices+" vertices, "+stridebytes+" B/vertex");
@@ -49,9 +49,9 @@ public class vbo{
 		vbo=glGenBuffers();
 		glBindBuffer(GL_ARRAY_BUFFER,vbo);
 		glBufferData(GL_ARRAY_BUFFER,vb,GL_STATIC_DRAW);
-		glVertexAttribPointer(0,4,GL_FLOAT,false,stridebytes,0);// positions
-		glVertexAttribPointer(1,4,GL_FLOAT,false,stridebytes,4*sizeofnum);// colors, 16 bytes offset
-		glVertexAttribPointer(2,2,GL_FLOAT,false,stridebytes,8*sizeofnum);// texture, 32 bytes offset
+		glVertexAttribPointer(0,3,GL_FLOAT,false,stridebytes,0);// positions
+		glVertexAttribPointer(1,4,GL_FLOAT,false,stridebytes,3*sizeofnum);// colors, 16 bytes offset
+		glVertexAttribPointer(2,2,GL_FLOAT,false,stridebytes,7*sizeofnum);// texture, 32 bytes offset
 		glBindBuffer(GL_ARRAY_BUFFER,0);
 		glBindVertexArray(0);
 		vboi=glGenBuffers();
@@ -98,21 +98,21 @@ public class vbo{
 	protected void vertices(final FloatBuffer vb){
 		final float w=1;
 		//0
-		vb.put(-w).put(w).put(0).put(1);//xyzw
+		vb.put(-w).put(w).put(0);//xyz
 		vb.put(1).put(0).put(0).put(1);//rgba
 		vb.put(0).put(0);//st
 		//1
-		vb.put(-w).put(-w).put(0).put(1);//xyzw
+		vb.put(-w).put(-w).put(0);//xyz
 		vb.put(0).put(1).put(0).put(1);//rgba
 		vb.put(0).put(1);//st
 		//2
-		vb.put(w).put(-w).put(0).put(1);//xyzw
+		vb.put(w).put(-w).put(0);//xyz
 		vb.put(0).put(0).put(1).put(1);//rgba
 		vb.put(1).put(1);//st
 		//3
-		vb.put(w).put(w).put(0).put(1);//xyzw
+		vb.put(w).put(w).put(0);//xyz
 		vb.put(1).put(1).put(1).put(1);//rgba
-		vb.put(1).put(0);//st //? 
+		vb.put(1).put(0);//st
 	}
 	protected int nindices(){return 6;}
 	protected void indices(final ByteBuffer ib){

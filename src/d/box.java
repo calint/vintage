@@ -17,7 +17,7 @@ final public class box{
 	public static void main(final String[]a)throws Throwable{load();loop();}
 	public interface app{vbo[]vbos()throws Throwable;}
 	private static obj app;
-	public static String appcls="d.app.wld";//application object
+	public static String appcls="d.app.app";//application object
 	private static final Random random=new Random(0);
 	private static int wi=512+256,hi=512+256;
 	public/*readonly*/static long frm;//frame number

@@ -3,7 +3,7 @@ import d.box;
 import d.obj;
 import d.vbo;
 import static d.box.*;
-public class wld extends obj implements d.box.app{
+public class app extends obj implements d.box.app{
 	static final long serialVersionUID=1;
 	//d.box.app
 	public vbo[]vbos(){return new vbo[]{
