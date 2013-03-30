@@ -4,6 +4,7 @@ import static org.lwjgl.opengl.GL11.*;
 //import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL20.*;
 //import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL32.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,10 +17,9 @@ final class shader{
 	static public void load()throws Throwable{
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 		final int p=glCreateProgram();
-		final int vs=loadshader(GL_VERTEX_SHADER,"shader.v");
-		final int fs=loadshader(GL_FRAGMENT_SHADER,"shader.f");
-		glAttachShader(p,vs);
-		glAttachShader(p,fs);
+		loadshader(p,GL_GEOMETRY_SHADER,"shader.g");
+		loadshader(p,GL_VERTEX_SHADER,"shader.v");
+		loadshader(p,GL_FRAGMENT_SHADER,"shader.f");
 		glLinkProgram(p);
 		if(glGetProgrami(p,GL_LINK_STATUS)==GL_FALSE)throw new Error("could not link due to: "+glGetProgramInfoLog(p,255));
 		if((umxwv=glGetUniformLocation(p,"umxwv"))==-1)throw new Error();
@@ -32,7 +32,7 @@ final class shader{
 		glUseProgram(p);
 		if(glGetError()!=GL_NO_ERROR)throw new Error("could not load shader program");
 	}
-	private static int loadshader(final int type,final String path)throws Throwable{
+	private static void loadshader(final int p,final int type,final String path)throws Throwable{
 		final StringBuilder src=new StringBuilder();
 		final InputStream srcis=vbo.class.getResourceAsStream(path);
 		final BufferedReader r=new BufferedReader(new InputStreamReader(srcis));
@@ -43,6 +43,7 @@ final class shader{
 		glShaderSource(shdr,src);
 		glCompileShader(shdr);
 		if(glGetShaderi(shdr,GL_COMPILE_STATUS)==GL_FALSE)throw new Error("could not compile "+path+" due to: "+glGetShaderInfoLog(shdr,255));
-		return shdr;
+		glAttachShader(p,shdr);
+		if(glGetError()!=GL_NO_ERROR)throw new Error();
 	}
 }
