@@ -7,19 +7,19 @@ public class vbotumbloid extends vbo{
 	protected int nvertices(){return 4;}
 	protected void vertices(final FloatBuffer vb){
 		final float s=1;
-		vb.put(s).put(s).put(0).put(1);//xyzw
+		vb.put(s).put(s).put(0);//xyzw
 		vb.put(0).put(0).put(0).put(0);//rgba
 		vb.put(0).put(0);//st
 
-		vb.put(-s).put(s).put(0).put(1);//xyzw
+		vb.put(-s).put(s).put(0);//xyzw
 		vb.put(0).put(0).put(0).put(0);//rgba
 		vb.put(0).put(0);//st
 
-		vb.put(-s).put(-s).put(0).put(1);//xyzw
+		vb.put(-s).put(-s).put(0);//xyzw
 		vb.put(0).put(0).put(0).put(0);//rgba
 		vb.put(0).put(0);//st
 
-		vb.put(s).put(-s).put(0).put(1);//xyzw
+		vb.put(s).put(-s).put(0);//xyzw
 		vb.put(0).put(0).put(0).put(0);//rgba
 		vb.put(0).put(0);//st
 
