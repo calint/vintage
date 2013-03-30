@@ -34,6 +34,7 @@ public class obj{
 	protected float[]dagl=new float[]{0,0,0};
 	private mtx mxmw=new mtx().ident();
 //	private long mxmwfrm;
+//	private long mxmwfrmoch;//angle or position change at frame
 	
 	public obj(){
 		count++;
@@ -44,15 +45,15 @@ public class obj{
 		obj.dels.add(this);
 	}
 	final private void updmxmw(){
-		mxmw.setagltrans(agl,pos);
+		mxmw.setsclagltrans(scl,agl,pos);
 //		mxmwfrm=box.frm;
 	}
 	final void render()throws Throwable{
 //		GL11.glPushMatrix();
 		if(vbo!=null){
+//			glUniform3f(shader.uscl,scl[0],scl[1],scl[2]);
 			updmxmw();
 			glUniformMatrix4(shader.umxmw,false,mxmw.bf);
-			glUniform3f(shader.uscl,scl[0],scl[1],scl[2]);
 			vbo.render();
 		}
 //		GL11.glPopMatrix();
