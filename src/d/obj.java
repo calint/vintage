@@ -33,6 +33,7 @@ public class obj{
 	protected float[]agl=new float[]{0,0,0};
 	protected float[]dagl=new float[]{0,0,0};
 	private mtx mxmw=new mtx().ident();
+	private long mxmwfrm;
 	
 	public obj(){
 		count++;
@@ -44,7 +45,7 @@ public class obj{
 		obj.dels.add(this);
 	}
 //	final private boolean isdeleted(){return (bits&1)!=0;}
-	final private void updmxmw(){mxmw.setagltrans(agl,pos);}
+	final private void updmxmw(){mxmw.setagltrans(agl,pos);mxmwfrm=box.frm;}
 	final void render()throws Throwable{
 //		GL11.glPushMatrix();
 		if(vbo!=null){

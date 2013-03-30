@@ -16,7 +16,7 @@ import org.lwjgl.opengl.PixelFormat;
 final public class box{
 	public static void main(final String[]a)throws Throwable{load();loop();}
 	public interface app{vbo[]vbos()throws Throwable;}
-	private static app app;
+	private static obj app;
 	public static String appcls="d.app.wld";//application object
 	private static final Random random=new Random(0);
 	private static int wi=512+256,hi=512+256;
@@ -28,27 +28,22 @@ final public class box{
 	public/*readonly*/static float dt;//dtms in seconds
 	static private void load()throws Throwable{
 		final long t0=System.currentTimeMillis();
-		app=(app)Class.forName(appcls).newInstance();
+		app=(obj)Class.forName(appcls).newInstance();
 		// display
 		final PixelFormat pixelFormat=new PixelFormat();
 		final ContextAttribs contextAtrributes=new ContextAttribs(3,2).withProfileCore(true).withForwardCompatible(true);
 		Display.setDisplayMode(new DisplayMode(wi,hi));
 		Display.create(pixelFormat,contextAtrributes);
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
-
 		banner();
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
 		System.out.println();
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
-
-//		glGetError();//?
 		shader.load();
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
-
-		for(final vbo o:app.vbos())
+		for(final vbo o:((app)app).vbos())
 			o.load();
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
-		
 		final long dt=System.currentTimeMillis()-t0;
 		System.out.println();
 		System.out.println(box.class.getName()+" load, "+dt+" millis");
@@ -90,8 +85,8 @@ final public class box{
 		glEnable(GL_DEPTH_TEST);
 //		glPolygonMode(GL_FRONT_AND_BACK,GL_POINT);
 		while(!Display.isCloseRequested()){
-			frmi++;
 			frm++;
+			frmi++;
 			tms=System.currentTimeMillis();
 			dtms=tms-t;
 			dt=(float)(dtms/1000.);
