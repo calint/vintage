@@ -78,7 +78,7 @@ final public class box{
 		System.out.println(box.class.getName()+" loop, "+sdf.format(t0));
 		long t=t0;
 		int frmi=0;
-		final mtx umxproj=new mtx().ident();
+		final mtx mxwv=new mtx().ident();
 		glClearColor(.4f,.6f,.9f,0);
 		glFrontFace(GL_CCW);
 		glEnable(GL_CULL_FACE);
@@ -121,12 +121,12 @@ final public class box{
 			
 			if((keys&64)!=0)break;
 				
-			umxproj.ident();
+			mxwv.ident();
 			final obj cam=app;
-			umxproj.setsclagltrans(new float[]{1,1,1,1},new float[]{-cam.agl[0],-cam.agl[1],-cam.agl[2]},new float[]{-cam.pos[0],-cam.pos[1],-cam.pos[2]});
-			glUniformMatrix4(shader.umxwv,false,umxproj.bf);
+//			glUniform2f(shader.us,1,1);
+			mxwv.setsclagltrans(new float[]{1,wihiratio,1,1},new float[]{-cam.agl[0],-cam.agl[1],-cam.agl[2]},new float[]{-cam.pos[0],-cam.pos[1],-cam.pos[2]});
+			glUniformMatrix4(shader.umxwv,false,mxwv.bf);
 //			glUniform3f(shader.upos,0,0,0);
-			glUniform2f(shader.us,1,wihiratio);
 			obj.allupdaterender();
 			Display.update();
 		}
