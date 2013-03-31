@@ -11,7 +11,8 @@ public class plr extends obj{static final long serialVersionUID=1;
 	protected void update()throws Throwable{
 		super.update();
 				
-		scl[0]=scl[1]=.05f+(float)(.05*Math.sin(a));
+		final float d=.05f+(float)(.05*Math.sin(a));
+		scl.set(d,d,0);
 		a+=(Math.PI/4*box.dt);
 		
 		dpos(0,0,0);

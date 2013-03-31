@@ -12,12 +12,12 @@ final class mtx{
 		bf.flip();
 		return this;
 	}
-	public mtx setsclagltrans(final float[]s,final float[]a,final float[]p){
+	public mtx setsclagltrans(final p s,final float[]a,final float[]p){
 		final float sinz=(float)Math.sin(a[2]);
 		final float cosz=(float)Math.cos(a[2]);
-		final float sx=s[0];
-		final float sy=s[1];
-		final float sz=s[2];
+		final float sx=s.x;
+		final float sy=s.y;
+		final float sz=s.z;
 		bf.rewind();
 		bf.put(cosz*sx).put(-sinz*sx).put(   0).put(0);
 		bf.put(sinz*sy).put( cosz*sy).put(   0).put(0);
