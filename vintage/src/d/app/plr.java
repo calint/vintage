@@ -5,9 +5,9 @@ public class plr extends obj{static final long serialVersionUID=1;
 	{vbo(vboplr.o).scl(1,1,1);}
 	private long lastfire;
 	private double a=0;
-	public static float dagl=(float)Math.PI;
+	public static float dagl=(float)Math.PI*2;
 	public static float dpos=.5f;
-	public static int firerate=1;
+	public static int firerate=100;
 	protected void update()throws Throwable{
 		super.update();
 				

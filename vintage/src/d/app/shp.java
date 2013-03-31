@@ -6,7 +6,7 @@ public class shp extends obj{
 	{vbo(vboshp.o);}
 	public static float dagl=(float)Math.PI;
 	public static float dpos=.5f;
-	public static int firerate=1;
+	public static int firerate=0;
 	private long lastfire;
 	protected void update()throws Throwable{
 		super.update();
