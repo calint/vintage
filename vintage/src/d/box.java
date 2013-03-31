@@ -126,9 +126,9 @@ final public class box{
 			if((keys&64)!=0)break;
 				
 			mxwv.ident();
-			final obj cam=app;
+//			final obj cam=app;
 //			glUniform2f(shader.us,1,1);
-			mxwv.setsclagltrans(new p(1,wihiratio,1),new p(-cam.agl.x,-cam.agl.y,-cam.agl.z),new p(-cam.pos.x,-cam.pos.y,-cam.pos.z));
+			mxwv.setsclagltrans(new p(1,wihiratio,1),new p(-app.agl.x,-app.agl.y,-app.agl.z),new p(-app.pos.x,-app.pos.y,-app.pos.z));
 			glUniformMatrix4(shader.umxwv,false,mxwv.bf);
 //			glUniform3f(shader.upos,0,0,0);
 			obj.allupdaterender();
