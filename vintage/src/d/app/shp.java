@@ -48,7 +48,7 @@ public class shp extends obj{
 //		}
 	}
 	protected void oncol(final obj o)throws Throwable{
-		System.out.println("oncol:"+o.getClass().getName());
+//		System.out.println("oncol:"+o.getClass().getName());
 		if(o instanceof tumbloid){
 			radius+=.01f;
 			scl(radius,radius,radius);
