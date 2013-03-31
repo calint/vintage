@@ -85,13 +85,17 @@ public class vbo{
 		if(tx!=null){
 			glBindTexture(GL_TEXTURE_2D,tx.id);
 			glEnableVertexAttribArray(2);
+			glUniform1i(shader.utx,0);
 		}
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboi);
-		glUniform1i(shader.utx,0);
-		glDrawElements(GL_TRIANGLES,nindices,GL_UNSIGNED_BYTE,0);
-//		glDrawElements(GL_POINTS,nindices,GL_UNSIGNED_BYTE,0);
-		//. groupedbymaterial,textureunit,drawelementsrange
+		if(elemtype==0){
+			glDrawElements(GL_TRIANGLES,nindices,GL_UNSIGNED_BYTE,0);
+		}else if(elemtype==1){
+			glDrawElements(GL_TRIANGLE_FAN,nindices,GL_UNSIGNED_BYTE,0);
+//			glDrawElements(GL_POINTS,nindices,GL_UNSIGNED_BYTE,0);
+		}
 	}
+	protected int elemtype;
 	
 
 	protected int nvertices(){return 4;}

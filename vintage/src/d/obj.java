@@ -13,23 +13,14 @@ public class obj{
 	public/*readonly*/static long ms_allrender;
 	static void allupdaterender()throws Throwable{
 		final long t0=System.currentTimeMillis();
-//		obj.all.removeAll(obj.dels);
-		
 		grid.rem(obj.dels);
 		obj.dels.clear();
-		
-//		obj.all.addAll(obj.news);
-		
 		grid.put(news);
 		obj.news.clear();
 		final long t1=System.currentTimeMillis();
-		
 		grid.update();
-//		for(final obj o:obj.all)o.update();
 		final long t2=System.currentTimeMillis();
-		
 		grid.render();
-//		for(final obj o:obj.all)o.render();
 		final long t3=System.currentTimeMillis();
 		ms_allnewsdels=t1-t0;
 		ms_allupdate=t2-t1;
