@@ -99,8 +99,10 @@ final public class box{
 				fps=(int)(frmi*1000/tt);
 				t0=tms;
 				frmi=0;
-				Display.setTitle("fps:"+fps+",objs:"+obj.count+",upd:"+obj.ms_allupdate+",rend:"+obj.ms_allrender+",keys:"+keys);
+				Display.setTitle("fps:"+fps+",objs:"+obj.count+",upd:"+obj.ms_allupdate+",rend:"+obj.ms_allrender+",coldet:"+obj.ms_allcoldet+",niscol:"+mtrs.niscol+",cols:"+mtrs.niscolyes+",keys:"+keys);
+//				grid.bench();
 			}
+			mtrs.reset();
 			// viewport
 //			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
 			wi=Display.getWidth();
