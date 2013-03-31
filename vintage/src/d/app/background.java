@@ -38,7 +38,8 @@ public class background extends obj{
 	protected void update()throws Throwable{
 		super.update();
 		dpos(.01f,0,0);
-		scl[0]=scl[1]=(float)Math.sin(a)*64.f;
+		final float d=(float)Math.sin(a)*64.f;
+		scl.set(d,d,0);
 		a+=(Math.PI/64*box.dt);
 	}
 }
