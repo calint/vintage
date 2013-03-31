@@ -1,8 +1,7 @@
 package d.app;
 import d.box;
 import d.obj;
-public class plr extends obj{static final long serialVersionUID=1;
-	{vbo(vboplr.o).scl(1,1,1);}
+public class plr extends obj{{vbo(vboplr.o).radius(1).scl(1,1,1);colbitsmsk=2;}
 	private long lastfire;
 	private double a=0;
 	public static float dagl=(float)Math.PI*2;
@@ -12,13 +11,19 @@ public class plr extends obj{static final long serialVersionUID=1;
 		super.update();
 				
 		final float d=.05f+(float)(.05*Math.sin(a));
-		scl.set(d,d,0);
+		scl(d,d,0);
+		radius(d);
 		a+=(Math.PI/4*box.dt);
 		
 		dpos(0,0,0);
 		dagl(0,0,0);
 		if((box.keys&1)!=0){//w
 			incdpos(0,dpos,0);
+		}
+		if((box.keys&256)!=0){//q
+			incdagl(0,0,-dagl);
+		}
+		if((box.keys&512)!=0){//e
 			incdagl(0,0,dagl);
 		}
 		if((box.keys&2)!=0){//a
@@ -26,7 +31,6 @@ public class plr extends obj{static final long serialVersionUID=1;
 		}
 		if((box.keys&4)!=0){//s
 			incdpos(0,-dpos,0);
-			incdagl(0,0,-dagl);
 		}
 		if((box.keys&8)!=0){//d
 			incdpos(dpos,0,0);

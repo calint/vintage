@@ -27,7 +27,7 @@ final class grid{
 					continue;
 				final boolean yes=obj.isincol(o1,o2);
 				if(yes){
-					mtrs.niscolyes++;
+					mtrs.noncols++;
 					if(a1!=0){
 						o1.oncol(o2);
 					}
