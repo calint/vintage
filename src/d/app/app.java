@@ -1,5 +1,6 @@
 package d.app;
 import static d.box.rnd;
+import d.box;
 import d.obj;
 import d.vbo;
 public class app extends obj implements d.box.app{
@@ -42,15 +43,15 @@ public class app extends obj implements d.box.app{
 		dagl(0,0,.01f);
 	}
 	
-//	private long t0;
-//	public static int rainratems=100;
-//	protected void update() throws Throwable{
-//		super.update();
-//		if(box.tms-t0>rainratems){
-//			t0=box.tms;
-//			new blt().pos(1,box.rnd(-1,1),0).dpos(-1,0,0);
-//			if(box.rnd()<.05)
-//				new tumbloid().radius(.05f).scl(.05f,.05f,0).pos(box.rnd(-1,1),1,0).dpos(0,-.5f,0).dagl(0,0,box.rnd(0,3));
-//		}
-//	}
+	private long t0;
+	public static int rainratems=100;
+	protected void update() throws Throwable{
+		super.update();
+		if(box.tms-t0>rainratems){
+			t0=box.tms;
+			new blt().pos(1,box.rnd(-1,1),0).dpos(-1,0,0);
+			if(box.rnd()<.05)
+				new tumbloid().radius(.05f).scl(.05f,.05f,0).pos(box.rnd(-1,1),1,0).dpos(0,-.5f,0).dagl(0,0,box.rnd(0,3));
+		}
+	}
 }

@@ -99,7 +99,7 @@ final public class box{
 				fps=(int)(frmi*1000/tt);
 				t0=tms;
 				frmi=0;
-				Display.setTitle("fps:"+fps+",objs:"+obj.count+",upd:"+obj.ms_allupdate+",rend:"+obj.ms_allrender+",coldet:"+obj.ms_allcoldet+",niscol:"+mtrs.niscol+",cols:"+mtrs.niscolyes+",keys:"+keys);
+				Display.setTitle("fps:"+fps+",objs:"+obj.count+",upd:"+obj.ms_allupdate+",rend:"+obj.ms_allrender+",coldet:"+obj.ms_allcoldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",keys:"+keys);
 //				grid.bench();
 			}
 			mtrs.reset();
@@ -120,6 +120,8 @@ final public class box{
 			if(Keyboard.isKeyDown(Keyboard.KEY_K))keys|=32;
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))keys|=64;
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE))keys|=128;
+			if(Keyboard.isKeyDown(Keyboard.KEY_Q))keys|=256;
+			if(Keyboard.isKeyDown(Keyboard.KEY_E))keys|=512;
 			
 			if((keys&64)!=0)break;
 				
