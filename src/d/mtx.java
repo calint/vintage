@@ -12,7 +12,7 @@ final class mtx{
 		bf.flip();
 		return this;
 	}
-	public mtx setsclagltrans(final p s,final p a,final float[]p){
+	public mtx setsclagltrans(final p s,final p a,final p p){
 		final float sinz=(float)Math.sin(a.z);
 		final float cosz=(float)Math.cos(a.z);
 		final float sx=s.x;
@@ -22,7 +22,7 @@ final class mtx{
 		bf.put(cosz*sx).put(-sinz*sx).put(   0).put(0);
 		bf.put(sinz*sy).put( cosz*sy).put(   0).put(0);
 		bf.put(      0).put(       0).put(  sz).put(0);
-		bf.put(   p[0]).put(    p[1]).put(p[2]).put(1);
+		bf.put(    p.x).put(     p.y).put( p.z).put(1);
 		bf.flip();
 		return this;
 	}

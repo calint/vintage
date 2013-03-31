@@ -39,16 +39,25 @@ public class obj{
 //	private int bits;
 	protected vbo vbo;
 	protected long t0ms=box.tms;
-	protected float[]pos=new float[3];// x y z
-	protected float[]dpos=new float[3];// x y z
-	protected final p scl=new p(1,1,1);
-	protected final p agl=new p();
-	protected final p dagl=new p();
-	private mtx mxmw=new mtx().ident();
+	protected/*readonly*/final p pos=p.n();// x y z
+	protected/*readonly*/final p dpos=p.n();// x y z
+	protected/*readonly*/final p scl=p.n(1,1,1);
+	protected/*readonly*/final p agl=p.n();
+	protected/*readonly*/final p dagl=p.n();
+	protected/*readonly*/final mtx mxmw=new mtx().ident();
 	
 	//bounding volume
-	float r;
-	static boolean isincol(final obj o1,final obj o2){
+	protected float radius;public obj radius(final float r){this.radius=r;return this;}
+	final public static boolean isincol(final obj o1,final obj o2){
+		final float dr=o1.radius+o2.radius;
+		final float dr2=dr*dr;
+		final p p1=o1.pos.clone();
+		final p p2=o2.pos.clone();
+		final p dp=p2.add(p1.neg());
+		final float dist2=dp.dot(dp);
+//		System.out.println("isincol "+dist2+" < "+dr2+"   dp:"+dp+"   p1:"+p1+"   p2:"+p2);
+		if(dist2<dr2)
+			return true;
 		return false;
 	}
 //	polyh polyh;
@@ -95,14 +104,17 @@ public class obj{
 	final public obj vbo(final vbo v){this.vbo=v;return this;}
 	final public obj agl(final float x,final float y,final float z){agl.set(x,y,z);return this;}
 	final public obj scl(final float x,final float y,final float z){scl.set(x,y,z);return this;}
-	final public obj pos(final float x,final float y,final float z){pos[0]=x;pos[1]=y;pos[2]=z;return this;}
-	final public obj dpos(final float x,final float y,final float z){dpos[0]=x;dpos[1]=y;dpos[2]=z;return this;}
+	final public obj pos(final float x,final float y,final float z){pos.set(x,y,z);return this;}
+//	final public obj pos(final p p){pos.set(p);return this;}
+	final public obj dpos(final float x,final float y,final float z){dpos.set(x,y,z);return this;}
 	final public obj dagl(final float x,final float y,final float z){dagl.set(x,y,z);return this;}
-	final public obj incdpos(final float x,final float y,final float z){dpos[0]+=x;dpos[1]+=y;dpos[2]+=z;return this;}
+	final public obj incdpos(final float x,final float y,final float z){dpos.x+=x;dpos.y+=y;dpos.z+=z;return this;}
 	final public obj incdagl(final float x,final float y,final float z){dagl.x+=x;dagl.y+=y;dagl.z+=z;return this;}
 	protected void update()throws Throwable{
-		pos[0]+=dpos[0]*box.dt;pos[1]+=dpos[1]*box.dt;pos[2]+=dpos[2]*box.dt;
+//		pos[0]+=dpos[0]*box.dt;pos[1]+=dpos[1]*box.dt;pos[2]+=dpos[2]*box.dt;
+		pos.add(dpos,box.dt);
 		agl.add(dagl,box.dt);
 //		agl.x+=dagl.x*box.dt;agl.y+=dagl.y*box.dt;agl.z+=dagl.z*box.dt;
 	}
+	protected void oncol(final obj o)throws Throwable{}
 }

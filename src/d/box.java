@@ -6,6 +6,8 @@ import static org.lwjgl.opengl.GL20.*;
 //import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL32.*;
 import java.text.SimpleDateFormat;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Random;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
@@ -120,7 +122,7 @@ final public class box{
 			mxwv.ident();
 			final obj cam=app;
 //			glUniform2f(shader.us,1,1);
-			mxwv.setsclagltrans(new p(1,wihiratio,1),new p(-cam.agl.x,-cam.agl.y,-cam.agl.z),new float[]{-cam.pos[0],-cam.pos[1],-cam.pos[2]});
+			mxwv.setsclagltrans(new p(1,wihiratio,1),new p(-cam.agl.x,-cam.agl.y,-cam.agl.z),new p(-cam.pos.x,-cam.pos.y,-cam.pos.z));
 			glUniformMatrix4(shader.umxwv,false,mxwv.bf);
 //			glUniform3f(shader.upos,0,0,0);
 			obj.allupdaterender();
@@ -130,4 +132,14 @@ final public class box{
 	}
 	public static float rnd(){return random.nextFloat();}
 	public static float rnd(final float min,final float max){return min+(max-min)*random.nextFloat();}
+	static public Iterator<obj>q(){return grid.all.iterator();}
+	static public Iterator<obj>q(final Class<? extends obj>cls){
+		final LinkedList<obj>ls=new LinkedList<obj>();
+		for(final Iterator<obj>i=q();i.hasNext();){
+			final obj o=i.next();
+			if(o.getClass()==cls)
+				ls.add(o);				
+		}
+		return ls.iterator();
+	}
 }
