@@ -43,6 +43,7 @@ public class obj{
 	protected/*readonly*/final p agl=p.n();
 	protected/*readonly*/final p dagl=p.n();
 	protected/*readonly*/final mtx mxmw=new mtx().ident();
+	protected/*readonly*/final p posprv=p.n();// x y z
 	
 //	private final p prevpos=new p();
 	//bounding volume
@@ -105,13 +106,14 @@ public class obj{
 	final public obj agl(final float x,final float y,final float z){agl.set(x,y,z);return this;}
 	final public obj scl(final float x,final float y,final float z){scl.set(x,y,z);return this;}
 	final public obj pos(final float x,final float y,final float z){pos.set(x,y,z);return this;}
-//	final public obj pos(final p p){pos.set(p);return this;}
+	final public obj pos(final p p){pos.set(p);return this;}
 	final public obj dpos(final float x,final float y,final float z){dpos.set(x,y,z);return this;}
 	final public obj dagl(final float x,final float y,final float z){dagl.set(x,y,z);return this;}
 	final public obj incdpos(final float x,final float y,final float z){dpos.x+=x;dpos.y+=y;dpos.z+=z;return this;}
 	final public obj incdagl(final float x,final float y,final float z){dagl.x+=x;dagl.y+=y;dagl.z+=z;return this;}
 	protected void update()throws Throwable{
 //		pos[0]+=dpos[0]*box.dt;pos[1]+=dpos[1]*box.dt;pos[2]+=dpos[2]*box.dt;
+		posprv.set(pos);
 		pos.add(dpos,box.dt);
 		agl.add(dagl,box.dt);
 //		agl.x+=dagl.x*box.dt;agl.y+=dagl.y*box.dt;agl.z+=dagl.z*box.dt;
