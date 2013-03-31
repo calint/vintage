@@ -7,8 +7,8 @@ public class vboblt extends vbo{
 	protected int nvertices(){return 3;}
 	protected void vertices(final FloatBuffer vb){
 		final float w=1;
-		vb.put(-w).put(w).put(0);//xyzw
-		vb.put(1).put(1).put(1).put(1);//rgba
+		vb.put(0).put(w).put(0);//xyzw
+		vb.put(1).put(0).put(0).put(1);//rgba
 		vb.put(0).put(0);//st
 
 		vb.put(-w).put(-w).put(0);//xyzw

@@ -7,5 +7,5 @@ const vec4 transp=vec4(0,0,0,0);
 void main(){
 	vec4 txrgba=texture(utx,txcoord);
 	if(txrgba.rgba==transp)discard;//transparent pixel 
-	out_Color=(rgba+txrgba)/2;
+	out_Color=txrgba*rgba;
 }

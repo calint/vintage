@@ -8,11 +8,11 @@ public class vbotumbloid extends vbo{
 	protected void vertices(final FloatBuffer vb){
 		final float s=1;
 		vb.put(s).put(s).put(0);//xyzw
-		vb.put(0).put(0).put(0).put(0);//rgba
+		vb.put(1).put(1).put(1).put(1);//rgba
 		vb.put(1).put(1);//st
 
 		vb.put(-s).put(s).put(0);//xyzw
-		vb.put(0).put(0).put(0).put(0);//rgba
+		vb.put(1).put(1).put(1).put(1);//rgba
 		vb.put(0).put(1);//st
 
 		vb.put(-s).put(-s).put(0);//xyzw
