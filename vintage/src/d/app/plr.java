@@ -34,7 +34,7 @@ public class plr extends obj{static final long serialVersionUID=1;
 		if((box.keys&16)!=0){//j
 			if((box.tms-lastfire)>firerate){
 				lastfire=box.tms;
-				new blt().pos(pos[0],pos[1],pos[2]).dpos((float)Math.cos(agl.z+Math.PI/2),(float)-Math.sin(agl.z+Math.PI/2),0).agl(agl.x,agl.y,agl.z);
+				new blt().pos(pos.x,pos.y,pos.z).dpos((float)Math.cos(agl.z+Math.PI/2),(float)-Math.sin(agl.z+Math.PI/2),0).agl(agl.x,agl.y,agl.z);
 			}
 		}
 		if((box.keys&32)!=0){//k

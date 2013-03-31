@@ -1,8 +1,8 @@
 package d.app;
+import java.util.Iterator;
 import d.box;
 import d.obj;
 public class shp extends obj{
-	static final long serialVersionUID=1;
 	{vbo(vboshp.o);}
 	public static float dagl=(float)Math.PI;
 	public static float dpos=.5f;
@@ -30,9 +30,35 @@ public class shp extends obj{
 		if((box.keys&16)!=0){//j
 			if((box.tms-lastfire)>firerate){
 				lastfire=box.tms;
-				new blt().pos(pos[0],pos[1],pos[2]).dpos((float)Math.cos(agl.z-Math.PI/2),(float)-Math.sin(agl.z-Math.PI/2),0).agl(agl.x,agl.y,agl.z);
+				new blt().from(this).pos(pos.x,pos.y,pos.z).dpos((float)Math.cos(agl.z-Math.PI/2),(float)-Math.sin(agl.z-Math.PI/2),0).agl(agl.x,agl.y,agl.z);
 			}
 		}
+		
+		// coldet
+		for(final Iterator<obj>i=box.q(tumbloid.class);i.hasNext();){
+			final obj o=i.next();
+			if(!obj.isincol(this,o))
+				continue;
+			oncol(o);
+		}
+		for(final Iterator<obj>i=box.q(blt.class);i.hasNext();){
+			final obj o=i.next();
+			if(!obj.isincol(this,o))
+				continue;
+			oncol(o);
+		}
 	}
-
+	protected void oncol(final obj o)throws Throwable{
+		if(o instanceof tumbloid){
+			radius+=.01f;
+			scl(radius,radius,radius);
+			o.rm();
+		}else if(o instanceof blt){
+			if(((blt)o).from==this)
+				return;
+			radius-=.01f;
+			scl(radius,radius,radius);
+			o.rm();
+		}
+	}
 }

@@ -17,7 +17,7 @@ public class app extends obj implements d.box.app{
 	{
 		new background().pos(0,0,.5f);
 	
-		new shp().scl(.1f,.1f,0).pos(0,-.5f,0).dagl(0,0,.1f);
+		new shp().radius(.1f).scl(.1f,.1f,0).pos(0,-.5f,0).dagl(0,0,.1f);
 		
 		final float sprd=.2f;
 		for(int i=0;i<8;i++)
@@ -38,7 +38,7 @@ public class app extends obj implements d.box.app{
 //		dpos(0,.05f,0);
 		dagl(0,0,.01f);
 	}
-	public static int rainratems=10;
+	public static int rainratems=100;
 	private long t0;
 	protected void update() throws Throwable{
 		super.update();
@@ -48,8 +48,9 @@ public class app extends obj implements d.box.app{
 		if(box.tms-t0>rainratems){
 			t0=box.tms;
 			new blt().pos(1,box.rnd(-1,1),0).dpos(-1,0,0);
+//			new tumbloid().scl(.05f,.05f,0).pos(0,1,0).dpos(0,-.5f,0).dagl(0,0,1);
 			if(box.rnd()<.05)
-				new tumbloid().scl(.05f,.05f,0).pos(box.rnd(-1,1),1,0).dpos(0,-.5f,0).dagl(0,0,box.rnd(0,3));
+				new tumbloid().radius(.05f).scl(.05f,.05f,0).pos(box.rnd(-1,1),1,0).dpos(0,-.5f,0).dagl(0,0,box.rnd(0,3));
 		}
 	}
 }
