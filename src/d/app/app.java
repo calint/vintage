@@ -18,6 +18,7 @@ public class app extends obj implements d.box.app{
 	{
 		new background().pos(0,0,.5f);
 		new circlexy().radius(.2f).scl(.2f,.2f,.2f).pos(0,.5f,0).dagl(0,0,1).dpos(-.01f,0,0);
+		new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-.5f,.5f,0).dagl(0,0,1).dpos(.02f,0,0);
 	
 		new shp().radius(.1f).scl(.1f,.1f,0).pos(0,-.5f,0);
 		

@@ -94,7 +94,9 @@ final public class box{
 			t=tms;
 			dt=dtms/1000.f;
 			if(tms-t0>1000){
-				fps=(int)(frmi*1000/(tms-t0));
+				long tt=tms-t0;
+				if(tt==0)tt++;
+				fps=(int)(frmi*1000/tt);
 				t0=tms;
 				frmi=0;
 				Display.setTitle("fps:"+fps+",objs:"+obj.count+",upd:"+obj.ms_allupdate+",rend:"+obj.ms_allrender+",keys:"+keys);

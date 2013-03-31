@@ -4,7 +4,7 @@ import java.nio.FloatBuffer;
 import d.vbo;
 public class vbocrclexy extends vbo{
 	static final public vbocrclexy o=new vbocrclexy(); 
-	final static int circlepoints=64;
+	final static int circlepoints=12;
 	protected int nvertices(){return circlepoints+1;}
 	protected void vertices(final FloatBuffer vb){
 		final double da=Math.PI*2/circlepoints;
