@@ -11,6 +11,10 @@ public class obj{
 	public/*readonly*/static long ms_allnewsdels;
 	public/*readonly*/static long ms_allupdate;
 	public/*readonly*/static long ms_allrender;
+	public/*readonly*/static long ms_allcoldet;
+	//collision detection
+	protected int colbits;
+	public int colbitsmsk;
 	static void allupdaterender()throws Throwable{
 		final long t0=System.currentTimeMillis();
 		grid.rem(obj.dels);
@@ -22,9 +26,12 @@ public class obj{
 		final long t2=System.currentTimeMillis();
 		grid.render();
 		final long t3=System.currentTimeMillis();
+		grid.coldet();
+		final long t4=System.currentTimeMillis();		
 		ms_allnewsdels=t1-t0;
 		ms_allupdate=t2-t1;
 		ms_allrender=t3-t2;
+		ms_allcoldet=t4-t3;
 	}
 
 //	private int bits;
@@ -37,9 +44,11 @@ public class obj{
 	protected/*readonly*/final p dagl=p.n();
 	protected/*readonly*/final mtx mxmw=new mtx().ident();
 	
+//	private final p prevpos=new p();
 	//bounding volume
 	protected float radius;public obj radius(final float r){this.radius=r;return this;}
 	final public static boolean isincol(final obj o1,final obj o2){
+		mtrs.niscol++;
 		final float dr=o1.radius+o2.radius;
 		final float dr2=dr*dr;
 		final p p1=o1.pos.clone();

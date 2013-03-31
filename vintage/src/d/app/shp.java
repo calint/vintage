@@ -1,9 +1,8 @@
 package d.app;
-import java.util.Iterator;
 import d.box;
 import d.obj;
 public class shp extends obj{
-	{vbo(vboshp.o);}
+	{vbo(vboshp.o);colbitsmsk=2;colbits=1+2+4;}
 	public static float dagl=(float)Math.PI;
 	public static float dpos=.5f;
 	public static int firerate=0;
@@ -35,20 +34,21 @@ public class shp extends obj{
 		}
 		
 		// coldet
-		for(final Iterator<obj>i=box.q(tumbloid.class);i.hasNext();){
-			final obj o=i.next();
-			if(!obj.isincol(this,o))
-				continue;
-			oncol(o);
-		}
-		for(final Iterator<obj>i=box.q(blt.class);i.hasNext();){
-			final obj o=i.next();
-			if(!obj.isincol(this,o))
-				continue;
-			oncol(o);
-		}
+//		for(final Iterator<obj>i=box.q(tumbloid.class);i.hasNext();){
+//			final obj o=i.next();
+//			if(!obj.isincol(this,o))
+//				continue;
+//			oncol(o);
+//		}
+//		for(final Iterator<obj>i=box.q(blt.class);i.hasNext();){
+//			final obj o=i.next();
+//			if(!obj.isincol(this,o))
+//				continue;
+//			oncol(o);
+//		}
 	}
 	protected void oncol(final obj o)throws Throwable{
+		System.out.println("oncol:"+o.getClass().getName());
 		if(o instanceof tumbloid){
 			radius+=.01f;
 			scl(radius,radius,radius);
@@ -59,6 +59,9 @@ public class shp extends obj{
 			radius-=.01f;
 			scl(radius,radius,radius);
 			o.rm();
+		}
+		if(o.colbitsmsk==1){
+			
 		}
 	}
 }
