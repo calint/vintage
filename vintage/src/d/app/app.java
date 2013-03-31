@@ -29,7 +29,7 @@ public class app extends obj implements d.box.app{
 			new sqr().pos(rnd(-1,1),h,0).scl(w,h,1);
 		}
 		
-		new plr().pos(-.5f,0,0);
+//		new plr().pos(-.5f,0,0);
 		new sqr().pos(.75f,.4f,0).scl(.1f,.4f,1).agl(0,0,0);
 		new sqr().pos(.75f,.2f,0).scl(.1f,.2f,1).agl(0,0,0);
 		new tri().pos(-1,0,0);
