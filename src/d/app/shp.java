@@ -61,7 +61,8 @@ public class shp extends obj{
 			o.rm();
 		}
 		if(o.colbitsmsk==1){
-			
+			pos(posprv);
+			dpos(0,0,0);
 		}
 	}
 }
