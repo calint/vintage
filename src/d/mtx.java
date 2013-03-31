@@ -12,9 +12,9 @@ final class mtx{
 		bf.flip();
 		return this;
 	}
-	public mtx setsclagltrans(final p s,final float[]a,final float[]p){
-		final float sinz=(float)Math.sin(a[2]);
-		final float cosz=(float)Math.cos(a[2]);
+	public mtx setsclagltrans(final p s,final p a,final float[]p){
+		final float sinz=(float)Math.sin(a.z);
+		final float cosz=(float)Math.cos(a.z);
 		final float sx=s.x;
 		final float sy=s.y;
 		final float sz=s.z;

@@ -41,8 +41,8 @@ public class obj{
 	protected long t0ms=box.tms;
 	protected float[]pos=new float[3];// x y z
 	protected float[]dpos=new float[3];// x y z
-	protected p scl=new p(1,1,1);
-	protected float[]agl=new float[]{0,0,0};
+	protected final p scl=new p(1,1,1);
+	protected final p agl=new p();
 	protected float[]dagl=new float[]{0,0,0};
 	private mtx mxmw=new mtx().ident();
 	
@@ -93,7 +93,7 @@ public class obj{
 //		GL11.glPopMatrix();
 	}
 	final public obj vbo(final vbo v){this.vbo=v;return this;}
-	final public obj agl(final float x,final float y,final float z){agl[0]=x;agl[1]=y;agl[2]=z;return this;}
+	final public obj agl(final float x,final float y,final float z){agl.set(x,y,z);return this;}
 	final public obj scl(final float x,final float y,final float z){scl.set(x,y,z);return this;}
 	final public obj pos(final float x,final float y,final float z){pos[0]=x;pos[1]=y;pos[2]=z;return this;}
 	final public obj dpos(final float x,final float y,final float z){dpos[0]=x;dpos[1]=y;dpos[2]=z;return this;}
@@ -102,6 +102,6 @@ public class obj{
 	final public obj incdagl(final float x,final float y,final float z){dagl[0]+=x;dagl[1]+=y;dagl[2]+=z;return this;}
 	protected void update()throws Throwable{
 		pos[0]+=dpos[0]*box.dt;pos[1]+=dpos[1]*box.dt;pos[2]+=dpos[2]*box.dt;
-		agl[0]+=dagl[0]*box.dt;agl[1]+=dagl[1]*box.dt;agl[2]+=dagl[2]*box.dt;
+		agl.x+=dagl[0]*box.dt;agl.y+=dagl[1]*box.dt;agl.z+=dagl[2]*box.dt;
 	}
 }

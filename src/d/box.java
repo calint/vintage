@@ -120,7 +120,7 @@ final public class box{
 			mxwv.ident();
 			final obj cam=app;
 //			glUniform2f(shader.us,1,1);
-			mxwv.setsclagltrans(new p(1,wihiratio,1),new float[]{-cam.agl[0],-cam.agl[1],-cam.agl[2]},new float[]{-cam.pos[0],-cam.pos[1],-cam.pos[2]});
+			mxwv.setsclagltrans(new p(1,wihiratio,1),new p(-cam.agl.x,-cam.agl.y,-cam.agl.z),new float[]{-cam.pos[0],-cam.pos[1],-cam.pos[2]});
 			glUniformMatrix4(shader.umxwv,false,mxwv.bf);
 //			glUniform3f(shader.upos,0,0,0);
 			obj.allupdaterender();
