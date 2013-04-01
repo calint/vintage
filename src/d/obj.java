@@ -20,12 +20,14 @@ public class obj{
 	static final grids grids=new grids(2,p.n());
 	static void allupdaterender()throws Throwable{
 		final long t0=System.currentTimeMillis();
-		grid.rem(obj.dels);
+		d.grids.rem(obj.dels);
 		obj.dels.clear();
-		grid.put(news);
+		d.grids.put(news);
 		obj.news.clear();
 		grids.clear();
-		grids.addall(grid.all);
+		grids.ngrids=0;
+		grids.addall(d.grids.all);
+//		System.out.println("ngrids:"+(grids.ngrids+1));
 		final long t1=System.currentTimeMillis();
 		grids.update();
 		final long t2=System.currentTimeMillis();
@@ -39,7 +41,7 @@ public class obj{
 		ms_allcoldet=t4-t3;
 	}
 
-//	private int bits;
+	protected int bits;
 	protected vbo vbo;
 	protected long t0ms=box.tms;
 	protected/*readonly*/final p pos=p.n();// x y z
@@ -91,14 +93,21 @@ public class obj{
 		obj.news.add(this);
 	}
 	final public void rm(){
+		if((bits&1)!=0)
+			return;
 		count--;
 		obj.dels.add(this);
+		bits|=1;
 	}
 	final private void updmxmw(){
 		mxmw.setsclagltrans(scl,agl,pos);
 //		mxmwfrm=box.frm;
 	}
+	private long renderfrm;
 	final void render(){
+		if(renderfrm==box.frm)
+			return;
+		renderfrm=box.frm;
 //		GL11.glPushMatrix();
 		if(vbo!=null){
 			updmxmw();
@@ -117,6 +126,14 @@ public class obj{
 	final public obj dagl(final float x,final float y,final float z){dagl.set(x,y,z);return this;}
 	final public obj incdpos(final float x,final float y,final float z){dpos.x+=x;dpos.y+=y;dpos.z+=z;return this;}
 	final public obj incdagl(final float x,final float y,final float z){dagl.x+=x;dagl.y+=y;dagl.z+=z;return this;}
+	
+	private long updfrm;
+	void upd()throws Throwable{
+		if(updfrm==box.frm)
+			return;
+		updfrm=box.frm;
+		update();
+	}
 	protected void update()throws Throwable{
 //		pos[0]+=dpos[0]*box.dt;pos[1]+=dpos[1]*box.dt;pos[2]+=dpos[2]*box.dt;
 		posprv.set(pos);

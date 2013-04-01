@@ -16,7 +16,7 @@ public class app extends obj implements d.box.app{
 			vbocrclexy.o
 	};}
 	{
-		new background().pos(0,0,.5f);
+//		new background().pos(0,0,.5f);
 		new circlexy().radius(.2f).scl(.2f,.2f,.2f).pos(0,.5f,0).dagl(0,0,1).dpos(-.01f,0,0);
 		new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-.5f,.5f,0).dagl(0,0,1).dpos(.02f,0,0);
 	
@@ -25,7 +25,6 @@ public class app extends obj implements d.box.app{
 		final float sprd=.1f;
 		for(int i=0;i<16;i++)
 			new plr().radius(.02f).scl(.02f,.02f,.02f).pos(rnd(-sprd,sprd),rnd(-sprd,sprd),0);
-
 		final int nstructs=32;
 		for(int i=0;i<nstructs;i++){
 			final float h=rnd(0,.2f);
@@ -44,12 +43,14 @@ public class app extends obj implements d.box.app{
 	}
 	
 	private long t0;
-	public static int rainratems=100;
+	public static int rainratems=10;
+	public static int nrainitems=10;
 	protected void update() throws Throwable{
 		super.update();
 		if(box.tms-t0>rainratems){
 			t0=box.tms;
-			new blt().pos(1,box.rnd(-1,1),0).dpos(-1,0,0);
+			for(int i=0;i<nrainitems;i++)
+				new blt().pos(1,box.rnd(-1,1),0).dpos(-1,0,0);
 			if(box.rnd()<.05)
 				new tumbloid().radius(.05f).scl(.05f,.05f,0).pos(box.rnd(-1,1),1,0).dpos(0,-.5f,0).dagl(0,0,box.rnd(0,3));
 		}
