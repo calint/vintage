@@ -9,6 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.ContextAttribs;
@@ -28,6 +31,8 @@ final public class box{
 	public/*readonly*/static long tms;//time in millis
 	public/*readonly*/static long dtms;//last frame time in millis
 	public/*readonly*/static float dt;//dtms in seconds
+	static final int nthreads=2;
+	static final ExecutorService thdpool=Executors.newFixedThreadPool(nthreads);
 	static private void load()throws Throwable{
 		final long t0=System.currentTimeMillis();
 		app=(obj)Class.forName(appcls).newInstance();
@@ -39,6 +44,7 @@ final public class box{
 		banner();
 		System.out.println();
 		shader.load();
+		vbo.o.load();
 		for(final vbo o:((app)app).vbos())
 			o.load();
 //		glShadeModel(GL_FLAT);
@@ -100,10 +106,10 @@ final public class box{
 				fps=(int)(frmi*1000/tt);
 				t0=tms;
 				frmi=0;
-				Display.setTitle("fps:"+fps+",objs:"+obj.count+",upd:"+obj.ms_allupdate+",rend:"+obj.ms_allrender+",coldet:"+obj.ms_allcoldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
+				Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grdrfh:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",coldet:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
 //				grid.bench();
 			}
-			mtrs.reset();
+			mtrs.framereset();
 			// viewport
 //			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
 			wi=Display.getWidth();
@@ -127,19 +133,20 @@ final public class box{
 			if((keys&64)!=0)break;
 				
 			mxwv.ident();
-//			final obj cam=app;
-//			glUniform2f(shader.us,1,1);
-			mxwv.setsclagltrans(new p(1,wihiratio,1),new p(-app.agl.x,-app.agl.y,-app.agl.z),new p(-app.pos.x,-app.pos.y,-app.pos.z));
+			mxwv.setsclagltrans(new p(1.f*.8f,wihiratio*.8f,1),new p(-app.agl.x,-app.agl.y,-app.agl.z),new p(-app.pos.x,-app.pos.y,-app.pos.z));
 			glUniformMatrix4(shader.umxwv,false,mxwv.bf);
-//			glUniform3f(shader.upos,0,0,0);
-			obj.allupdaterender();
+			grid.updaterender();
 			Display.update();
+		}
+		box.thdpool.shutdown();
+		if(!box.thdpool.awaitTermination(1,TimeUnit.SECONDS)){
+			System.out.println("... timedout");
 		}
 		//? cleanupskippeddueto
 	}
 	public static float rnd(){return random.nextFloat();}
 	public static float rnd(final float min,final float max){return min+(max-min)*random.nextFloat();}
-	static public Iterator<obj>q(){return grid.all.iterator();}
+	static public Iterator<obj>q(){return grid.objs.iterator();}
 	static public Iterator<obj>q(final Class<? extends obj>cls){
 		final LinkedList<obj>ls=new LinkedList<obj>();
 		for(final Iterator<obj>i=q();i.hasNext();){
