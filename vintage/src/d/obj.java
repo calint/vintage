@@ -2,6 +2,7 @@ package d;
 import static org.lwjgl.opengl.GL20.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import d.app.vbocrclexy;
 public class obj{
 	static final long serialVersionUID=1;
 	public/*readonly*/static int count;
@@ -99,6 +100,7 @@ public class obj{
 			updmxmw();
 			glUniformMatrix4(shader.umxmw,false,mxmw.bf);
 			vbo.render();
+			vbocrclexy.o.render();
 		}
 //		GL11.glPopMatrix();
 	}
