@@ -126,10 +126,10 @@ final class grid{
 			final long t3=System.currentTimeMillis();
 			o.coldet();
 			final long t4=System.currentTimeMillis();		
-			mtrs.ms_gridupd=t1-t0;
-			mtrs.ms_render=t2-t1;
-			mtrs.ms_update=t3-t2;
-			mtrs.ms_coldet=t4-t3;
+			box.mtrs.ms_gridupd=t1-t0;
+			box.mtrs.ms_render=t2-t1;
+			box.mtrs.ms_update=t3-t2;
+			box.mtrs.ms_coldet=t4-t3;
 		}
 	private static void put(final Collection<obj>col){objs.addAll(col);}
 	private static void rem(final Collection<obj>col){objs.removeAll(col);}
@@ -146,7 +146,7 @@ final class grid{
 					continue;
 				final boolean yes=obj.isincol(o1,o2);
 				if(yes){
-					mtrs.noncols++;
+					box.mtrs.noncols++;
 					if(a1!=0){
 						o1.oncol(o2);
 					}

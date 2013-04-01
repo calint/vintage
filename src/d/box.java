@@ -19,6 +19,17 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.PixelFormat;
 final public class box{
+	static final class mtrs{
+		public/*readonly*/static int niscol; 
+		public/*readonly*/static int noncols;
+		public/*readonly*/static int ngrids; 
+		public/*readonly*/static long ms_gridupd;
+		public/*readonly*/static long ms_render;
+		public/*readonly*/static long ms_update;
+		public/*readonly*/static long ms_coldet;
+		public/*readonly*/static int nobjs;
+		static void framereset(){niscol=noncols=ngrids=0;}
+	}
 	public static void main(final String[]a)throws Throwable{load();loop();}
 	public interface app{vbo[]vbos()throws Throwable;}
 	private static obj app;
@@ -106,9 +117,10 @@ final public class box{
 				fps=(int)(frmi*1000/tt);
 				t0=tms;
 				frmi=0;
-				Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grdrfh:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",coldet:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
+				Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grd:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",fsx:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
 //				grid.bench();
 			}
+//			Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grdrfh:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",coldet:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
 			mtrs.framereset();
 			// viewport
 //			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
