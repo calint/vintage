@@ -100,7 +100,7 @@ final public class box{
 				fps=(int)(frmi*1000/tt);
 				t0=tms;
 				frmi=0;
-				Display.setTitle("fps:"+fps+",objs:"+obj.count+",upd:"+obj.ms_allupdate+",rend:"+obj.ms_allrender+",coldet:"+obj.ms_allcoldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grids.ngrids+1)+",keys:"+keys);
+				Display.setTitle("fps:"+fps+",objs:"+obj.count+",upd:"+obj.ms_allupdate+",rend:"+obj.ms_allrender+",coldet:"+obj.ms_allcoldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
 //				grid.bench();
 			}
 			mtrs.reset();
@@ -139,7 +139,7 @@ final public class box{
 	}
 	public static float rnd(){return random.nextFloat();}
 	public static float rnd(final float min,final float max){return min+(max-min)*random.nextFloat();}
-	static public Iterator<obj>q(){return grids.all.iterator();}
+	static public Iterator<obj>q(){return grid.all.iterator();}
 	static public Iterator<obj>q(final Class<? extends obj>cls){
 		final LinkedList<obj>ls=new LinkedList<obj>();
 		for(final Iterator<obj>i=q();i.hasNext();){

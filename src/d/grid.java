@@ -5,31 +5,31 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-final class grids{
+final class grid{
 		static int splitthresh=20;
 		static int subgridlevels=4;
 		static int ngrids;
 		final p po;
 		final float s;
 		final List<obj>ls=new ArrayList<obj>();
-		final grids[]grids=new grids[8];
+		final grid[]grids=new grid[8];
 		protected final int bit_bullet=4;
 		protected final int bit_struct=1;
 		protected final int bit_vehicle=2;
 		final static List<obj>all=new LinkedList<obj>();
-		grids(final float size,final p po){this.po=po;this.s=size;ngrids++;}
+		grid(final float size,final p po){this.po=po;this.s=size;ngrids++;}
 		void render()throws Throwable{
 			//if not in or intersecting viewpyr return
 			
 			for(final obj o:ls)o.render();
 			if(grids[0]!=null)
-				for(final grids g:grids)
+				for(final grid g:grids)
 					g.render();
 		}
 		void clear(){
 			ls.clear();
 			if(grids[0]!=null){
-				for(final grids c:grids)
+				for(final grid c:grids)
 					c.clear();
 				for(int i=0;i<grids.length;i++)
 					grids[i]=null;
@@ -61,17 +61,17 @@ final class grids{
 			if(nrec==0)
 				return false;
 			final float ns=s/2;
-			grids[0]=new grids(ns,po.clone().add(-ns,ns,-ns));
-			grids[1]=new grids(ns,po.clone().add( ns,ns,-ns));
-			grids[2]=new grids(ns,po.clone().add(-ns,ns, ns));
-			grids[3]=new grids(ns,po.clone().add( ns,ns, ns));
+			grids[0]=new grid(ns,po.clone().add(-ns,ns,-ns));
+			grids[1]=new grid(ns,po.clone().add( ns,ns,-ns));
+			grids[2]=new grid(ns,po.clone().add(-ns,ns, ns));
+			grids[3]=new grid(ns,po.clone().add( ns,ns, ns));
 
-			grids[4]=new grids(ns,po.clone().add(-ns,-ns,-ns));
-			grids[5]=new grids(ns,po.clone().add( ns,-ns,-ns));
-			grids[6]=new grids(ns,po.clone().add(-ns,-ns, ns));
-			grids[7]=new grids(ns,po.clone().add( ns,-ns, ns));
+			grids[4]=new grid(ns,po.clone().add(-ns,-ns,-ns));
+			grids[5]=new grid(ns,po.clone().add( ns,-ns,-ns));
+			grids[6]=new grid(ns,po.clone().add(-ns,-ns, ns));
+			grids[7]=new grid(ns,po.clone().add( ns,-ns, ns));
 		
-			for(final grids c:grids){
+			for(final grid c:grids){
 				for(final obj o:ls){
 					c.putif(o,o.pos,o.radius);
 				}
@@ -83,13 +83,13 @@ final class grids{
 		void coldet()throws Throwable{
 			coldet(ls);
 			if(grids[0]!=null)
-				for(final grids c:grids)
+				for(final grid c:grids)
 					c.coldet();
 		}
 		void update()throws Throwable{
 			for(final obj o:ls)o.upd();
 			if(grids[0]!=null)
-				for(final grids c:grids)
+				for(final grid c:grids)
 					c.update();
 		}
 		
