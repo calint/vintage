@@ -16,23 +16,23 @@ public class obj{
 	protected int colbits;
 	public int colbitsmsk;
 	
-	static final grid grids=new grid(1,p.n(0,0,.5f));
+	private static final grid grid=new grid(1,p.n(0,0,.5f));
 	static void allupdaterender()throws Throwable{
 		final long t0=System.currentTimeMillis();
 		d.grid.rem(obj.dels);
 		obj.dels.clear();
 		d.grid.put(news);
 		obj.news.clear();
-		grids.clear();
-		grids.ngrids=0;
-		grids.addall(d.grid.all);
+		grid.clear();
+		d.grid.ngrids=0;
+		grid.addall(d.grid.all);
 //		System.out.println("ngrids:"+(grids.ngrids+1));
 		final long t1=System.currentTimeMillis();
-		grids.update();
+		grid.update();
 		final long t2=System.currentTimeMillis();
-		grids.render();
+		grid.render();
 		final long t3=System.currentTimeMillis();
-		grids.coldet();
+		grid.coldet();
 		final long t4=System.currentTimeMillis();		
 		ms_gridupd=t1-t0;
 		ms_allupdate=t2-t1;
