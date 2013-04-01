@@ -21,7 +21,7 @@ public class obj{
 	//bounding volume
 	protected float radius;public obj radius(final float r){this.radius=r;return this;}
 	final public static boolean isincol(final obj o1,final obj o2){
-		mtrs.niscol++;
+		box.mtrs.niscol++;
 		final float dr=o1.radius+o2.radius;
 		final float dr2=dr*dr;
 		final p p1=o1.pos.clone();
@@ -54,13 +54,13 @@ public class obj{
 //	private long mxmwfrmoch;//angle or position change at frame
 	
 	public obj(){
-		mtrs.nobjs++;
+		box.mtrs.nobjs++;
 		grid.news.add(this);
 	}
 	final public void rm(){
 		if((bits&1)!=0)
 			return;
-		mtrs.nobjs--;
+		box.mtrs.nobjs--;
 		grid.dels.add(this);
 		bits|=1;
 	}
