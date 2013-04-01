@@ -6,16 +6,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 final class grids{
-		static int splitthresh=100;
-		static int subgridlevels=3;
+		static int splitthresh=20;
+		static int subgridlevels=4;
 		static int ngrids;
 		final p po;
 		final float s;
 		final List<obj>ls=new ArrayList<obj>();
 		final grids[]grids=new grids[8];
-		protected final int colbit_bullet=4;
-		protected final int colbit_struct=1;
-		protected final int colbit_vehicle=2;
+		protected final int bit_bullet=4;
+		protected final int bit_struct=1;
+		protected final int bit_vehicle=2;
 		final static List<obj>all=new LinkedList<obj>();
 		grids(final float size,final p po){this.po=po;this.s=size;ngrids++;}
 		void render()throws Throwable{

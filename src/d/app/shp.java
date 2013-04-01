@@ -57,6 +57,8 @@ public class shp extends obj{
 			if(((blt)o).from==this)
 				return;
 			radius-=.01f;
+			if(radius<.01f)
+				radius=.01f;
 			scl(radius,radius,radius);
 			o.rm();
 		}
