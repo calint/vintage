@@ -25,9 +25,11 @@ public class vbocrclexy extends vbo{
 			a+=da;
 		}
 	}
-	protected int nindices(){return circlepoints+1;}
+	protected int nindices(){return circlepoints+2;}
 	protected void indices(final ByteBuffer ib){
-		for(int i=0;i<circlepoints;i++)ib.put((byte)i);ib.put((byte)1);
+		ib.put((byte)0);
+		for(int i=1;i<=circlepoints;i++)ib.put((byte)i);
+		ib.put((byte)1);
 	}
-	protected String imgpath(){return "logo.jpg";}
+//	protected String imgpath(){return "logo.jpg";}
 }

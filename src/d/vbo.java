@@ -78,7 +78,7 @@ public class vbo{
 		}
 		System.out.println();
 	}
-	final void render()throws Throwable{
+	public final void render()throws Throwable{
 		glBindVertexArray(vao);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
@@ -89,10 +89,16 @@ public class vbo{
 		}
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboi);
 		if(elemtype==0){
+			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+//			glPolygonOffset(0,0);
 			glDrawElements(GL_TRIANGLES,nindices,GL_UNSIGNED_BYTE,0);
 		}else if(elemtype==1){
+			glDisable(GL_DEPTH_TEST);
+			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+//			glPolygonOffset(1,1);
 			glDrawElements(GL_TRIANGLE_FAN,nindices,GL_UNSIGNED_BYTE,0);
 //			glDrawElements(GL_POINTS,nindices,GL_UNSIGNED_BYTE,0);
+			glEnable(GL_DEPTH_TEST);
 		}
 	}
 	protected int elemtype;

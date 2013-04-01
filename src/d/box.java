@@ -41,6 +41,7 @@ final public class box{
 		shader.load();
 		for(final vbo o:((app)app).vbos())
 			o.load();
+//		glShadeModel(GL_FLAT);
 		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		final long dt=System.currentTimeMillis()-t0;
 		System.out.println();
