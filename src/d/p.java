@@ -16,4 +16,5 @@ public final class p implements Serializable,Cloneable{
 	public p clone(){return new p(x,y,z);}
 	public p neg(){x=-x;y=-y;z=-z;return this;}
 	public float dot(final p p){return x*p.x+y*p.y+z*p.z;}
+	public p add(final float x,final float y,final float z){this.x+=x;this.y+=y;this.z+=z;return this;}
 }

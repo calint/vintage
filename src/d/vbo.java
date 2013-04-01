@@ -78,7 +78,7 @@ public class vbo{
 		}
 		System.out.println();
 	}
-	public final void render()throws Throwable{
+	public final void render(){
 		glBindVertexArray(vao);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);

@@ -9,27 +9,31 @@ public class obj{
 //	private static Collection<obj>all=new ArrayList<obj>();
 	private static Collection<obj>dels=new ArrayList<obj>();
 	private static Collection<obj>news=new ArrayList<obj>();
-	public/*readonly*/static long ms_allnewsdels;
+	public/*readonly*/static long ms_gridupd;
 	public/*readonly*/static long ms_allupdate;
 	public/*readonly*/static long ms_allrender;
 	public/*readonly*/static long ms_allcoldet;
 	//collision detection
 	protected int colbits;
 	public int colbitsmsk;
+	
+	static final grids grids=new grids(2,p.n());
 	static void allupdaterender()throws Throwable{
 		final long t0=System.currentTimeMillis();
 		grid.rem(obj.dels);
 		obj.dels.clear();
 		grid.put(news);
 		obj.news.clear();
+		grids.clear();
+		grids.addall(grid.all);
 		final long t1=System.currentTimeMillis();
-		grid.update();
+		grids.update();
 		final long t2=System.currentTimeMillis();
-		grid.render();
+		grids.render();
 		final long t3=System.currentTimeMillis();
-		grid.coldet();
+		grids.coldet();
 		final long t4=System.currentTimeMillis();		
-		ms_allnewsdels=t1-t0;
+		ms_gridupd=t1-t0;
 		ms_allupdate=t2-t1;
 		ms_allrender=t3-t2;
 		ms_allcoldet=t4-t3;
@@ -94,7 +98,7 @@ public class obj{
 		mxmw.setsclagltrans(scl,agl,pos);
 //		mxmwfrm=box.frm;
 	}
-	final void render()throws Throwable{
+	final void render(){
 //		GL11.glPushMatrix();
 		if(vbo!=null){
 			updmxmw();

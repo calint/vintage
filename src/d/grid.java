@@ -1,6 +1,5 @@
 package d;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 final class grid{
@@ -15,8 +14,10 @@ final class grid{
 	static void rem(final Collection<obj>col){all.removeAll(col);}
 	static void update()throws Throwable{for(final obj o:all)o.update();}
 	static void render()throws Throwable{for(final obj o:all)o.render();}
-	static void coldet()throws Throwable{
+	static void coldet()throws Throwable{coldet(all);}
+	static void coldet(final List<obj>all)throws Throwable{
 		final int n=all.size();
+		if(n<2)return;
 		for(int i=0;i<n-1;i++){
 			for(int j=i+1;j<n;j++){
 				final obj o1=all.get(i);
@@ -36,20 +37,19 @@ final class grid{
 					}
 				}
 			}
-		}
-		
+		}	
 	}
-	static long benchniter=1024;
-	static void bench(){
-		final long t0=System.nanoTime();
-		for(long j=0;j<benchniter;j++){
-			for(Iterator<obj>i=all.iterator();i.hasNext();){
-				final obj o=i.next();
-				o.pos.x=o.pos.x;
-			}			
-		}
-		final long t1=System.nanoTime();
-		final long dt=t1-t0;
-		System.out.println(" grid bench iter "+dt+" ns");
-	}
+//	static long benchniter=1024;
+//	static void bench(){
+//		final long t0=System.nanoTime();
+//		for(long j=0;j<benchniter;j++){
+//			for(Iterator<obj>i=all.iterator();i.hasNext();){
+//				final obj o=i.next();
+//				o.pos.x=o.pos.x;
+//			}			
+//		}
+//		final long t1=System.nanoTime();
+//		final long dt=t1-t0;
+//		System.out.println(" grid bench iter "+dt+" ns");
+//	}
 }
