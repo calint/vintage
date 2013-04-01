@@ -1,45 +1,11 @@
 package d;
 import static org.lwjgl.opengl.GL20.*;
-import java.util.ArrayList;
-import java.util.Collection;
 public class obj{
 	static final long serialVersionUID=1;
-	public/*readonly*/static int count;
-//	private static Collection<obj>all=new ArrayList<obj>();
-	private static Collection<obj>dels=new ArrayList<obj>();
-	private static Collection<obj>news=new ArrayList<obj>();
-	public/*readonly*/static long ms_gridupd;
-	public/*readonly*/static long ms_allupdate;
-	public/*readonly*/static long ms_allrender;
-	public/*readonly*/static long ms_allcoldet;
 	//collision detection
 	protected int colbits;
 	public int colbitsmsk;
-	
-	private static final grid grid=new grid(1,p.n(0,0,.5f));
-	static void allupdaterender()throws Throwable{
-		final long t0=System.currentTimeMillis();
-		d.grid.rem(obj.dels);
-		obj.dels.clear();
-		d.grid.put(news);
-		obj.news.clear();
-		grid.clear();
-		d.grid.ngrids=0;
-		grid.addall(d.grid.all);
-//		System.out.println("ngrids:"+(grids.ngrids+1));
-		final long t1=System.currentTimeMillis();
-		grid.update();
-		final long t2=System.currentTimeMillis();
-		grid.render();
-		final long t3=System.currentTimeMillis();
-		grid.coldet();
-		final long t4=System.currentTimeMillis();		
-		ms_gridupd=t1-t0;
-		ms_allupdate=t2-t1;
-		ms_allrender=t3-t2;
-		ms_allcoldet=t4-t3;
-	}
-
+	//
 	protected int bits;
 	protected vbo vbo;
 	protected long t0ms=box.tms;
@@ -88,14 +54,14 @@ public class obj{
 //	private long mxmwfrmoch;//angle or position change at frame
 	
 	public obj(){
-		count++;
-		obj.news.add(this);
+		mtrs.nobjs++;
+		grid.news.add(this);
 	}
 	final public void rm(){
 		if((bits&1)!=0)
 			return;
-		count--;
-		obj.dels.add(this);
+		mtrs.nobjs--;
+		grid.dels.add(this);
 		bits|=1;
 	}
 	final private void updmxmw(){
@@ -112,8 +78,10 @@ public class obj{
 			updmxmw();
 			glUniformMatrix4(shader.umxmw,false,mxmw.bf);
 			vbo.render();
-//			vbocrclexy.o.render();
 		}
+//		vbo.o.elemtype=2;
+//		vbo.o.render();
+//		vbo.o.elemtype=1;
 //		GL11.glPopMatrix();
 	}
 	final public obj vbo(final vbo v){this.vbo=v;return this;}

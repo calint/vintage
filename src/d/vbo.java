@@ -1,20 +1,10 @@
 package d;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL12.GL_BGRA;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.glActiveTexture;
-import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
-import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
-import static org.lwjgl.opengl.GL15.glBindBuffer;
-import static org.lwjgl.opengl.GL15.glBufferData;
-import static org.lwjgl.opengl.GL15.glGenBuffers;
-import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
-import static org.lwjgl.opengl.GL20.glUniform1i;
-import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL30.glGenVertexArrays;
-import static org.lwjgl.opengl.GL30.glGenerateMipmap;
+import static org.lwjgl.opengl.GL12.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL30.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.ByteBuffer;
@@ -22,6 +12,7 @@ import java.nio.FloatBuffer;
 import javax.imageio.ImageIO;
 import org.lwjgl.BufferUtils;
 public class vbo{
+	public final static vbo o=new vbo();
 	private int vao;// vertex array object
 	private int vbo;// vertex buffer object
 	private int vboi;// indices buffer object
@@ -93,12 +84,11 @@ public class vbo{
 //			glPolygonOffset(0,0);
 			glDrawElements(GL_TRIANGLES,nindices,GL_UNSIGNED_BYTE,0);
 		}else if(elemtype==1){
-//			glDisable(GL_DEPTH_TEST);
-//			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-//			glPolygonOffset(1,1);
 			glDrawElements(GL_TRIANGLE_FAN,nindices,GL_UNSIGNED_BYTE,0);
-//			glDrawElements(GL_POINTS,nindices,GL_UNSIGNED_BYTE,0);
-//			glEnable(GL_DEPTH_TEST);
+		}else if(elemtype==2){
+			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+			glDrawElements(GL_TRIANGLES,nindices,GL_UNSIGNED_BYTE,0);
+			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);	
 		}
 	}
 	protected int elemtype;
