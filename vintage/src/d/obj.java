@@ -2,7 +2,6 @@ package d;
 import static org.lwjgl.opengl.GL20.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import d.app.vbocrclexy;
 public class obj{
 	static final long serialVersionUID=1;
 	public/*readonly*/static int count;
@@ -17,7 +16,7 @@ public class obj{
 	protected int colbits;
 	public int colbitsmsk;
 	
-	static final grids grids=new grids(2,p.n());
+	static final grids grids=new grids(1,p.n(0,0,.5f));
 	static void allupdaterender()throws Throwable{
 		final long t0=System.currentTimeMillis();
 		d.grids.rem(obj.dels);
@@ -113,7 +112,7 @@ public class obj{
 			updmxmw();
 			glUniformMatrix4(shader.umxmw,false,mxmw.bf);
 			vbo.render();
-			vbocrclexy.o.render();
+//			vbocrclexy.o.render();
 		}
 //		GL11.glPopMatrix();
 	}

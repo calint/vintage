@@ -16,7 +16,7 @@ public class app extends obj implements d.box.app{
 			vbocrclexy.o
 	};}
 	{
-//		new background().pos(0,0,.5f);
+		new background().pos(0,0,.9f);
 		new circlexy().radius(.2f).scl(.2f,.2f,.2f).pos(0,.5f,0).dagl(0,0,1).dpos(-.01f,0,0);
 		new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-.5f,.5f,0).dagl(0,0,1).dpos(.02f,0,0);
 	
@@ -44,7 +44,7 @@ public class app extends obj implements d.box.app{
 	
 	private long t0;
 	public static int rainratems=10;
-	public static int nrainitems=10;
+	public static int nrainitems=20;
 	protected void update() throws Throwable{
 		super.update();
 		if(box.tms-t0>rainratems){
