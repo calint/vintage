@@ -11,6 +11,8 @@ public class blt extends obj{static final long serialVersionUID=1;
 			rm();
 	}
 	protected void oncol(final obj o)throws Throwable{
+		if((bits&1)!=0)
+			return;
 		if((o.colbitsmsk&1)==0)
 			return;
 		rm();
