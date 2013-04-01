@@ -2,5 +2,6 @@ package d;
 final class mtrs{
 	static int niscol; 
 	static int noncols;
-	static void reset(){niscol=noncols=0;}
+	static int ngrids; 
+	static void reset(){niscol=noncols=ngrids=0;}
 }
