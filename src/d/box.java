@@ -158,6 +158,7 @@ final public class box{
 	}
 	public static float rnd(){return random.nextFloat();}
 	public static float rnd(final float min,final float max){return min+(max-min)*random.nextFloat();}
+	public static float rnd(final double min,final double max){return (float)(min+(max-min)*random.nextDouble());}
 	static public Iterator<obj>q(){return grid.objs.iterator();}
 	static public Iterator<obj>q(final Class<? extends obj>cls){
 		final LinkedList<obj>ls=new LinkedList<obj>();
