@@ -13,18 +13,16 @@ public class shp extends obj{
 		dagl(0,0,0);
 		
 		if((box.keys&1)!=0){//w
-			incdpos(0,dpos,0);
-//			incdagl(0,0,dagl);
+			incdpos(0,-dpos,0);
 		}
 		if((box.keys&2)!=0){//a
-			incdpos(-dpos,0,0);
+			incdpos(dpos,0,0);
 		}
 		if((box.keys&4)!=0){//s
-			incdpos(0,-dpos,0);
-//			incdagl(0,0,-dagl);
+			incdpos(0,dpos,0);
 		}
 		if((box.keys&8)!=0){//d
-			incdpos(dpos,0,0);
+			incdpos(-dpos,0,0);
 		}
 		if((box.keys&16)!=0){//j
 			if((box.tms-lastfire)>firerate){

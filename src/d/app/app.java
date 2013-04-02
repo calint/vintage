@@ -15,9 +15,11 @@ public class app extends obj implements d.box.app{
 			vbotumbloid.o,
 			vbocrclexy.o
 	};}{		
+		pos(0,0,1);
+		dpos(0,0,-.01f);
 		dagl(0,0,.01f);
 		
-		new background().pos(0,0,.7f);
+		new background().pos(0,0,.1f);
 		new shp().radius(.1f).scl(.1f,.1f,0).pos(0,-.5f,0);
 		for(int i=0;i<8;i++){
 			final float r=box.rnd(.05,.1);

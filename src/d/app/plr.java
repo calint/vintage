@@ -18,7 +18,7 @@ public class plr extends obj{{vbo(vboplr.o).radius(1).scl(1,1,1);colbitsmsk=2;}
 		dpos(0,0,0);
 		dagl(0,0,0);
 		if((box.keys&1)!=0){//w
-			incdpos(0,dpos,0);
+			incdpos(0,-dpos,0);
 		}
 		if((box.keys&256)!=0){//q
 			incdagl(0,0,-dagl);
@@ -27,13 +27,13 @@ public class plr extends obj{{vbo(vboplr.o).radius(1).scl(1,1,1);colbitsmsk=2;}
 			incdagl(0,0,dagl);
 		}
 		if((box.keys&2)!=0){//a
-			incdpos(-dpos,0,0);
+			incdpos(dpos,0,0);
 		}
 		if((box.keys&4)!=0){//s
-			incdpos(0,-dpos,0);
+			incdpos(0,dpos,0);
 		}
 		if((box.keys&8)!=0){//d
-			incdpos(dpos,0,0);
+			incdpos(-dpos,0,0);
 		}
 		if((box.keys&16)!=0){//j
 			if((box.tms-lastfire)>firerate){
