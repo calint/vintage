@@ -145,7 +145,7 @@ final public class box{
 			if((keys&64)!=0)break;
 				
 			mxwv.ident();
-			mxwv.setsclagltrans(new p(1.f*.8f,wihiratio*.8f,1),new p(-app.agl.x,-app.agl.y,-app.agl.z),new p(-app.pos.x,-app.pos.y,-app.pos.z));
+			mxwv.setsclagltrans(new p(1.f*.8f,wihiratio*.8f,1),app.agl.clone().neg(),app.pos.clone().neg());
 			glUniformMatrix4(shader.umxwv,false,mxwv.bf);
 			grid.updaterender();
 			Display.update();

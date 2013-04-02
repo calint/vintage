@@ -43,6 +43,10 @@ public class app extends obj implements d.box.app{
 	public static int nrainitems=20;
 	protected void update() throws Throwable{
 		super.update();
+		if(pos.z>0)
+			dpos(0,0,-.01f);
+		if(pos.z<-1)
+			dpos(0,0,.01f);
 		if(box.tms-t0>rainratems){
 			t0=box.tms;
 			for(int i=0;i<nrainitems;i++)
