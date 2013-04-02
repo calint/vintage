@@ -8,7 +8,8 @@ out vx{vec4 rgba;vec2 txcoord;}vtx;
 void main(){
 	vec4 pw=umxmw*vec4(in_pos,1);//to world coords
 	vec4 pv=umxwv*pw;//to view coords
-	gl_Position=pv;
+	vec3 ps=vec3(pv.x/pv.z,pv.y/pv.z,pv.z);
+	gl_Position=vec4(ps,1);
 	vtx.rgba=in_rgba;
 	vtx.txcoord=in_txc;
 }
