@@ -2,7 +2,7 @@ package d.app;
 import d.box;
 import d.obj;
 public class shp extends obj{
-	{vbo(vboshp.o);colbitsmsk=2;colbits=1+2+4;}
+	{vbo(vboshp.o);colbitsmsk=1;colbits=2+2+4;}
 	public static float dagl=(float)Math.PI;
 	public static float dpos=.5f;
 	public static int firerate=0;
