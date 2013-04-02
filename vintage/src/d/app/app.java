@@ -19,8 +19,12 @@ public class app extends obj implements d.box.app{
 		
 		new background().pos(0,0,.7f);
 		new shp().radius(.1f).scl(.1f,.1f,0).pos(0,-.5f,0);
-		new circlexy().radius(.2f).scl(.2f,.2f,.2f).pos(0,.5f,0).dagl(0,0,1).dpos(-.01f,0,0);
-		new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-.5f,.5f,0).dagl(0,0,1).dpos(.02f,0,0);
+		for(int i=0;i<8;i++){
+			final float r=box.rnd(.05,.1);
+			final float s=(float)Math.sqrt(r*r+r*r);
+			new circlexy().radius(r).scl(s,s,s).pos(box.rnd(-.5,.5),box.rnd(0,.5),0).dagl(0,0,1).dpos(box.rnd(0,-.3),box.rnd(0,-.3),0);
+		}
+			//		new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-.5f,.5f,0).dagl(0,0,1).dpos(.02f,0,0);
 		final float sprd=.1f;
 		for(int i=0;i<16;i++)
 			new plr().radius(.02f).scl(.02f,.02f,.02f).pos(rnd(-sprd,sprd),rnd(-sprd,sprd),0);
