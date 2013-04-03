@@ -56,9 +56,18 @@ final public class box{
 		System.out.println();
 		shader.load();
 		vbo.o.load();
+		vboviewpyr.o.load();
 		for(final vbo o:((app)app).vbos())
 			o.load();
 //		glShadeModel(GL_FLAT);
+
+		
+		glClearColor(.4f,.6f,.9f,0);
+		glFrontFace(GL_CCW);
+		glEnable(GL_CULL_FACE);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
+		
 		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		final long dt=System.currentTimeMillis()-t0;
 		System.out.println();
@@ -95,10 +104,6 @@ final public class box{
 		long t=t0;
 		int frmi=0;
 		final mtx mxwv=new mtx().ident();
-		glClearColor(.4f,.6f,.9f,0);
-		glFrontFace(GL_CCW);
-		glEnable(GL_CULL_FACE);
-		glEnable(GL_DEPTH_TEST);
 //		glPolygonMode(GL_FRONT_AND_BACK,GL_POINT);
 		while(!Display.isCloseRequested()){
 			frm++;
@@ -145,7 +150,7 @@ final public class box{
 			if((keys&64)!=0)break;
 				
 			mxwv.ident();
-			mxwv.setsclagltrans(new p(1.f*.8f,wihiratio*.8f,1),app.agl.clone().neg(),app.pos.clone().neg());
+			mxwv.setsclagltrans(p.n(1,wihiratio,1),app.agl.clone().neg(),app.pos.clone().neg());
 			glUniformMatrix4(shader.umxwv,false,mxwv.bf);
 			grid.updaterender();
 			Display.update();
