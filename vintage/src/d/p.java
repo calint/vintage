@@ -2,6 +2,10 @@ package d;
 import java.io.Serializable;
 public final class p implements Serializable,Cloneable{
 	static final long serialVersionUID=1;
+	public static p vectorfrom2points(final p po,final p p1){return p.n(p1.x-po.x,p1.y-po.y,p1.z-po.z);}
+	public static p crossprod(final p v1,final p v2){
+		return null;
+	}
 	public static p n(final float x,final float y,final float z){return new p(x,y,z);}
 	public static p n(final float x,final float y){return new p(x,y,0);}
 	public static p n(){return new p();}

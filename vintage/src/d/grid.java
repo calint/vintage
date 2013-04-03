@@ -23,15 +23,22 @@ final class grid{
 	//	private static Collection<obj>all=new ArrayList<obj>();
 	static Collection<obj>dels=new ArrayList<obj>();
 	grid(final float size,final p po){this.po=po;this.s=size;ngrids++;}
-	void render(){
+	void render(final pn[]cullpns){
 		//? ifnotinorintersectingviewpyrreturn
-		
+		for(int i=0;i<cullpns.length;i++){
+			final pn pn=cullpns[i];
+			final float d=pn.disttopoint(po);
+			if(d-s>0){
+//				mtrs.ngridsculled++;
+				return;
+			}
+		}
 		for(final obj o:ls)
-			o.render();
+			o.cullrend(cullpns);
 		
 		if(grids[0]!=null)
 			for(final grid g:grids)
-				g.render();
+				g.render(cullpns);
 	}
 	void clear(){
 		ls.clear();
@@ -108,8 +115,7 @@ final class grid{
 			for(final grid c:grids)
 				c.update();
 	}
-		
-	static void updaterender()throws Throwable{
+	static void updaterender(final pn[]cullpns)throws Throwable{
 			final long t0=System.currentTimeMillis();
 			rem(dels);
 			dels.clear();
@@ -120,7 +126,7 @@ final class grid{
 			o.addall(objs);
 	//		System.out.println("ngrids:"+(grids.ngrids+1));
 			final long t1=System.currentTimeMillis();
-			o.render();
+			o.render(cullpns);
 			final long t2=System.currentTimeMillis();
 			o.update();
 			final long t3=System.currentTimeMillis();

@@ -22,11 +22,13 @@ public class app extends obj implements d.box.app{
 //		for(float v=-1;v<1;v+=.08f)
 //			new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(u,v,u+v).dagl(0,0,u);
 	final float s=.9f;
-	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-s,-s,0).dagl(0,0,2);
-	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-s, s,0).dagl(0,0,2);
-	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos( s, s,0).dagl(0,0,2);
-	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos( s,-s,0).dagl(0,0,2);
-	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.75f).dagl(0,0,2).dpos(0,0,.01f);
+//	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-s,-s,0).dagl(0,0,2);
+//	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-s, s,0).dagl(0,0,2);
+//	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos( s, s,0).dagl(0,0,2);
+//	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos( s,-s,0).dagl(0,0,2);
+//	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.75f).dagl(0,0,2).dpos(0,0,.01f);
+//	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,1.2f).dagl(0,0,2).dpos(0,0,0);
+	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.8f).dagl(0,0,2).dpos(0,0,.02f);
 
 	
 //	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.1f,.1f,.75f).dagl(0,0,2);

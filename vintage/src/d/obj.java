@@ -1,5 +1,6 @@
 package d;
 import static org.lwjgl.opengl.GL20.*;
+import d.box.mtrs;
 public class obj{
 	static final long serialVersionUID=1;
 	//collision detection
@@ -60,9 +61,9 @@ public class obj{
 	final public void rm(){
 		if((bits&1)!=0)
 			return;
-		box.mtrs.nobjs--;
-		grid.dels.add(this);
 		bits|=1;
+		grid.dels.add(this);
+		box.mtrs.nobjs--;
 	}
 	final private void updmxmw(){
 		mxmw.setsclagltrans(scl,agl,pos);
@@ -73,6 +74,7 @@ public class obj{
 		if(renderfrm==box.frm)
 			return;
 		renderfrm=box.frm;
+		mtrs.nobjrend++;
 //		GL11.glPushMatrix();
 		if(vbo!=null){
 			updmxmw();
@@ -95,7 +97,7 @@ public class obj{
 	final public obj incdagl(final float x,final float y,final float z){dagl.x+=x;dagl.y+=y;dagl.z+=z;return this;}
 	
 	private long updfrm;
-	void upd()throws Throwable{
+	final void upd()throws Throwable{
 		if(updfrm==box.frm)
 			return;
 		updfrm=box.frm;
@@ -109,4 +111,15 @@ public class obj{
 //		agl.x+=dagl.x*box.dt;agl.y+=dagl.y*box.dt;agl.z+=dagl.z*box.dt;
 	}
 	protected void oncol(final obj o)throws Throwable{}
+	final void cullrend(final pn[]cullpns){
+		for(int i=0;i<cullpns.length;i++){
+			final pn pn=cullpns[i];
+			final float d=pn.disttopoint(pos);
+			if(d-radius>0){
+				mtrs.nobjcull++;
+				return;
+			}
+		}
+		render();
+	}
 }
