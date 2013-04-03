@@ -11,10 +11,9 @@ void main(){
 	vtx.txcoord=in_txc;
 	vec4 pw=umxmw*vec4(in_pos,1);//to world coords
 	vec4 pv=umxwv*pw;//to view coords (clipspace)
-	//pv.z=-pv.z;//?
+	pv.z=-pv.z;//?
 	if(udopersp){
-		pv.x/=pv.z;
-		pv.y/=pv.z;
+		pv.w=pv.z;
 	}
 	gl_Position=pv;
 }

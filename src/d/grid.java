@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import d.box.mtrs;
 final class grid{
 		//layers
 	protected static final int bit_struct=1;
@@ -23,22 +24,23 @@ final class grid{
 	//	private static Collection<obj>all=new ArrayList<obj>();
 	static Collection<obj>dels=new ArrayList<obj>();
 	grid(final float size,final p po){this.po=po;this.s=size;ngrids++;}
-	void render(final pn[]cullpns){
+	void cullrend(final pn[]cullpns){
 		//? ifnotinorintersectingviewpyrreturn
 		for(int i=0;i<cullpns.length;i++){
 			final pn pn=cullpns[i];
 			final float d=pn.disttopoint(po);
 			if(d-s>0){
-//				mtrs.ngridsculled++;
+				mtrs.ngridcull++;
 				return;
 			}
 		}
+		mtrs.ngridrend++;
 		for(final obj o:ls)
 			o.cullrend(cullpns);
 		
 		if(grids[0]!=null)
 			for(final grid g:grids)
-				g.render(cullpns);
+				g.cullrend(cullpns);
 	}
 	void clear(){
 		ls.clear();
@@ -126,7 +128,7 @@ final class grid{
 			o.addall(objs);
 	//		System.out.println("ngrids:"+(grids.ngrids+1));
 			final long t1=System.currentTimeMillis();
-			o.render(cullpns);
+			o.cullrend(cullpns);
 			final long t2=System.currentTimeMillis();
 			o.update();
 			final long t3=System.currentTimeMillis();

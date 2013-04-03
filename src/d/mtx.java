@@ -3,6 +3,10 @@ import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 final class mtx{
 	// axis x,y,z,w
+	//	0  4   8  12
+	//	1  5   9  13
+	//	2  6  10  14
+	//	3  7  11  15
 	public final FloatBuffer bf=BufferUtils.createFloatBuffer(16);
 	public mtx ident(){
 		bf.rewind();
@@ -33,4 +37,7 @@ final class mtx{
 	public p axisxinv(){return p.n(bf.get(0),bf.get(4),bf.get(8));}
 	public p axisyinv(){return p.n(bf.get(1),bf.get(5),bf.get(9));}
 	public p axiszinv(){return p.n(bf.get(2),bf.get(6),bf.get(10));}
+	public void setperspective(final float fovy,final float aspect,final float znear,final float zfar){
+		
+	}
 }
