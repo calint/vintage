@@ -14,14 +14,14 @@ public class app extends obj implements d.box.app{
 			vbotumbloid.o,
 			vbocrclexy.o
 	};}{
-//	vbo(vboviewpyr.o);
+	vbo(vboviewpyr.o);
 	pos(0,0,1);
 //	new shp().radius(1).scl(1,1,1).pos(0,0,1);
 	
 //	for(float u=-1;u<1;u+=.08f)
 //		for(float v=-1;v<1;v+=.08f)
 //			new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(u,v,u+v).dagl(0,0,u);
-	final float s=.9f;
+//	final float s=.9f;
 //	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-s,-s,0).dagl(0,0,2);
 //	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-s, s,0).dagl(0,0,2);
 //	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos( s, s,0).dagl(0,0,2);
@@ -31,11 +31,11 @@ public class app extends obj implements d.box.app{
 	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.8f).dagl(0,0,2).dpos(0,0,.02f);
 
 	
-//	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.1f,.1f,.75f).dagl(0,0,2);
-//	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.2f,.2f,.50f).dagl(0,0,3);
-//	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.3f,.3f,.25f).dagl(0,0,4);
-//	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.4f,.4f,.10f).dagl(0,0,5);
-//	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.5f,.5f,.01f).dagl(0,0,6);
+	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.1f,.1f,.75f).dagl(0,0,2);
+	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.2f,.2f,.50f).dagl(0,0,3);
+	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.3f,.3f,.25f).dagl(0,0,4);
+	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.4f,.4f,.10f).dagl(0,0,5);
+	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.5f,.5f,.01f).dagl(0,0,6);
 //	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(-.1f,0,-.5f).dagl(0,0,7);
 //	new circlexy().radius(.1f).scl(.1f,.1f,.1f).dpos(0,.1f,0).pos(.6f,.6f,   0);
 //		dpos(0,0,-.01f);
