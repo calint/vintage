@@ -70,9 +70,9 @@ final public class box{
 		glFrontFace(GL_CCW);
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_GEQUAL);
 //		glDepthFunc(GL_LEQUAL);
-		glClearDepth(-1);
+//		glDepthFunc(GL_GEQUAL);
+//		glClearDepth(-1);
 		
 		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		final long dt=System.currentTimeMillis()-t0;
