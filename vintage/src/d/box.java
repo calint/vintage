@@ -23,12 +23,13 @@ final public class box{
 		public/*readonly*/static int niscol; 
 		public/*readonly*/static int noncols;
 		public/*readonly*/static int ngrids; 
+		public/*readonly*/static int nobjcull; 
 		public/*readonly*/static long ms_gridupd;
 		public/*readonly*/static long ms_render;
 		public/*readonly*/static long ms_update;
 		public/*readonly*/static long ms_coldet;
 		public/*readonly*/static int nobjs;
-		static void framereset(){niscol=noncols=ngrids=0;}
+		static void framereset(){niscol=noncols=ngrids=nobjcull=0;}
 	}
 	public static void main(final String[]a)throws Throwable{load();loop();}
 	public interface app{vbo[]vbos()throws Throwable;}
@@ -122,7 +123,7 @@ final public class box{
 				fps=(int)(frmi*1000/tt);
 				t0=tms;
 				frmi=0;
-				Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grd:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",fsx:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
+				Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grd:"+mtrs.ms_gridupd+",ncull:"+mtrs.nobjcull+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",fsx:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
 //				grid.bench();
 			}
 //			Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grdrfh:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",coldet:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
@@ -149,9 +150,16 @@ final public class box{
 			
 			if((keys&64)!=0)break;
 				
+				
 			mxwv.ident();
 			mxwv.setsclagltrans(p.n(1,wihiratio,1),app.agl.clone().neg(),app.pos.clone().neg());
 			glUniformMatrix4(shader.umxwv,false,mxwv.bf);
+//			if(Keyboard.isKeyDown(Keyboard.KEY_F2))
+//				glUniform1i(shader.udopersp,1);
+//			else
+//				glUniform1i(shader.udopersp,0);
+			if(Keyboard.isKeyDown(Keyboard.KEY_F2))glUniform1i(shader.udopersp,1);
+			if(Keyboard.isKeyDown(Keyboard.KEY_F3))glUniform1i(shader.udopersp,0);
 			grid.updaterender();
 			Display.update();
 		}

@@ -13,6 +13,7 @@ final class shader{
 	static int umxwv;// world to view matrix
 	static int umxmw;// model to world matrix
 	static int utx;// texture sampler
+	static int udopersp;// texture sampler
 	
 	static public void load()throws Throwable{
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
@@ -22,9 +23,12 @@ final class shader{
 		loadshader(p,GL_FRAGMENT_SHADER,"shader.f");
 		glLinkProgram(p);
 		if(glGetProgrami(p,GL_LINK_STATUS)==GL_FALSE)throw new Error("could not link due to: "+glGetProgramInfoLog(p,255));
+		//? usereflection
 		if((umxwv=glGetUniformLocation(p,"umxwv"))==-1)throw new Error();
 		if((umxmw=glGetUniformLocation(p,"umxmw"))==-1)throw new Error();
 		if((utx=glGetUniformLocation(p,"utx"))==-1)throw new Error();
+		if((udopersp=glGetUniformLocation(p,"udopersp"))==-1)throw new Error();
+		
 		glBindAttribLocation(p,0,"in_pos");
 		glBindAttribLocation(p,1,"in_rgba");
 		glBindAttribLocation(p,2,"in_txc");
