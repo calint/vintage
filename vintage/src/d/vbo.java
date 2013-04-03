@@ -80,8 +80,6 @@ public class vbo{
 		}
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,vboi);
 		if(elemtype==0){
-//			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
-//			glPolygonOffset(0,0);
 			glDrawElements(GL_TRIANGLES,nindices,GL_UNSIGNED_BYTE,0);
 		}else if(elemtype==1){
 			glDrawElements(GL_TRIANGLE_FAN,nindices,GL_UNSIGNED_BYTE,0);

@@ -165,6 +165,8 @@ final public class box{
 //				glUniform1i(shader.udopersp,0);
 			if(Keyboard.isKeyDown(Keyboard.KEY_F2))glUniform1i(shader.udopersp,1);
 			if(Keyboard.isKeyDown(Keyboard.KEY_F3))glUniform1i(shader.udopersp,0);
+			if(Keyboard.isKeyDown(Keyboard.KEY_F4))glUniform1i(shader.urendzbuf,1);
+			if(Keyboard.isKeyDown(Keyboard.KEY_F5))glUniform1i(shader.urendzbuf,0);
 
 			final p zaxis=mxwv.axisz();
 			final pn pnback=pn.frompointandnormal(app.pos.clone(),zaxis);

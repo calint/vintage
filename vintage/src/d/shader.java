@@ -13,7 +13,8 @@ final class shader{
 	static int umxwv;// world to view matrix
 	static int umxmw;// model to world matrix
 	static int utx;// texture sampler
-	static int udopersp;// texture sampler
+	static int udopersp;// true to do perspective
+	static int urendzbuf;// true to render zbuffer
 	
 	static public void load()throws Throwable{
 		if(glGetError()!=GL_NO_ERROR)throw new Error("opengl in error state");
@@ -28,6 +29,7 @@ final class shader{
 		if((umxmw=glGetUniformLocation(p,"umxmw"))==-1)throw new Error();
 		if((utx=glGetUniformLocation(p,"utx"))==-1)throw new Error();
 		if((udopersp=glGetUniformLocation(p,"udopersp"))==-1)throw new Error();
+		if((urendzbuf=glGetUniformLocation(p,"urendzbuf"))==-1)throw new Error();
 		
 		glBindAttribLocation(p,0,"in_pos");
 		glBindAttribLocation(p,1,"in_rgba");

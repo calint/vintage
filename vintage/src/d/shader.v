@@ -13,6 +13,9 @@ void main(){
 	vec4 pv=umxwv*pw;//to view coords (clipspace)
 	if(udopersp){
 		pv.w=-pv.z;
+		pv.z*=pv.z;//? vertex is divided by pv.z, depth buffer uses pv.z
+	}else{
+		pv.z=-pv.z;
 	}
 	gl_Position=pv;
 }
