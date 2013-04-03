@@ -24,12 +24,13 @@ final public class box{
 		public/*readonly*/static int noncols;
 		public/*readonly*/static int ngrids; 
 		public/*readonly*/static int nobjcull; 
+		public/*readonly*/static int nobjrend; 
 		public/*readonly*/static long ms_gridupd;
 		public/*readonly*/static long ms_render;
 		public/*readonly*/static long ms_update;
 		public/*readonly*/static long ms_coldet;
 		public/*readonly*/static int nobjs;
-		static void framereset(){niscol=noncols=ngrids=nobjcull=0;}
+		static void framereset(){niscol=noncols=ngrids=nobjcull=nobjrend=0;}
 	}
 	public static void main(final String[]a)throws Throwable{load();loop();}
 	public interface app{vbo[]vbos()throws Throwable;}
@@ -67,7 +68,9 @@ final public class box{
 		glFrontFace(GL_CCW);
 		glEnable(GL_CULL_FACE);
 		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_LEQUAL);
+		glDepthFunc(GL_GEQUAL);
+		glClearDepth(-1);
+//		glDepthFunc(GL_LEQUAL);
 		
 		if(glGetError()!=GL_NO_ERROR)throw new Error();
 		final long dt=System.currentTimeMillis()-t0;
@@ -123,7 +126,7 @@ final public class box{
 				fps=(int)(frmi*1000/tt);
 				t0=tms;
 				frmi=0;
-				Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grd:"+mtrs.ms_gridupd+",ncull:"+mtrs.nobjcull+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",fsx:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
+				Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grd:"+mtrs.ms_gridupd+",nobjcull:"+mtrs.nobjcull+",nobjrend:"+mtrs.nobjrend+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",fsx:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
 //				grid.bench();
 			}
 //			Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grdrfh:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",coldet:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
@@ -160,7 +163,13 @@ final public class box{
 //				glUniform1i(shader.udopersp,0);
 			if(Keyboard.isKeyDown(Keyboard.KEY_F2))glUniform1i(shader.udopersp,1);
 			if(Keyboard.isKeyDown(Keyboard.KEY_F3))glUniform1i(shader.udopersp,0);
-			grid.updaterender();
+
+			final p zaxis=mxwv.axisz();
+			final pn pnback=pn.frompointandnormal(app.pos.clone(),zaxis);
+			final pn[]pns=new pn[1];
+			pns[0]=pnback;
+
+			grid.updaterender(pns);
 			Display.update();
 		}
 		box.thdpool.shutdown();
