@@ -89,7 +89,21 @@ public class vbo{
 			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
 			glDrawElements(GL_TRIANGLES,nindices,GL_UNSIGNED_BYTE,0);
 			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);	
-		}
+		}else if(elemtype==3){
+			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+			glDisableVertexAttribArray(2);
+//			glDisableVertexAttribArray(1);
+			glDrawElements(GL_TRIANGLE_FAN,nindices,GL_UNSIGNED_BYTE,0);
+			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);	
+		}else if(elemtype==4){
+			glDrawElements(GL_TRIANGLE_FAN,nindices,GL_UNSIGNED_BYTE,0);
+			glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+			glPolygonOffset(-.1f,.1f);
+			glDisableVertexAttribArray(2);
+			glDisableVertexAttribArray(1);
+			glDrawElements(GL_TRIANGLE_FAN,nindices,GL_UNSIGNED_BYTE,0);
+			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);	
+		}else throw new Error();
 	}
 	protected int elemtype;
 	
