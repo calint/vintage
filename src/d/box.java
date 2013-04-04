@@ -1,19 +1,5 @@
 package d;
-import static org.lwjgl.opengl.GL11.GL_CCW;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_CULL_FACE;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_TEST;
-import static org.lwjgl.opengl.GL11.GL_MAX_TEXTURE_SIZE;
-import static org.lwjgl.opengl.GL11.GL_NO_ERROR;
-import static org.lwjgl.opengl.GL11.GL_VERSION;
-import static org.lwjgl.opengl.GL11.glClear;
-import static org.lwjgl.opengl.GL11.glClearColor;
-import static org.lwjgl.opengl.GL11.glEnable;
-import static org.lwjgl.opengl.GL11.glFrontFace;
-import static org.lwjgl.opengl.GL11.glGetError;
-import static org.lwjgl.opengl.GL11.glGetInteger;
-import static org.lwjgl.opengl.GL11.glGetString;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_MAX_ELEMENTS_VERTICES;
 import static org.lwjgl.opengl.GL20.GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS;
 import static org.lwjgl.opengl.GL20.GL_MAX_FRAGMENT_UNIFORM_COMPONENTS;
@@ -138,11 +124,8 @@ final public class box{
 			frmi++;
 			tms=System.currentTimeMillis();
 			dtms=tms-t;
-			dt=(float)(dtms/1000.);
-//			final long dt0=tms-t;
-//			if(dt0>16)
-//				System.out.println("frame #"+frmno+": "+dt0+" ms "+(dt0>16?"!":" "));
 			t=tms;
+			dt=(float)(dtms/1000.);
 			dt=dtms/1000.f;
 			if(tms-t0>1000){
 				long tt=tms-t0;
@@ -151,18 +134,9 @@ final public class box{
 				t0=tms;
 				frmi=0;
 				Display.setTitle("fps:"+fps+" n objs:"+mtrs.nobjs+",gc:"+mtrs.ngridcull+",gr:"+mtrs.ngridrend+",noc:"+mtrs.nobjcull+",or:"+mtrs.nobjrend+", ms grd:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",fsx:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
-//				grid.bench();
 			}
-//			Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grdrfh:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",coldet:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
 			mtrs.framereset();
-			// viewport
-//			System.out.println("scr: "+Display.getWidth()+" x "+Display.getHeight());
-			wi=Display.getWidth();
-			hi=Display.getHeight();
-			final float wihiratio=(float)wi/hi;
-//			glViewport(0,0,wi,hi);
-			glClear(GL_COLOR_BUFFER_BIT+GL_DEPTH_BUFFER_BIT);
-
+			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))break;
 			keys=0;
 			if(Keyboard.isKeyDown(Keyboard.KEY_W))keys|=1;
 			if(Keyboard.isKeyDown(Keyboard.KEY_A))keys|=2;
@@ -170,26 +144,10 @@ final public class box{
 			if(Keyboard.isKeyDown(Keyboard.KEY_D))keys|=8;
 			if(Keyboard.isKeyDown(Keyboard.KEY_J))keys|=16;
 			if(Keyboard.isKeyDown(Keyboard.KEY_K))keys|=32;
-			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))keys|=64;
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE))keys|=128;
 			if(Keyboard.isKeyDown(Keyboard.KEY_Q))keys|=256;
 			if(Keyboard.isKeyDown(Keyboard.KEY_E))keys|=512;
-			
-			if((keys&64)!=0)break;
-				
-				
-			mxwv.ident();
-			mxwv.setsclagltrans(p.n(1,wihiratio,1),app.agl.clone().neg(),app.pos.clone().neg());
-			glUniformMatrix4(shader.umxwv,false,mxwv.bf);
-//			if(Keyboard.isKeyDown(Keyboard.KEY_F2))
-//				glUniform1i(shader.udopersp,1);
-//			else
-//				glUniform1i(shader.udopersp,0);
-			if(Keyboard.isKeyDown(Keyboard.KEY_F2))glUniform1i(shader.udopersp,1);
-			if(Keyboard.isKeyDown(Keyboard.KEY_F3))glUniform1i(shader.udopersp,0);
-			if(Keyboard.isKeyDown(Keyboard.KEY_F4))glUniform1i(shader.urendzbuf,1);
-			if(Keyboard.isKeyDown(Keyboard.KEY_F5))glUniform1i(shader.urendzbuf,0);
-
+							
 			// cullplanes
 			final pn[]pns=new pn[5];
 			// view (instead of mxwv^-1 cause orthonorm
@@ -204,16 +162,25 @@ final public class box{
 			final p topleft=p.n().sub(xinv).add(yinv).sub(zinv);
 			final p bottomleft=p.n().sub(xinv).sub(yinv).sub(zinv);
 			final p bottomright=p.n().add(xinv).sub(yinv).sub(zinv);
-			//top
-			pns[1]=pn.from3points(app.pos.clone(),topright,topleft);
-			//left
-			pns[2]=pn.from3points(app.pos.clone(),topleft,bottomleft);
-			//bottom
-			pns[3]=pn.from3points(app.pos.clone(),bottomleft,bottomright);
-			//right
-			pns[4]=pn.from3points(app.pos.clone(),bottomright,topright);
-			
+			pns[1]=pn.from3points(app.pos.clone(),topright,topleft);//top
+			pns[2]=pn.from3points(app.pos.clone(),topleft,bottomleft);//left
+			pns[3]=pn.from3points(app.pos.clone(),bottomleft,bottomright);//bottom
+			pns[4]=pn.from3points(app.pos.clone(),bottomright,topright);//right
 			//far			
+			//
+			wi=Display.getWidth();
+			hi=Display.getHeight();
+//			System.out.println(wi+"x"+hi);
+			final float wihiratio=(float)wi/hi;
+			glViewport(0,0,wi,hi);
+			glClear(GL_COLOR_BUFFER_BIT+GL_DEPTH_BUFFER_BIT);
+			mxwv.ident();
+			mxwv.setsclagltrans(p.n(1,wihiratio,1),app.agl.clone().neg(),app.pos.clone().neg());
+			glUniformMatrix4(shader.umxwv,false,mxwv.bf);
+			if(Keyboard.isKeyDown(Keyboard.KEY_F2))glUniform1i(shader.udopersp,1);
+			if(Keyboard.isKeyDown(Keyboard.KEY_F3))glUniform1i(shader.udopersp,0);
+			if(Keyboard.isKeyDown(Keyboard.KEY_F4))glUniform1i(shader.urendzbuf,1);
+			if(Keyboard.isKeyDown(Keyboard.KEY_F5))glUniform1i(shader.urendzbuf,0);
 			grid.updaterender(pns);
 			Display.update();
 		}
