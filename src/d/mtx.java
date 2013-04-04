@@ -31,8 +31,9 @@ final class mtx{
 		bf.flip();
 		return this;
 	}
+	public p axisx(){return p.n(bf.get(0),bf.get(1),bf.get(2));}
+	public p axisy(){return p.n(bf.get(4),bf.get(5),bf.get(6));}
 	public p axisz(){return p.n(bf.get(8),bf.get(9),bf.get(10));}
-//	public p axisx(){return p.n(bf.get(0),bf.get(1),bf.get(2));}
 	//asumming orthonorm
 	public p axisxinv(){return p.n(bf.get(0),bf.get(4),bf.get(8));}
 	public p axisyinv(){return p.n(bf.get(1),bf.get(5),bf.get(9));}
