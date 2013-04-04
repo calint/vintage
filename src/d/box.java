@@ -13,6 +13,10 @@ import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniformMatrix4;
 //import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.opengl.GL32.GL_MAX_GEOMETRY_TEXTURE_IMAGE_UNITS;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -42,23 +46,88 @@ final public class box{
 		public/*readonly*/static int nobjs;
 		static void framereset(){niscol=noncols=ngrids=nobjcull=nobjrend=ngridcull=ngridrend=0;}
 	}
-	public static void main(final String[]a)throws Throwable{load();loop();}
-	public interface app{vbo[]vbos()throws Throwable;}
+	public static void main(final String[]a)throws Throwable{
+		if(a.length>0)
+			nplayers=Integer.parseInt(a[0]);
+		load();
+		loop();
+	}
+	public interface app{vbo[]vbos()throws Throwable;obj[]netobjs()throws Throwable;}
 	private static obj app;
 	public static String appcls="d.app.app";//application object
 	private static final Random random=new Random(0);
-	private static int wi=512+256,hi=512+256,scrdst=wi;
+	private static int wi=512+256,hi=512+256;//,scrdst=wi;
 	public/*readonly*/static long frm;//frame number
 	public/*readonly*/static int fps;//frames per second
-	public/*readonly*/static int keys;//keys bits
+//	public/*readonly*/static int keys;//keys bits
 	public/*readonly*/static long tms;//time in millis
 	public/*readonly*/static long dtms;//last frame time in millis
 	public/*readonly*/static float dt;//dtms in seconds
+	public/*readonly*/static float netdt=.016f;//fixed dt in multiplayer	
+	public static String net_server_port="9999";
+	public static boolean gc_before_stats;
 	static final int nthreads=2;
 	static final ExecutorService thdpool=Executors.newFixedThreadPool(nthreads);
+	
+	private static Socket sock;
+	private static OutputStream os;
+	private static InputStream is;
+	private static final int protocol_msg_len=32;
+	private static String playerid;
+	private final static byte[]keys=new byte[protocol_msg_len];
+	public static int nplayers=1;
+	private static obj[]plrs;
+	private static int playerix;
+//	static final int net_packetsize_bytes=32;
+	
+	static private void mkplayerid(){
+		final String chars="01234567890abcdef";
+		final StringBuilder sb=new StringBuilder(net.protocol_msg_len);
+		for(int n=0;n<net.protocol_msg_len;n++){
+			int hx=(int)(Math.random()*16);
+			sb.append(chars.charAt(hx));
+		}
+		playerid=sb.toString();
+	}
+	static void pl(final String s){System.out.println(s);}
 	static private void load()throws Throwable{
 		final long t0=System.currentTimeMillis();
 		app=(obj)Class.forName(appcls).newInstance();
+		
+		
+		plrs=((app)app).netobjs();
+		final String host="localhost";
+		if(nplayers>1){
+			pl(nplayers+" players game");
+			pl("connecting to "+host);
+			sock=new Socket(host,Integer.parseInt(box.net_server_port));
+			os=sock.getOutputStream();
+			is=sock.getInputStream();
+			mkplayerid();
+			pl("connected, waiting for other players");
+			os.write(playerid.getBytes());
+			os.flush();
+			for(int n=0;n<plrs.length;n++){
+				final int c=is.read(plrs[n].keys());
+				if(c==-1)
+					throw new IOException("connection to server lost");
+			}
+			playerix=-1;
+			for(int n=0;n<plrs.length;n++){
+				final String pid=new String(plrs[n].keys());
+				if(pid.equals(playerid)){
+					playerix=n;
+					break;
+				}
+			}
+			for(int k=0;k<plrs.length;k++){
+				final byte[]keys=plrs[k].keys();
+				for(int n=0;n<keys.length;n++)
+					keys[n]=0;
+			}
+		}
+
+		
 		// display
 		final PixelFormat pixelFormat=new PixelFormat();
 		final ContextAttribs contextAtrributes=new ContextAttribs(3,2).withProfileCore(true).withForwardCompatible(true);
@@ -127,26 +196,28 @@ final public class box{
 			t=tms;
 			dt=(float)(dtms/1000.);
 			dt=dtms/1000.f;
+			if(nplayers>1){
+				final float slp=netdt-dt;
+				final long slpms=(long)(1000*slp);
+				System.out.println("sleep "+slpms);
+				if(slpms>1)
+					Thread.sleep(slpms);
+				dt=netdt;
+			}
 			if(tms-t0>1000){
 				long tt=tms-t0;
 				if(tt==0)tt++;
 				fps=(int)(frmi*1000/tt);
 				t0=tms;
 				frmi=0;
-				Display.setTitle("fps:"+fps+" n objs:"+mtrs.nobjs+",gc:"+mtrs.ngridcull+",gr:"+mtrs.ngridrend+",noc:"+mtrs.nobjcull+",or:"+mtrs.nobjrend+", ms grd:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",fsx:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
+				Display.setTitle("fps:"+fps+" n objs:"+mtrs.nobjs+",gc:"+mtrs.ngridcull+",gr:"+mtrs.ngridrend+",noc:"+mtrs.nobjcull+",or:"+mtrs.nobjrend+", ms grd:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",fsx:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1));
 			}
 			mtrs.framereset();
-			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))break;
-			keys=0;
-			if(Keyboard.isKeyDown(Keyboard.KEY_W))keys|=1;
-			if(Keyboard.isKeyDown(Keyboard.KEY_A))keys|=2;
-			if(Keyboard.isKeyDown(Keyboard.KEY_S))keys|=4;
-			if(Keyboard.isKeyDown(Keyboard.KEY_D))keys|=8;
-			if(Keyboard.isKeyDown(Keyboard.KEY_J))keys|=16;
-			if(Keyboard.isKeyDown(Keyboard.KEY_K))keys|=32;
-			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE))keys|=128;
-			if(Keyboard.isKeyDown(Keyboard.KEY_Q))keys|=256;
-			if(Keyboard.isKeyDown(Keyboard.KEY_E))keys|=512;
+			
+			System.arraycopy(keys,0,plrs[playerix].keys(),0,keys.length);
+			if(nplayers>1)try{
+				os.write(plrs[playerix].keys());
+			}catch(IOException e){throw new Error(e);}
 							
 			// cullplanes
 			final pn[]pns=new pn[5];
@@ -186,6 +257,34 @@ final public class box{
 			if(Keyboard.isKeyDown(Keyboard.KEY_F5))glUniform1i(shader.urendzbuf,0);
 			grid.updaterender(pns);
 			Display.update();
+			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))break;
+
+			
+			if(nplayers>1){
+				for(int n=0;n<plrs.length;n++){
+					try{
+						final int c=is.read(plrs[n].keys());
+						if(c!=box.protocol_msg_len)
+							throw new IOException("expected "+box.protocol_msg_len+" B. received:"+c);
+					}catch(IOException e){
+						e.printStackTrace();
+					}
+				}
+			}else
+				System.arraycopy(keys,0,plrs[0].keys(),0,keys.length);
+			
+//			final obj plr=plrs[playerix];
+			for(int i=0;i<keys.length;i++)
+				keys[i]=0;
+			if(Keyboard.isKeyDown(Keyboard.KEY_W))keys[0]|=1;
+			if(Keyboard.isKeyDown(Keyboard.KEY_A))keys[1]|=1;
+			if(Keyboard.isKeyDown(Keyboard.KEY_S))keys[2]|=1;
+			if(Keyboard.isKeyDown(Keyboard.KEY_D))keys[3]|=1;
+			if(Keyboard.isKeyDown(Keyboard.KEY_J))keys[4]|=1;
+			if(Keyboard.isKeyDown(Keyboard.KEY_K))keys[5]|=1;
+			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE))keys[6]|=1;
+			if(Keyboard.isKeyDown(Keyboard.KEY_Q))keys[7]|=1;
+			if(Keyboard.isKeyDown(Keyboard.KEY_E))keys[8]|=1;
 		}
 		box.thdpool.shutdown();
 		if(!box.thdpool.awaitTermination(1,TimeUnit.SECONDS)){
