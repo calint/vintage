@@ -37,4 +37,5 @@ public final class p implements Serializable,Cloneable{
 		return this;
 	}
 	public p zero(){x=y=z=0;return this;}
+	public p scl(float s){x*=s;y*=s;z*=s;return this;}
 }

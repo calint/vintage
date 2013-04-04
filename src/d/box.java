@@ -151,8 +151,8 @@ final public class box{
 			// cullplanes
 			final pn[]pns=new pn[5];
 			// view (instead of mxwv^-1 cause orthonorm
-			final p xinv=mxwv.axisxinv();
-			final p yinv=mxwv.axisyinv();
+			final p xinv=mxwv.axisxinv().scl(1.5f);
+			final p yinv=mxwv.axisyinv().scl(1.5f);
 			final p zinv=mxwv.axiszinv();
 			//back
 			final pn pnback=pn.frompointandnormal(app.pos.clone(),zinv);
