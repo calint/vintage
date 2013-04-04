@@ -78,7 +78,7 @@ public class obj{
 //		GL11.glPushMatrix();
 		if(vbo!=null){
 			updmxmw();
-			glUniformMatrix4(shader.umxmw,false,mxmw.bf);
+			glUniformMatrix4(shader.umxmw,true,mxmw.tobb());
 			vbo.render();
 		}
 //		vbo.o.elemtype=2;

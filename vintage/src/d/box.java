@@ -44,7 +44,9 @@ final public class box{
 		public/*readonly*/static long ms_update;
 		public/*readonly*/static long ms_coldet;
 		public/*readonly*/static int nobjs;
-		static void framereset(){niscol=noncols=ngrids=nobjcull=nobjrend=ngridcull=ngridrend=0;}
+		public/*readonly*/static int npointstransformed;
+		public/*readonly*/static int nmmul;
+		static void framereset(){niscol=noncols=ngrids=nobjcull=nobjrend=ngridcull=ngridrend=npointstransformed=nmmul=0;}
 	}
 	public static void main(final String[]a)throws Throwable{
 		if(a.length>0)
@@ -250,7 +252,7 @@ final public class box{
 			glClear(GL_COLOR_BUFFER_BIT+GL_DEPTH_BUFFER_BIT);
 			mxwv.ident();
 			mxwv.setsclagltrans(p.n(1,wihiratio,1),app.agl.clone().neg(),app.pos.clone().neg());
-			glUniformMatrix4(shader.umxwv,false,mxwv.bf);
+			glUniformMatrix4(shader.umxwv,true,mxwv.tobb());
 			if(Keyboard.isKeyDown(Keyboard.KEY_F2))glUniform1i(shader.udopersp,1);
 			if(Keyboard.isKeyDown(Keyboard.KEY_F3))glUniform1i(shader.udopersp,0);
 			if(Keyboard.isKeyDown(Keyboard.KEY_F4))glUniform1i(shader.urendzbuf,1);
