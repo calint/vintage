@@ -1,5 +1,5 @@
 package d;
-final public class pn{
+final class pn{
 	public static pn frompointandnormal(final p p,final p n){return new pn(p,n);}
 	public static pn from3points(final p p0,final p p1,final p p2){
 		final p v1=d.p.vectorfrom2points(p0,p1);
