@@ -30,7 +30,7 @@ final public class net{
 			return;
 		}
 		if(args.length>0)
-			box.net_server_port=args[0];
+			net_server_port=args[0];
 
 		final ServerSocketChannel serverSocketChannel=ServerSocketChannel.open();
 		serverSocketChannel.configureBlocking(false);
@@ -108,7 +108,7 @@ final public class net{
 		final PrintStream ps=new PrintStream(out);
 //		ps.println("");
 		ps.println("             time: "+new Date(System.currentTimeMillis()));
-		ps.println("             port: "+box.net_server_port);
+		ps.println("             port: "+net_server_port);
 		ps.println("          players: "+nplayersconnected+"/"+nplayers);
 		final Runtime rt=Runtime.getRuntime();
 		if(box.gc_before_stats)
