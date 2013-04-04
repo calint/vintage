@@ -17,7 +17,7 @@ public class app extends obj implements d.box.app{
 //	vbo(vboviewpyr.o);
 	pos(0,0,1);
 //	dpos(0,0,-.01f);
-	dagl(0,0,.01f);
+	dagl(0,0,-.1f);
 	new shp().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.1f);
 	new shp().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.2f);
 	new shp().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.3f);
