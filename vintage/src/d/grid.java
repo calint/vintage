@@ -17,7 +17,7 @@ final class grid{
 	static int subgridlevels=4;//maximum splits
 	static int ngrids;//grid count
 	final p po;//grid origo
-	final float s;//grid scale //r=
+	final float s;//grid scale // r=
 	final List<obj>ls=new ArrayList<obj>();
 	final grid[]grids=new grid[8];//sub grids, if [0]!=null
 	static Collection<obj>news=new ArrayList<obj>();
@@ -25,11 +25,10 @@ final class grid{
 	static Collection<obj>dels=new ArrayList<obj>();
 	grid(final float size,final p po){this.po=po;this.s=size;ngrids++;}
 	void cullrend(final pn[]cullpns){
-		//? ifnotinorintersectingviewpyrreturn
 		for(int i=0;i<cullpns.length;i++){
 			final pn pn=cullpns[i];
 			final float d=pn.disttopoint(po);
-			if(d-s>0){
+			if(d-s>0){//? s!=r
 				mtrs.ngridcull++;
 				return;
 			}

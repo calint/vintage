@@ -168,11 +168,17 @@ final public class box{
 			if(Keyboard.isKeyDown(Keyboard.KEY_F4))glUniform1i(shader.urendzbuf,1);
 			if(Keyboard.isKeyDown(Keyboard.KEY_F5))glUniform1i(shader.urendzbuf,0);
 
+			// cullplanes
+			//back
 			final p zaxis=mxwv.axisz();
 			final pn pnback=pn.frompointandnormal(app.pos.clone(),zaxis);
 			final pn[]pns=new pn[1];
 			pns[0]=pnback;
-
+			//right
+			//left
+			//top
+			//bottom
+			//far			
 			grid.updaterender(pns);
 			Display.update();
 		}
