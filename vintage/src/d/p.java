@@ -24,4 +24,17 @@ public final class p implements Serializable,Cloneable{
 	public p neg(){x=-x;y=-y;z=-z;return this;}
 	public float dot(final p p){return x*p.x+y*p.y+z*p.z;}
 	public p add(final float x,final float y,final float z){this.x+=x;this.y+=y;this.z+=z;return this;}
+	public p sub(final p p){x-=p.x;y-=p.y;z-=p.z;return this;}
+	public p norm(){return norm(1.f);}
+	public p norm(final float length){
+		float q=(float)Math.sqrt(x*x+y*y+z*z);
+		if(q==0){
+			zero();
+			return this;
+		}
+		final float t=length/q;
+		x=t*x;y=t*y;z=t*z;
+		return this;
+	}
+	public p zero(){x=y=z=0;return this;}
 }

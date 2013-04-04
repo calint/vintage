@@ -128,7 +128,7 @@ final public class box{
 				fps=(int)(frmi*1000/tt);
 				t0=tms;
 				frmi=0;
-				Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grd:"+mtrs.ms_gridupd+",ngridcull:"+mtrs.ngridcull+",ngridrend:"+mtrs.ngridrend+",nobjcull:"+mtrs.nobjcull+",nobjrend:"+mtrs.nobjrend+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",fsx:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
+				Display.setTitle("fps:"+fps+",nobjs:"+mtrs.nobjs+",ngc:"+mtrs.ngridcull+",ngr:"+mtrs.ngridrend+",noc:"+mtrs.nobjcull+",nor:"+mtrs.nobjrend+", ms grd:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",fsx:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
 //				grid.bench();
 			}
 //			Display.setTitle("fps:"+fps+",objs:"+mtrs.nobjs+",grdrfh:"+mtrs.ms_gridupd+",rend:"+mtrs.ms_render+",upd:"+mtrs.ms_update+",coldet:"+mtrs.ms_coldet+",niscol:"+mtrs.niscol+",noncols:"+mtrs.noncols+",ngrids:"+(grid.ngrids+1)+",keys:"+keys);
@@ -169,15 +169,28 @@ final public class box{
 			if(Keyboard.isKeyDown(Keyboard.KEY_F5))glUniform1i(shader.urendzbuf,0);
 
 			// cullplanes
+			final pn[]pns=new pn[5];
+			// view (instead of mxwv^-1 cause orthonorm
+			final p xinv=mxwv.axisxinv();
+			final p yinv=mxwv.axisyinv();
+			final p zinv=mxwv.axiszinv();
 			//back
-			final p zaxis=mxwv.axisz();
-			final pn pnback=pn.frompointandnormal(app.pos.clone(),zaxis);
-			final pn[]pns=new pn[1];
+			final pn pnback=pn.frompointandnormal(app.pos.clone(),zinv);
 			pns[0]=pnback;
-			//right
-			//left
+			//viewpyr
+			final p topright=p.n().add(xinv).add(yinv).sub(zinv);
+			final p topleft=p.n().sub(xinv).add(yinv).sub(zinv);
+			final p bottomleft=p.n().sub(xinv).sub(yinv).sub(zinv);
+			final p bottomright=p.n().add(xinv).sub(yinv).sub(zinv);
 			//top
+			pns[1]=pn.from3points(app.pos.clone(),topright,topleft);
+			//left
+			pns[2]=pn.from3points(app.pos.clone(),topleft,bottomleft);
 			//bottom
+			pns[3]=pn.from3points(app.pos.clone(),bottomleft,bottomright);
+			//right
+			pns[4]=pn.from3points(app.pos.clone(),bottomright,topright);
+			
 			//far			
 			grid.updaterender(pns);
 			Display.update();
