@@ -205,7 +205,7 @@ final public class box{
 	}
 	
 	// todo
-	public static Iterator<obj>q(final pn[]cullplanes){return null;}
-	public static void a(final pn[]cullplanes,final apply code){}
+	public static Iterator<obj>q(final vol vol){return null;}
+	public static void a(final vol vol,final apply code){}
 	public interface apply{void on(final obj o)throws Throwable;}
 }
