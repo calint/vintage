@@ -12,19 +12,19 @@ public class shp extends obj{
 		dpos(0,0,0);
 		dagl(0,0,0);
 		
-		if((box.keys&1)!=0){//w
+		if(keys[0]!=0){//w
 			incdpos(0,dpos,0);
 		}
-		if((box.keys&2)!=0){//a
+		if(keys[1]!=0){//a
 			incdpos(-dpos,0,0);
 		}
-		if((box.keys&4)!=0){//s
+		if(keys[2]!=0){//s
 			incdpos(0,-dpos,0);
 		}
-		if((box.keys&8)!=0){//d
+		if(keys[3]!=0){//d
 			incdpos(dpos,0,0);
 		}
-		if((box.keys&16)!=0){//j
+		if(keys[4]!=0){//j
 			if((box.tms-lastfire)>firerate){
 				lastfire=box.tms;
 				new blt().from(this).pos(pos.x,pos.y,pos.z).dpos((float)Math.cos(agl.z-Math.PI/2),(float)-Math.sin(agl.z-Math.PI/2),0).agl(agl.x,agl.y,agl.z);

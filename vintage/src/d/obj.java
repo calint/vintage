@@ -122,4 +122,8 @@ public class obj{
 		}
 		render();
 	}
+	
+	//? network
+	protected final byte[]keys=new byte[net.protocol_msg_len];
+	final byte[]keys(){return keys;}
 }

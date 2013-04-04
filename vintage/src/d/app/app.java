@@ -5,6 +5,9 @@ import d.vbo;
 public class app extends obj implements d.box.app{
 	static final long serialVersionUID=1;
 	//d.box.app
+	int nplayers=2;
+	obj[]netobjs=new obj[nplayers];
+	public obj[]netobjs()throws Throwable{return netobjs;}
 	public vbo[]vbos(){return new vbo[]{
 			vboplr.o,
 			vboblt.o,
@@ -18,13 +21,15 @@ public class app extends obj implements d.box.app{
 	pos(0,0,1);
 //	dpos(0,0,-.01f);
 	dagl(0,0,-.1f);
-	new shp().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.1f);
-	new shp().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.2f);
-	new shp().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.3f);
-	
-	final float sprd=.1f;
-	for(int i=0;i<16;i++)
-		new plr().radius(.02f).scl(.02f,.02f,.02f).pos(box.rnd(-sprd,sprd),box.rnd(-sprd,sprd),0);
+	netobjs[0]=new shp().radius(.1f).scl(.1f,.1f,.1f).pos(.5f,0,.1f);
+	netobjs[1]=new shp().radius(.1f).scl(.1f,.1f,.1f).pos(-.5f,0,.1f);
+//	new shp().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.1f);
+//	new shp().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.2f);
+//	new shp().radius(.1f).scl(.1f,.1f,.1f).pos(0,0,.3f);
+//	
+//	final float sprd=.1f;
+//	for(int i=0;i<16;i++)
+//		new plr().radius(.02f).scl(.02f,.02f,.02f).pos(box.rnd(-sprd,sprd),box.rnd(-sprd,sprd),0);
 
 //	new circlexy().radius(.1f).scl(.1f,.1f,.1f).pos(-.5f,0,0).dagl(0,0,2).dpos(0,0,.05f);
 	
