@@ -2,35 +2,41 @@ package d;
 import java.nio.FloatBuffer;
 import org.lwjgl.BufferUtils;
 import d.box.mtrs;
-final class mtx{
-	// axis x,y,z,w
+final class mtx implements Cloneable{
 	//	0  4   8  12
 	//	1  5   9  13
 	//	2  6  10  14
 	//	3  7  11  15
+
+	//axis x, y, z, w
 	float xx,yx,zx,ox;
 	float xy,yy,zy,oy;
 	float xz,yz,zz,oz;
 	float xo,yo,zo,oo;
+	public mtx set(final float[]m){
+		xx=m[ 0];yx=m[ 4];zx=m[ 8];ox=m[12];
+		xy=m[ 1];yy=m[ 5];zy=m[ 9];oy=m[13];
+		xz=m[ 2];yz=m[ 6];zz=m[10];oz=m[14];
+		xo=m[ 3];yo=m[ 7];zo=m[11];oo=m[15];
+		return this;
+	}
+	public mtx clone(){
+		final mtx m=new mtx();
+		m.xx=xx; m.yx=yx; m.zx=zx; m.ox=ox;
+		m.xy=xy; m.yy=yy; m.zy=zy; m.oy=oy;
+		m.xz=xz; m.yz=yz; m.zz=zz; m.oz=oz;
+		m.xo=xo; m.yo=yo; m.zo=zo; m.oo=oo;
+		return m;
+	}
 
 //	public final FloatBuffer bf=BufferUtils.createFloatBuffer(16);
-	mtx ident(){
+	public mtx ident(){
 		xx=1;xy=0;xz=0;xo=0;
 		yx=0;yy=1;yz=0;yo=0;
 		zx=0;zy=0;zz=1;zo=0;
 		ox=oy=oz=0; oo=1;
 		return this;
 	}
-
-//	public mtx ident(){
-//		bf.rewind();
-//		bf.put(1).put(0).put(0).put(0);
-//		bf.put(0).put(1).put(0).put(0);
-//		bf.put(0).put(0).put(1).put(0);
-//		bf.put(0).put(0).put(0).put(1);
-//		bf.flip();
-//		return this;
-//	}
 	public mtx setsclagltrans(final p s,final p a,final p p){
 		final float sinz=(float)Math.sin(a.z);
 		final float cosz=(float)Math.cos(a.z);
@@ -51,17 +57,15 @@ final class mtx{
 	public p axisyinv(){return p.n(xy,yy,zy);}
 	public p axiszinv(){return p.n(xz,yz,zz);}
 	
-	mtx mw(final p p,final p a){//? Mszxyt
+	public mtx mw(final p p,final p a){//? Mszxyt
 		ident();
 		roty(a.y);
 		rotx(a.x);
 		rotz(a.z);
-		ox=p.x;
-		oy=p.y;
-		oz=p.z;
+		ox=p.x;oy=p.y;oz=p.z;
 		return this;
 	}
-	mtx trnsf(final p src,final p dst){
+	public mtx trnsf(final p src,final p dst){
 		mtrs.npointstransformed++;
 		final float x=src.x;
 		final float y=src.y;
@@ -72,14 +76,7 @@ final class mtx{
 		dst.set(nx,ny,nz);
 		return this;
 	}
-	mtx set(final float[]m){
-		xx=m[ 0];yx=m[ 4];zx=m[ 8];ox=m[12];
-		xy=m[ 1];yy=m[ 5];zy=m[ 9];oy=m[13];
-		xz=m[ 2];yz=m[ 6];zz=m[10];oz=m[14];
-		xo=m[ 3];yo=m[ 7];zo=m[11];oo=m[15];
-		return this;
-	}
-	mtx mul(final mtx m){
+	public mtx mul(final mtx m){
 		mtrs.nmmul++;
 		final float nxx=m.xx*xx+m.yx*xy+m.zx*xz+m.ox*xo;
 		final float nyx=m.xx*yx+m.yx*yy+m.zx*yz+m.ox*yo;
