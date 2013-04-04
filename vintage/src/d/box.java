@@ -189,6 +189,8 @@ final public class box{
 		long t=t0;
 		int frmi=0;
 		final mtx mxwv=new mtx().ident();
+//		Display.sync(60);
+//		Display.setVSyncEnabled(true);
 //		glPolygonMode(GL_FRONT_AND_BACK,GL_POINT);
 		while(!Display.isCloseRequested()){
 			frm++;
@@ -198,6 +200,8 @@ final public class box{
 			t=tms;
 			dt=(float)(dtms/1000.);
 			dt=dtms/1000.f;
+			if(dt>netdt)
+				System.out.println(sdf.format(tms)+"  "+dt+"   "+(dt>netdt?"!":" "));
 			if(nplayers>1){
 				final float slp=netdt-dt;
 				final long slpms=(long)(1000*slp);
@@ -258,7 +262,8 @@ final public class box{
 			if(Keyboard.isKeyDown(Keyboard.KEY_F4))glUniform1i(shader.urendzbuf,1);
 			if(Keyboard.isKeyDown(Keyboard.KEY_F5))glUniform1i(shader.urendzbuf,0);
 			grid.updaterender(pns);
-			Display.update();
+			
+			
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))break;
 
 			
@@ -286,7 +291,13 @@ final public class box{
 			if(Keyboard.isKeyDown(Keyboard.KEY_K))keys[5]|=1;
 			if(Keyboard.isKeyDown(Keyboard.KEY_SPACE))keys[6]|=1;
 			if(Keyboard.isKeyDown(Keyboard.KEY_Q))keys[7]|=1;
-			if(Keyboard.isKeyDown(Keyboard.KEY_E))keys[8]|=1;
+			if(Keyboard.isKeyDown(Keyboard.KEY_E))keys[8]|=1;			
+
+			final long t1=System.nanoTime();			
+			Display.update();
+			final long t2=System.nanoTime();
+			if(t2-t1>10000000)
+				System.out.println("! display.update "+(t2-t1)+" ns");
 		}
 		box.thdpool.shutdown();
 		if(!box.thdpool.awaitTermination(1,TimeUnit.SECONDS)){

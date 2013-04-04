@@ -71,8 +71,9 @@ public class app extends obj implements d.box.app{
 	}
 	
 	private long t0;
-	public static int rainratems=1;
-	public static int nrainitems=20;
+	public static int rainratems=10000;
+//	public static int rainratems=100;
+	public static int nrainitems=40;
 	protected void update() throws Throwable{
 		super.update();
 		if(pos.z>0)
