@@ -47,7 +47,7 @@ final public class box{
 	private static obj app;
 	public static String appcls="d.app.app";//application object
 	private static final Random random=new Random(0);
-	private static int wi=512+256,hi=512+256;
+	private static int wi=512+256,hi=512+256,scrdst=wi;
 	public/*readonly*/static long frm;//frame number
 	public/*readonly*/static int fps;//frames per second
 	public/*readonly*/static int keys;//keys bits
@@ -154,6 +154,9 @@ final public class box{
 			final p xinv=mxwv.axisxinv().scl(1.5f);
 			final p yinv=mxwv.axisyinv().scl(1.5f);
 			final p zinv=mxwv.axiszinv();
+//			final p xinv=mxwv.axisxinv().scl(wi*.8f);
+//			final p yinv=mxwv.axisyinv().scl(hi*.8f);
+//			final p zinv=mxwv.axiszinv().scl(scrdst);
 			//back
 			final pn pnback=pn.frompointandnormal(app.pos.clone(),zinv);
 			pns[0]=pnback;
