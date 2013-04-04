@@ -69,11 +69,7 @@ public class obj{
 		mxmw.setsclagltrans(scl,agl,pos);
 //		mxmwfrm=box.frm;
 	}
-	private long renderfrm;
 	final void render(){
-		if(renderfrm==box.frm)
-			return;
-		renderfrm=box.frm;
 		mtrs.nobjrend++;
 //		GL11.glPushMatrix();
 		if(vbo!=null){
@@ -111,7 +107,12 @@ public class obj{
 //		agl.x+=dagl.x*box.dt;agl.y+=dagl.y*box.dt;agl.z+=dagl.z*box.dt;
 	}
 	protected void oncol(final obj o)throws Throwable{}
+	private long cullrendfrm;
 	final void cullrend(final pn[]cullpns){
+		if(cullrendfrm==box.frm)
+			return;
+		cullrendfrm=box.frm;
+
 		for(int i=0;i<cullpns.length;i++){
 			final pn pn=cullpns[i];
 			final float d=pn.disttopoint(pos);

@@ -9,6 +9,7 @@ public class shp extends obj{
 	private long lastfire;
 	protected void update()throws Throwable{
 		super.update();
+//		System.out.println(this+" "+box.frm);
 		dpos(0,0,0);
 		dagl(0,0,0);
 		

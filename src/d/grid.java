@@ -13,7 +13,7 @@ final class grid{
 	protected static final int bit_scenery=16;
 	final static grid o=new grid(2f,p.n(0,0,.5f));
 	final static List<obj>objs=new LinkedList<obj>();
-	static int splitthresh=20;//if a grid contains more than thresh the grid is split in 8 cubes
+	static int splitthresh=50;//if a grid contains more than thresh the grid is split in 8 cubes
 	static int subgridlevels=4;//maximum splits
 	static int ngrids;//grid count
 	final p po;//grid origo
