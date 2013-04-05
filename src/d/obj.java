@@ -106,6 +106,7 @@ public class obj{
 		agl.add(dagl,box.dt);
 //		agl.x+=dagl.x*box.dt;agl.y+=dagl.y*box.dt;agl.z+=dagl.z*box.dt;
 	}
+	/** same collision may generate several calls depending on how the objects overlap grid*/
 	protected void oncol(final obj o)throws Throwable{}
 	private long cullrendfrm;
 	final void cullrend(final pn[]cullpns){
