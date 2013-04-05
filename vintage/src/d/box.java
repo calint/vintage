@@ -57,7 +57,7 @@ final public class box{
 	}
 	public interface app{vbo[]vbos()throws Throwable;obj[]netobjs()throws Throwable;}
 	private static obj app;
-	public static String appcls="d.app.app";//application object
+	public static String appcls="d.app2.app";//application object
 	private static final Random random=new Random(0);
 	private static int wi=512+256,hi=512+256;//,scrdst=wi;
 	public/*readonly*/static long frm;//frame number
@@ -99,8 +99,7 @@ final public class box{
 	static private void load()throws Throwable{
 		final long t0=System.currentTimeMillis();
 		app=(obj)Class.forName(appcls).newInstance();
-		
-		
+		grid.o.s=app.radius;
 		plrs=((app)app).netobjs();
 		final String host="localhost";
 		if(nplayers>1){
@@ -166,6 +165,9 @@ final public class box{
 		System.out.println("light weight java game layer");
 		System.out.println("       version: "+Sys.getVersion());
 		System.out.println("   application: "+app.getClass().getName());
+		System.out.println("        radius: "+app.radius);
+		System.out.println("         scale: "+app.scl);
+		System.out.println("          grid: radius="+grid.o.s+" levels="+grid.subgridlevels+" splitthresh="+grid.splitthresh);
 		System.out.println("        opengl: "+glGetString(GL_VERSION));
 		System.out.println("        64 bit: "+Sys.is64Bit());
 		System.out.println("       adapter: "+Display.getAdapter());
