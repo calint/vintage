@@ -17,7 +17,7 @@ final class grid{
 	static int subgridlevels=4;//maximum splits
 	static int ngrids;//grid count
 	final p po;//grid origo
-	final float s;//grid scale // r=
+	float s;//grid scale // r=
 	final List<obj>ls=new ArrayList<obj>();
 	final grid[]grids=new grid[8];//sub grids, if [0]!=null
 	static Collection<obj>news=new ArrayList<obj>();
@@ -155,9 +155,11 @@ final class grid{
 				if(yes){
 					box.mtrs.noncols++;
 					if(a1!=0){
+						//? is o2 in o1.oncols ls?  (multiple grids making same oncol)
 						o1.oncol(o2);
 					}
 					if(a2!=0){
+						//? is o1 in o2.oncols ls?
 						o2.oncol(o1);
 					}
 				}
