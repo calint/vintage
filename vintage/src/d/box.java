@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
@@ -70,6 +71,9 @@ final public class box{
 	public static boolean gc_before_stats;
 	static final int nthreads=2;
 	static final ExecutorService thdpool=Executors.newFixedThreadPool(nthreads);
+	
+	public static boolean cullplanes=true;
+	
 	
 	private static Socket sock;
 	private static OutputStream os;
@@ -193,6 +197,7 @@ final public class box{
 //		Display.setVSyncEnabled(true);
 //		glPolygonMode(GL_FRONT_AND_BACK,GL_POINT);
 		while(!Display.isCloseRequested()){
+			final long t0n=System.nanoTime();
 			frm++;
 			frmi++;
 			tms=System.currentTimeMillis();
@@ -200,8 +205,8 @@ final public class box{
 			t=tms;
 			dt=(float)(dtms/1000.);
 			dt=dtms/1000.f;
-			if(dt>netdt)
-				System.out.println(sdf.format(tms)+"  "+dt+"   "+(dt>netdt?"!":" "));
+//			if(dt>netdt)
+//				System.out.println(sdf.format(tms)+"  "+dt+"   "+(dt>netdt?"!":" "));
 			if(nplayers>1){
 				final float slp=netdt-dt;
 				final long slpms=(long)(1000*slp);
@@ -257,12 +262,18 @@ final public class box{
 			mxwv.ident();
 			mxwv.setsclagltrans(p.n(1,wihiratio,1),app.agl.clone().neg(),app.pos.clone().neg());
 			glUniformMatrix4(shader.umxwv,true,mxwv.tobb());
+			
 			if(Keyboard.isKeyDown(Keyboard.KEY_F2))glUniform1i(shader.udopersp,1);
 			if(Keyboard.isKeyDown(Keyboard.KEY_F3))glUniform1i(shader.udopersp,0);
 			if(Keyboard.isKeyDown(Keyboard.KEY_F4))glUniform1i(shader.urendzbuf,1);
 			if(Keyboard.isKeyDown(Keyboard.KEY_F5))glUniform1i(shader.urendzbuf,0);
-			grid.updaterender(pns);
+			if(Keyboard.isKeyDown(Keyboard.KEY_F6))cullplanes=false;
+			if(Keyboard.isKeyDown(Keyboard.KEY_F7))cullplanes=true;
 			
+			if(cullplanes)
+				grid.updaterender(pns);
+			else
+				grid.updaterender(new pn[0]);
 			
 			if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))break;
 
@@ -293,11 +304,12 @@ final public class box{
 			if(Keyboard.isKeyDown(Keyboard.KEY_Q))keys[7]|=1;
 			if(Keyboard.isKeyDown(Keyboard.KEY_E))keys[8]|=1;			
 
-			final long t1=System.nanoTime();			
+			final long t1n=System.nanoTime();			
 			Display.update();
-			final long t2=System.nanoTime();
-			if(t2-t1>10000000)
-				System.out.println("! display.update "+(t2-t1)+" ns");
+//			Display.swapBuffers();
+			final long t2n=System.nanoTime();
+//			if(t2-t1>10000000)
+//			System.out.println(sdf.format(new Date(t1n/1000000))+"     Display.update:"+(t2n-t1n)/1000+" us  swapbuffers:"+Display.ns_swapbuffers+"  rest:"+(t1n-t0n)/1000+" us");
 		}
 		box.thdpool.shutdown();
 		if(!box.thdpool.awaitTermination(1,TimeUnit.SECONDS)){
